@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>Alexandru Badiu</title>
+	<link rel="Shortcut Icon" href="/favicon.ico" type="image/x-icon" />
+	<meta http-equiv="pragma" content="no-cache" />
+	<meta name="robots" content="all" />
+	<meta name="MSSmartTagsPreventParsing" content="true" />
+	<meta http-equiv="imagetoolbar" content="false" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->	
+  <link href='http://fonts.googleapis.com/css?family=ABeeZee:400,400italic' rel='stylesheet' type='text/css'>
+	<style>
+		* { padding: 0; margin: 0; }
+		body { background-color: #333; }
+    h2 { color: rgba(203,199,195,0.7); font-family: "ABeeZee", Helvetica; font-size: 26px; margin-bottom: 16px; }
+    p { color: #fff; font-family: "ABeeZee", Helvetica; font-size: 16px; line-height: 26px; margin-bottom: 16px; -webkit-font-smoothing: antialiased; }
+    a { color: #fff; font-weight: 600; text-decoration: none; padding-bottom: -1px !important; border-bottom: 3px solid rgba(255,255,255,0.3); }
+    strong { font-weight: 600; }
+    a:hover { color: #fff; border-bottom: 3px solid rgba(255,255,255,1); }
+    small { color: #fff; font-family: "ABeeZee", Helvetica; font-size: 12px; -webkit-font-smoothing: antialiased; }
+		#monogram { width: 50px; padding: 50px 0 0 0; margin: 0 auto 0 50px; }
+		#about { 
+      width: 360px; 
+      padding: 0 0 0 150px; 
+      margin: -35px 50px 0 auto !important; 
+    }
+    #container {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      -webkit-border-radius: 20px;
+      -moz-border-radius: 20px;
+      border-radius: 20px;
+    }
+		@media (max-width: 767px) {
+			#monogram { position: relative; width: auto; padding: 20px; margin: 0; }
+			#about { position: relative; width: auto; padding: 20px; margin: 0 !important; }
+			background-image { opacity: 0.2; }
+		}
+	</style>
+</head>	
+    
+<body>
+
+<!-- swap out for a logo -->
+<div id="monogram">
+	<img src="monogram.png" />
+</div>
+
+<!-- swap out for information about yourself -->
+<div id="about">
+  <div id="container">
+    <h2>Hello?</h2>
+    <p>Is it me you're looking for?</p>
+    <p>If you're looking for Alexandru Badiu then yes, that would be me. I am a software engineer @ <a href="http://demotix.com">Demotix</a> / <a href="http://corbisimages.com">Corbis</a>, an amateur game developer, lazy <a href="https://soundcloud.com/viciosul_sid">chiptune maker</a> and part time Mr. T impersonator.</p>
+    <p>From time to time I like to ride pig statues while pretending to be Bastian from Neverending Story.</p>
+
+    <h2>Networks</h2>
+    <p>
+  		<a href="http://github.com/voidberg">GitHub</a><br>
+  		<a href="https://drupal.org/user/8662">Drupal</a><br>
+      <a href="http://www.linkedin.com/profile/view?id=7885754">LinkedIn</a><br>
+  		<a href="http://soundcloud.com/viciosul_sid">Soundcloud</a><br>
+  		<a href="http://twitter.com/voidberg">Twitter</a><br>
+  		<a href="http://facebook.com/voidberg">Facebook</a><br>
+  		<a href="http://last.fm/user/voidberg">Last.fm</a><br>
+  	</p>
+    <small>Photo by <a href="http://acmconsulting.eu/">Alex McFadyen</a>.</small>
+  </div>
+</div>
+
+<!--include jquery & backstretch-->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="jquery.backstretch.min.js"></script>
+<script type="text/javascript">
+$(function(){
+     $(window).resize(function(){
+         if($(this).width() >= 767){
+             $.backstretch("nh_bg.jpg", {speed: 150});
+         }
+      })
+      .resize();//trigger resize on page load
+});
+</script>
+
+</body>	
+</html>
