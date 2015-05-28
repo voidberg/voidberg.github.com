@@ -336,9 +336,9 @@ module.exports = mod;
 						<li>Treat it like any other service and inject it when needed</li>
 					</ul>
 <pre><code>
-    $scope.$watch(angular.bind(this, function () {
+    $scope.$watch(() => {
       return this.efilter;
-    }),
+    },
     (newVal) => {
       this.updateFilter(newVal);
     });
