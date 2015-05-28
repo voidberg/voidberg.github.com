@@ -63,7 +63,7 @@
 /services
 /filters
 /directives
-/views				
+/views
 </pre></code></li>
 						<li>Put as much as we could inside Bower</li>
 					</ul>
@@ -145,7 +145,7 @@
 				<section>
 					<h1>Webpack</h1>
 					<pre><code style="font-size: 0.6em;">
-entry: "./app/main.js",     
+entry: "./app/main.js",
 output: { path: path.resolve(__dirname, './build'), filename: '[name].js' },
 module: {
   loaders: [
@@ -202,7 +202,7 @@ module.exports = mod;
 /main.js
 /state1/
 /state2/
-/components/				
+/components/
 </code></pre>
 				</section>
 
@@ -393,7 +393,7 @@ register('app')
     .service('myService', require('./my-angular-service'))
     .provider('myOtherService', require('./my-angular-provider'))
     .factory('myFactory', require('./my-angular-factory'))
-    .directive('myDirective', require('./my-angular-directive'));						
+    .directive('myDirective', require('./my-angular-directive'));
 					</code></pre>
 				</section>
 
@@ -403,22 +403,22 @@ register('app')
 class MyDirective {
     /*@ngInject*/
     constructor($interval) {
-        this.template = '<div>I\'m a directive!</div>'; 
-        this.restrict = 'E'; 
+        this.template = '<div>I\'m a directive!</div>';
+        this.restrict = 'E';
         this.scope = {};
-        this.$interval = $interval; 
-    } 
-    compile(tElement) { 
-        tElement.css('position', 'absolute'); 
-    } 
-    link(scope, element) { 
-        this.$interval(() => this.move(element), 1000); 
-    } 
+        this.$interval = $interval;
+    }
+    compile(tElement) {
+        tElement.css('position', 'absolute');
+    }
+    link(scope, element) {
+        this.$interval(() => this.move(element), 1000);
+    }
     move(element) {
-        element.css('left', (Math.random() * 500) + 'px'); 
-        element.css('top', (Math.random() * 500) + 'px'); 
-    } 
-}					
+        element.css('left', (Math.random() * 500) + 'px');
+        element.css('top', (Math.random() * 500) + 'px');
+    }
+}
 					</code></pre>
 				</section>
 
@@ -435,7 +435,7 @@ class MyDirective {
         this.controller = 'MyDirectiveController';
         this.controllerAs = 'ctrl';
         this.bindToController = true;
-    } 
+    }
 }
 
 class MyDirectiveController {
@@ -443,7 +443,7 @@ class MyDirectiveController {
     constructor($window) {
     	this.$window = $window;
     	console.log(this.title);
-    } 
+    }
 }
 
 module.exports = MyDirective;
@@ -460,7 +460,7 @@ module.exports = MyDirective;
 class MyDirectiveController {
     /*@ngInject*/
     constructor($window) {
-    } 
+    }
 }
 
 resolve: /*@ngInject*/function ($q, $ocLazyLoad) {
@@ -478,7 +478,7 @@ resolve: /*@ngInject*/function ($q, $ocLazyLoad) {
 						<li>Jade</li>
 						<li>SASS and Bourbon</li>
 						<li>Karma and Protractor, local or remote via SauceLabs</li>
-						<li>Mocha, Chai, Sinon</li>
+						<li>Mocha, Chai, Sinon, Istanbul</li>
 						<li>Bamboo</li>
 					</ul>
 				</section>
