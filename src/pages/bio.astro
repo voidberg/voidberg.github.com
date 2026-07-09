@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import { Content as BioIntro } from '../prose/bio-intro.md';
+import { timeline } from '../data/timeline';
+import { community } from '../data/community';
+
+const description =
+  'The longer version: how Alexandru Badiu got from front-end developer to Senior Director of Engineering, and what he built along the way.';
+---
+
+<Base title="Me in 10 minutes · Alexandru Badiu" description={description} active="/bio">
+  <header class="page-head enter">
+    <div class="eyebrow">Bio · the long version</div>
+    <h1>Me, in 10 minutes.</h1>
+    <p class="blurb">If the homepage's ten-second version sparked anything, here's the longer walkthrough: how I got here, the work I'm proud of, and where I've ended up.</p>
+  </header>
+
+  <section class="prose enter" style="margin-top:48px;">
+    <BioIntro />
+  </section>
+
+  <section class="enter">
+    <div class="slabel"><span class="k">01</span><h2>The path so far</h2><span class="line"></span></div>
+    <div class="timeline">
+      {timeline.map((t) => (
+        <div class:list={['tl-entry', { current: t.current }]}>
+          <div class="tl-when">{t.when}</div>
+          <p>{t.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="enter">
+    <div class="slabel"><span class="k">02</span><h2>Community &amp; talks</h2><span class="line"></span></div>
+    <ul class="posts-mini">
+      {community.map((c) => (
+        <li>
+          <span class="pm-date">{c.date}</span>
+          <span class="pm-title">{c.title}</span>
+          <span class="pm-meta">{c.meta}</span>
+        </li>
+      ))}
+    </ul>
+    <div class="writing-foot">
+      <a class="linkish" href="/projects">See the things I've built →</a>
+    </div>
+  </section>
+
+  <section class="enter">
+    <div class="slabel"><span class="k">→</span><h2>Next</h2><span class="line"></span></div>
+    <div class="doors">
+      <a class="door" href="/now"><span class="num">→</span><div class="body"><span class="kick">What I'm doing right now</span><span class="ttl">Now</span><span class="dsc">The handful of things filling my weeks. Updated every few weeks.</span></div><span class="arr">→</span></a>
+      <a class="door" href="/contact"><span class="num">→</span><div class="body"><span class="kick">Say hello</span><span class="ttl">Contact</span><span class="dsc">I read everything; I reply to most. Hiring conversations welcome.</span></div><span class="arr">→</span></a>
+    </div>
+  </section>
+</Base>

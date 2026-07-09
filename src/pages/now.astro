@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import { Content as NowContent } from '../prose/now.md';
+
+const description =
+  'What Alexandru Badiu is doing now: between roles, reviving old open-source projects, poking at Go, and learning the theremin.';
+---
+
+<Base title="Now · Alexandru Badiu" description={description} active="/now">
+  <style is:global slot="head">
+    /* Style the markdown-rendered Now content to match the .now-block spec. */
+    .now-body h3{font-family:"Press Start 2P",monospace;font-size:12px;color:var(--s-mag);
+      margin:44px 0 16px;letter-spacing:.04em;}
+    .now-body h3:first-child{margin-top:0;}
+    .now-body p{font-size:16px;line-height:1.7;color:var(--ink);margin:0 0 16px;}
+    .now-body a{color:var(--s-cyan);text-decoration:none;border-bottom:2px solid var(--s-cyan);padding-bottom:1px;}
+    .now-body a:hover{color:var(--bg);background:var(--s-cyan);}
+  </style>
+
+  <header class="page-head enter">
+    <div class="now-stamp" style="margin-bottom:18px;"><span class="pulse"></span><span>Updated July 2026 · London</span></div>
+    <h1>What I'm doing now.</h1>
+    <p class="blurb">If we last spoke a while ago, here's roughly where my attention is. Reasonably honest, reasonably current.</p>
+  </header>
+
+  <section class="now-body enter" style="margin-top:48px;">
+    <NowContent />
+  </section>
+
+  <div class="now-foot">
+    Curious about the boring honest list of tools behind all this? See <a href="/uses">/uses</a>.
+    <br />
+    Inspired by <a href="https://nownownow.com/about" target="_blank" rel="noreferrer">Derek Sivers' now-page idea</a>, a small movement of sites with a simple "what I'm doing now" page.
+  </div>
+</Base>

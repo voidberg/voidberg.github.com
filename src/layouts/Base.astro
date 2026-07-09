@@ -1,0 +1,66 @@
+---
+import Nav from '../components/Nav.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  active?: string;
+  /** '' on the home page (loader controls the reveal); 'no-loader' elsewhere. */
+  bodyClass?: string;
+  showControls?: boolean;
+  backHref?: string;
+  backLabel?: string;
+  footerExtra?: string;
+}
+
+const {
+  title,
+  description = '',
+  active,
+  bodyClass = 'no-loader',
+  showControls = false,
+  backHref = '/',
+  backLabel = '← Back to home',
+  footerExtra = '',
+} = Astro.props;
+
+const year = new Date().getFullYear();
+const fontHref =
+  'https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Spline+Sans+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href={fontHref} rel="stylesheet" />
+    <link rel="stylesheet" href="/spectrum.css" />
+    <slot name="head" />
+  </head>
+  <body class={bodyClass}>
+    <div class="tape-frame" aria-hidden="true">
+      <div class="bar top"></div><div class="bar bot"></div>
+      <div class="bar lft"></div><div class="bar rgt"></div>
+    </div>
+
+    <slot name="preloader" />
+
+    <div class="wrap" id="page">
+      <Nav active={active} showControls={showControls} />
+
+      <slot />
+
+      <footer class="foot">
+        <span>© {year} Alexandru Badiu{footerExtra}</span>
+        <span><a href={backHref}>{backLabel}</a></span>
+      </footer>
+    </div>
+
+    <slot name="scripts" />
+  </body>
+</html>

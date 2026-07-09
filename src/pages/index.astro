@@ -1,0 +1,639 @@
+---
+import Base from "../layouts/Base.astro";
+import { featuredProjects } from "../data/projects";
+
+const description =
+    "Alexandru Badiu, engineering leader in London. Twenty years building software, the last stretch leading teams across five countries. Currently looking for what's next.";
+
+const nowRows = [
+    {
+        k: "WORK",
+        html: "I'm currently between roles since BENlabs shut down in 2026. I'm looking for senior engineering or engineering leadership, and happy to talk to teams building something real with AI in the product, not just the pitch deck.",
+    },
+    {
+        k: "MAKING",
+        html: "Reviving old open-source tools and poking at Go. Learning the theremin, and making chiptunes as <em>viciosul_sid</em> when the mood lands.",
+    },
+    {
+        k: "READING",
+        html: 'More than I\'m writing, for once, and building small tools around what I read. <a class="full" href="/now">full /now page →</a>',
+    },
+];
+---
+
+<Base
+    title="Alexandru Badiu · LOADING…"
+    description={description}
+    bodyClass=""
+    showControls={true}
+    backHref="#page"
+    backLabel="Back to top ↑"
+    footerExtra={' · LOAD "" complete'}
+>
+    <style is:global slot="head">
+        /* ===== Landing-only styles ===== */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.35s ease;
+        }
+        #loader.done {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #loader.hidden {
+            display: none;
+        }
+        .load-stripes {
+            position: absolute;
+            inset: 0;
+            opacity: 0.85;
+            background: repeating-linear-gradient(
+                0deg,
+                #5a3d3d 0 16px,
+                #3a5654 16px 32px
+            );
+            background-size: 100% 64px;
+            animation: drift 3.4s linear infinite;
+        }
+        .load-stripes.data {
+            background: repeating-linear-gradient(
+                0deg,
+                #3a3f63 0 16px,
+                #645a39 16px 32px
+            );
+            animation: drift 2.6s linear infinite;
+        }
+        @keyframes drift {
+            from {
+                background-position: 0 0;
+            }
+            to {
+                background-position: 0 64px;
+            }
+        }
+        .load-panel {
+            position: absolute;
+            inset: 46px;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 26px;
+            gap: 14px;
+            border: 2px solid #111;
+        }
+        .load-line {
+            font-family: "Press Start 2P", monospace;
+            font-size: 13px;
+            color: #7fc9c7;
+        }
+        .load-line .nm {
+            color: #cdbf7a;
+        }
+        .load-status {
+            font-family: "Press Start 2P", monospace;
+            font-size: 11px;
+            line-height: 1.5;
+            letter-spacing: 0.03em;
+            color: var(--dim);
+            min-height: 1.5em;
+        }
+        .load-status .nm {
+            color: #cdbf7a;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .load-stripes {
+                animation: none;
+            }
+        }
+
+        .statusbar .iconbtn {
+            min-width: 30px;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1;
+        }
+        .statusbar .iconbtn.on {
+            background: var(--s-grn);
+            border-color: var(--s-grn);
+            color: var(--bg);
+        }
+        .statusbar .iconbtn.on:hover {
+            background: var(--s-cyan);
+            border-color: var(--s-cyan);
+        }
+
+        .hero {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            margin-top: 52px;
+        }
+        .hero-id {
+            flex: 1;
+            min-width: 0;
+        }
+        .avatar {
+            width: 150px;
+            height: 150px;
+        }
+        .avatar img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            image-rendering: auto;
+        }
+        .hero h1 {
+            font-family: "Press Start 2P", monospace;
+            font-size: 23px;
+            line-height: 1.35;
+            margin: 0 0 14px;
+            color: var(--paper);
+            text-shadow: 3px 3px 0 var(--s-blue);
+            white-space: nowrap;
+        }
+        .subline {
+            font-family: "Spline Sans Mono", ui-monospace, monospace;
+            font-size: 13px;
+            color: var(--dim);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .subline .sep {
+            color: var(--s-cyan);
+        }
+        .lede {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--ink);
+            margin: 26px 0 0;
+        }
+        .lede a {
+            color: var(--s-cyan);
+            text-decoration: none;
+            border-bottom: 2px solid var(--s-cyan);
+            padding-bottom: 1px;
+        }
+        .lede a:hover {
+            color: var(--bg);
+            background: var(--s-cyan);
+        }
+
+        .now-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            border: 1px solid var(--rule);
+        }
+        .now-row {
+            display: grid;
+            grid-template-columns: 92px 1fr;
+            gap: 16px;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--rule);
+        }
+        .now-row:last-child {
+            border-bottom: none;
+        }
+        .now-row .k {
+            font-family: "Press Start 2P", monospace;
+            font-size: 11px;
+            color: var(--s-yel);
+            padding-top: 5px;
+            letter-spacing: 0.04em;
+        }
+        .now-row p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--ink);
+            line-height: 1.65;
+        }
+        .now-row a {
+            color: var(--s-cyan);
+            text-decoration: none;
+            border-bottom: 1px solid var(--s-cyan);
+        }
+        .now-row .full {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 14px;
+            font-family: "Spline Sans Mono", ui-monospace, monospace;
+            font-size: 12px;
+        }
+        .now-grid + .now-stamp {
+            margin-top: 14px;
+        }
+
+        .slabel .see-all {
+            font-family: "Spline Sans Mono", ui-monospace, monospace;
+            font-size: 12px;
+            color: var(--s-cyan);
+            text-decoration: none;
+            white-space: nowrap;
+            border-bottom: 1px solid var(--s-cyan);
+            padding-bottom: 1px;
+        }
+        .slabel .see-all:hover {
+            color: var(--bg);
+            background: var(--s-cyan);
+        }
+        .proj-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .proj {
+            display: block;
+            text-decoration: none;
+            border: 2px solid var(--rule);
+            background: var(--card);
+            padding: 18px 18px 16px;
+            transition:
+                transform 0.12s ease,
+                border-color 0.12s ease,
+                box-shadow 0.12s ease;
+        }
+        .proj:hover {
+            transform: translate(-2px, -2px);
+            border-color: var(--accent);
+            box-shadow: 4px 4px 0 var(--accent);
+        }
+        .proj .px {
+            width: 100%;
+            height: 64px;
+            image-rendering: pixelated;
+            margin-bottom: 14px;
+            border: 1px solid #1c1c1c;
+        }
+        .proj .pname {
+            font-family: "Press Start 2P", monospace;
+            font-size: 11px;
+            color: var(--paper);
+            margin-bottom: 9px;
+            line-height: 1.5;
+        }
+        .proj .pdesc {
+            font-size: 14px;
+            color: var(--dim);
+            line-height: 1.6;
+        }
+        .proj .ptag {
+            font-family: "Spline Sans Mono", ui-monospace, monospace;
+            font-size: 10px;
+            color: var(--s-grn);
+            margin-top: 11px;
+            letter-spacing: 0.05em;
+        }
+
+        @media (max-width: 640px) {
+            .hero {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .proj-grid {
+                grid-template-columns: 1fr;
+            }
+            .now-row {
+                grid-template-columns: 1fr;
+                gap: 7px;
+            }
+            .hero h1 {
+                font-size: 20px;
+                white-space: normal;
+            }
+        }
+    </style>
+
+    <!-- ===== LOADER ===== -->
+    <div id="loader" aria-hidden="true" slot="preloader">
+        <div class="load-stripes" id="stripes"></div>
+        <div class="load-panel">
+            <div class="load-line">
+                LOAD <span class="nm">"alex.badiu"</span>
+            </div>
+            <div class="load-status" id="loadstatus">&nbsp;</div>
+        </div>
+    </div>
+
+    <!-- HERO -->
+    <header class="hero">
+        <div class="avatar enter">
+            <img
+                src="/img/hero.png"
+                width="384"
+                height="384"
+                alt="Alexandru Badiu with a rooster in a Faroese village, rendered in ZX Spectrum colours"
+            />
+            <span class="tag">SCREEN$</span>
+        </div>
+        <div class="hero-id">
+            <div class="eyebrow enter">Me, in 10 seconds</div>
+            <h1 class="enter">Alexandru Badiu</h1>
+            <div class="subline enter mono">
+                <span>Engineering leader</span><span class="sep">▚</span><span
+                    >London</span
+                ><span class="sep">▚</span><span>open to what's next</span>
+            </div>
+        </div>
+    </header>
+    <p class="lede enter">
+        I'm Alex, an engineering leader based in London. I spent about thirteen
+        years at one company as it grew from Demotix to Corbis to BENlabs,
+        ending up as Senior Director of Engineering and leading teams across
+        five countries. BENlabs wound down in 2026, so right now I'm looking for
+        what's next in senior engineering or engineering leadership. In between
+        I'm reviving old open-source projects and learning the theremin, slowly.
+        Romanian by origin, easily bribed with strong coffee.
+    </p>
+
+    <!-- NOW -->
+    <section class="enter">
+        <div class="slabel">
+            <span class="k">NOW</span><h2>What I'm doing right now</h2><span
+                class="line"></span>
+        </div>
+        <div class="now-grid">
+            {
+                nowRows.map((row) => (
+                    <div class="now-row">
+                        <>
+                            <span class="k">{row.k}</span>
+                            <p set:html={row.html} />
+                        </>
+                    </div>
+                ))
+            }
+        </div>
+        <div class="now-stamp">
+            <span class="pulse"></span><span>Updated July 2026 · London</span>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="enter">
+        <div class="slabel">
+            <span class="k">PROJ</span><h2>Things I've built</h2><span
+                class="line"></span><a class="see-all" href="/projects"
+                >See all →</a
+            >
+        </div>
+        <div class="proj-grid">
+            {
+                featuredProjects.map((p) => (
+                    <a class="proj" href="/projects">
+                        <canvas
+                            class="px"
+                            width="120"
+                            height="64"
+                            data-seed={p.seed}
+                        />
+                        <div class="pname">{p.name}</div>
+                        <div class="pdesc">{p.short ?? p.desc}</div>
+                        <div class="ptag">{p.tag}</div>
+                    </a>
+                ))
+            }
+        </div>
+    </section>
+
+    <!-- DOORS -->
+    <section class="enter">
+        <div class="slabel">
+            <span class="k">MORE</span><h2>Load another program</h2><span
+                class="line"></span>
+        </div>
+        <div class="doors">
+            <a class="door" href="/bio"
+                ><span class="num">01</span><div class="body">
+                    <span class="kick">Take longer</span><span class="ttl"
+                        >Me in 10 minutes</span
+                    ><span class="dsc"
+                        >The longer version: how I got here, the career, and the
+                        things I've built along the way.</span
+                    >
+                </div><span class="arr">→</span></a
+            >
+            <a class="door" href="/uses"
+                ><span class="num">02</span><div class="body">
+                    <span class="kick">What I work with</span><span class="ttl"
+                        >Uses</span
+                    ><span class="dsc"
+                        >The boring honest list of the tools and tech I actually
+                        reach for.</span
+                    >
+                </div><span class="arr">→</span></a
+            >
+            <a class="door" href="/contact"
+                ><span class="num">03</span><div class="body">
+                    <span class="kick">Get in touch</span><span class="ttl"
+                        >Contact</span
+                    ><span class="dsc"
+                        >Best for slow questions, engineering chat, or
+                        mentoring. I read everything; I reply to most.</span
+                    >
+                </div><span class="arr">→</span></a
+            >
+        </div>
+    </section>
+
+    <script slot="scripts">
+        (function () {
+            /* ---------- tiny bleep (WebAudio) ---------- */
+            var AC = null,
+                soundOn = false;
+            function ctx() {
+                if (!AC) {
+                    try {
+                        AC = new (
+                            window.AudioContext || window.webkitAudioContext
+                        )();
+                    } catch (e) {}
+                }
+                // Browsers start the context suspended until a user gesture; resume it.
+                if (AC && AC.state === "suspended") {
+                    AC.resume();
+                }
+                return AC;
+            }
+            function bleep(freq, dur) {
+                if (!soundOn) return;
+                var c = ctx();
+                if (!c) return;
+                var o = c.createOscillator(),
+                    g = c.createGain();
+                o.type = "square";
+                o.frequency.value = freq || 880;
+                g.gain.value = 0.14;
+                o.connect(g);
+                g.connect(c.destination);
+                var t = c.currentTime;
+                o.start(t);
+                g.gain.setValueAtTime(0.14, t);
+                g.gain.exponentialRampToValueAtTime(0.0001, t + (dur || 0.06));
+                o.stop(t + (dur || 0.06));
+            }
+
+            /* ---------- dithered avatar + project thumbs ---------- */
+            function ordered(x, y) {
+                var m = [
+                    [0, 8, 2, 10],
+                    [12, 4, 14, 6],
+                    [3, 11, 1, 9],
+                    [15, 7, 13, 5],
+                ];
+                return m[y & 3][x & 3] / 16;
+            }
+            function paintDither(cv, cols) {
+                var w = cv.width,
+                    h = cv.height,
+                    g = cv.getContext("2d");
+                var cx = w * 0.5,
+                    cy = h * 0.42;
+                for (var y = 0; y < h; y++)
+                    for (var x = 0; x < w; x++) {
+                        var dx = (x - cx) / (w * 0.34),
+                            dy = (y - cy) / (h * 0.34);
+                        var head =
+                            1 - Math.min(1, Math.sqrt(dx * dx + dy * dy));
+                        var shoulder = Math.max(0, y / h - 0.62) * 2.2;
+                        var v = Math.max(head * 0.95, Math.min(0.8, shoulder));
+                        v = v * 0.85 + 0.12;
+                        var lvl = v + (ordered(x, y) - 0.5) * 0.5;
+                        var idx = Math.max(
+                            0,
+                            Math.min(
+                                cols.length - 1,
+                                Math.round(lvl * (cols.length - 1)),
+                            ),
+                        );
+                        g.fillStyle = cols[idx];
+                        g.fillRect(x, y, 1, 1);
+                    }
+            }
+            function paintProj(cv, seed) {
+                var w = cv.width,
+                    h = cv.height,
+                    g = cv.getContext("2d");
+                var pal = [
+                    "#000",
+                    "#22227a",
+                    "#7a227a",
+                    "#227a7a",
+                    "#227a22",
+                    "#7a6e22",
+                ];
+                var s = seed || 1;
+                for (var y = 0; y < h; y += 4)
+                    for (var x = 0; x < w; x += 4) {
+                        s = (s * 1103515245 + 12345) & 0x7fffffff;
+                        var r = (s >> 16) & 0xff;
+                        g.fillStyle =
+                            r < 150
+                                ? pal[0]
+                                : pal[
+                                      1 + ((x + y + (r & 7)) % (pal.length - 1))
+                                  ];
+                        g.fillRect(x, y, 4, 4);
+                    }
+            }
+            var SPEC = [
+                "#000000",
+                "#0000aa",
+                "#aa00aa",
+                "#00aaaa",
+                "#bbbbbb",
+                "#ffffff",
+            ];
+            var av = document.getElementById("av");
+            if (av) paintDither(av, SPEC);
+            document.querySelectorAll(".proj .px").forEach(function (c) {
+                paintProj(c, parseInt(c.dataset.seed, 10));
+            });
+
+            /* ---------- loader (authentic tape load: border bands + header message) ---------- */
+            var loader = document.getElementById("loader");
+            var stripes = document.getElementById("stripes");
+            var statusEl = document.getElementById("loadstatus");
+            var timers = [];
+            function clearTimers() {
+                timers.forEach(clearTimeout);
+                timers = [];
+            }
+            var SEEN_KEY = "ab_tape_loaded";
+            function runLoader() {
+                clearTimers();
+                loader.classList.remove("done", "hidden");
+                stripes.classList.remove("data");
+                document.body.classList.remove("revealed");
+                statusEl.innerHTML = "&nbsp;";
+                bleep(1200, 0.12);
+                /* Pilot tone gives way to the data stream: the header is found and the
+           Spectrum prints "Program: <name>" in the top-left. No bar, no counter. */
+                timers.push(
+                    setTimeout(function () {
+                        stripes.classList.add("data");
+                        statusEl.innerHTML =
+                            'Program: <span class="nm">alex.badiu</span>';
+                    }, 700),
+                );
+                /* Load completes: remember it, reveal the page, then hide the loader. */
+                timers.push(
+                    setTimeout(function () {
+                        bleep(1760, 0.1);
+                        try {
+                            localStorage.setItem(SEEN_KEY, "1");
+                        } catch (e) {}
+                        loader.classList.add("done");
+                        document.body.classList.add("revealed");
+                        timers.push(
+                            setTimeout(function () {
+                                loader.classList.add("hidden");
+                            }, 400),
+                        );
+                    }, 2600),
+                );
+            }
+            var seen = false;
+            try {
+                seen = localStorage.getItem(SEEN_KEY) === "1";
+            } catch (e) {}
+            if (seen) {
+                loader.classList.add("done", "hidden");
+                document.body.classList.add("revealed");
+            } else {
+                runLoader();
+            }
+
+            /* ---------- controls ---------- */
+            var sbtn = document.getElementById("sound-btn");
+            sbtn.addEventListener("click", function () {
+                soundOn = !soundOn;
+                ctx();
+                sbtn.classList.toggle("on", soundOn);
+                sbtn.title = soundOn
+                    ? "Sound on, click to mute"
+                    : "Toggle bleeps";
+                if (soundOn) bleep(988, 0.06);
+            });
+            document
+                .getElementById("replay-btn")
+                .addEventListener("click", function () {
+                    bleep(660, 0.05);
+                    runLoader();
+                });
+            document.querySelectorAll(".door,.proj").forEach(function (el) {
+                el.addEventListener("mouseenter", function () {
+                    bleep(1320, 0.03);
+                });
+            });
+        })();
+    </script>
+</Base>

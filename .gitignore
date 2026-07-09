@@ -6,5 +6,12 @@ _site
 Gemfile
 Gemfile.lock
 node_modules
-package.json
 file.tar
+
+# Astro build output + cache
+dist/
+.astro/
+
+# Local reference material (not part of the published site)
+design_handoff_personal_site/
+SITE-BUILD-CONTEXT.md
