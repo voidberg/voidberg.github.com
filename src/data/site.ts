@@ -3,9 +3,8 @@
 
 export const site = {
   name: 'Alexandru Badiu',
-  // Replace with the id from your Formspree form (looks like "abcdwxyz").
-  // Until then the contact form shows a graceful error on submit.
-  formspreeId: 'YOUR_FORM_ID',
+  // The id from the Formspree form (the part after /f/ in the endpoint).
+  formspreeId: 'xnjejnlo',
   socials: {
     github: 'https://github.com/voidberg',
     linkedin: 'https://www.linkedin.com/in/alexandrubadiu',
@@ -20,9 +19,6 @@ export interface NavItem {
 }
 
 export const nav: NavItem[] = [
-  { label: 'Bio', href: '/bio' },
-  { label: 'Now', href: '/now' },
   { label: 'Projects', href: '/projects' },
-  { label: 'Uses', href: '/uses' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Contact', href: '/#contact' },
 ];

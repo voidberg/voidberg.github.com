@@ -1,23 +1,20 @@
 ---
 import Base from "../layouts/Base.astro";
 import { featuredProjects } from "../data/projects";
+import { site } from "../data/site";
 
 const description =
     "Alexandru Badiu, engineering leader in London. Twenty years building software, the last stretch leading teams across five countries. Currently looking for what's next.";
 
-const nowRows = [
-    {
-        k: "WORK",
-        html: "I'm currently between roles since BENlabs shut down in 2026. I'm looking for senior engineering or engineering leadership, and happy to talk to teams building something real with AI in the product, not just the pitch deck.",
-    },
-    {
-        k: "MAKING",
-        html: "Reviving old open-source tools and poking at Go. Learning the theremin, and making chiptunes as <em>viciosul_sid</em> when the mood lands.",
-    },
-    {
-        k: "READING",
-        html: 'More than I\'m writing, for once, and building small tools around what I read. <a class="full" href="/now">full /now page →</a>',
-    },
+const formAction = `https://formspree.io/f/${site.formspreeId}`;
+
+const topics = [
+    { id: "hello", label: "Just saying hi", active: true },
+    { id: "hiring", label: "Hiring" },
+    { id: "engineering", label: "Engineering" },
+    { id: "mentoring", label: "Mentoring" },
+    { id: "speaking", label: "Speaking" },
+    { id: "music", label: "Music" },
 ];
 ---
 
@@ -187,51 +184,6 @@ const nowRows = [
             background: var(--s-cyan);
         }
 
-        .now-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            border: 1px solid var(--rule);
-        }
-        .now-row {
-            display: grid;
-            grid-template-columns: 92px 1fr;
-            gap: 16px;
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--rule);
-        }
-        .now-row:last-child {
-            border-bottom: none;
-        }
-        .now-row .k {
-            font-family: "Press Start 2P", monospace;
-            font-size: 11px;
-            color: var(--s-yel);
-            padding-top: 5px;
-            letter-spacing: 0.04em;
-        }
-        .now-row p {
-            margin: 0;
-            font-size: 14px;
-            color: var(--ink);
-            line-height: 1.65;
-        }
-        .now-row a {
-            color: var(--s-cyan);
-            text-decoration: none;
-            border-bottom: 1px solid var(--s-cyan);
-        }
-        .now-row .full {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 14px;
-            font-family: "Spline Sans Mono", ui-monospace, monospace;
-            font-size: 12px;
-        }
-        .now-grid + .now-stamp {
-            margin-top: 14px;
-        }
-
         .slabel .see-all {
             font-family: "Spline Sans Mono", ui-monospace, monospace;
             font-size: 12px;
@@ -293,6 +245,11 @@ const nowRows = [
             letter-spacing: 0.05em;
         }
 
+        .contact-intro {
+            margin: 0 0 8px;
+            max-width: 60ch;
+        }
+
         @media (max-width: 640px) {
             .hero {
                 flex-direction: column;
@@ -300,10 +257,6 @@ const nowRows = [
             }
             .proj-grid {
                 grid-template-columns: 1fr;
-            }
-            .now-row {
-                grid-template-columns: 1fr;
-                gap: 7px;
             }
             .hero h1 {
                 font-size: 20px;
@@ -354,29 +307,6 @@ const nowRows = [
         Romanian by origin, easily bribed with strong coffee.
     </p>
 
-    <!-- NOW -->
-    <section class="enter">
-        <div class="slabel">
-            <span class="k">NOW</span><h2>What I'm doing right now</h2><span
-                class="line"></span>
-        </div>
-        <div class="now-grid">
-            {
-                nowRows.map((row) => (
-                    <div class="now-row">
-                        <>
-                            <span class="k">{row.k}</span>
-                            <p set:html={row.html} />
-                        </>
-                    </div>
-                ))
-            }
-        </div>
-        <div class="now-stamp">
-            <span class="pulse"></span><span>Updated July 2026 · London</span>
-        </div>
-    </section>
-
     <!-- PROJECTS -->
     <section class="enter">
         <div class="slabel">
@@ -404,43 +334,153 @@ const nowRows = [
         </div>
     </section>
 
-    <!-- DOORS -->
-    <section class="enter">
+    <!-- CONTACT -->
+    <section class="enter" id="contact">
         <div class="slabel">
-            <span class="k">MORE</span><h2>Load another program</h2><span
-                class="line"></span>
+            <span class="k">SEND</span><h2>Get in touch</h2><span class="line"
+            ></span>
         </div>
-        <div class="doors">
-            <a class="door" href="/bio"
-                ><span class="num">01</span><div class="body">
-                    <span class="kick">Take longer</span><span class="ttl"
-                        >Me in 10 minutes</span
-                    ><span class="dsc"
-                        >The longer version: how I got here, the career, and the
-                        things I've built along the way.</span
-                    >
-                </div><span class="arr">→</span></a
+        <p class="blurb contact-intro">
+            I read everything; I reply to most. Best for slow questions,
+            engineering chat, mentoring, or hiring conversations. For anything
+            urgent, LinkedIn is faster.
+        </p>
+
+        <form
+            class="cform"
+            id="cform"
+            method="POST"
+            action={formAction}
+            novalidate
+            style="margin-top:28px;"
+        >
+            <input
+                type="hidden"
+                name="_subject"
+                value="New message from alexandrubadiu.ro"
+            />
+            <input type="hidden" name="topic" id="topic-field" value="hello" />
+            <input
+                type="text"
+                name="_gotcha"
+                tabindex="-1"
+                autocomplete="off"
+                style="position:absolute;left:-9999px;"
+                aria-hidden="true"
+            />
+
+            <div class="cfield cfield-topic">
+                <label>What's this about<span class="req">*</span></label>
+                <div class="topics" id="topics" role="radiogroup">
+                    {
+                        topics.map((t) => (
+                            <button
+                                type="button"
+                                class:list={["topic-btn", { active: t.active }]}
+                                data-topic={t.id}
+                            >
+                                {t.label}
+                            </button>
+                        ))
+                    }
+                </div>
+            </div>
+
+            <div class="cfield" id="f-name">
+                <label for="name">Your name<span class="req">*</span></label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    autocomplete="name"
+                    placeholder="What should I call you?"
+                />
+                <span class="err-msg">A name helps, even a first name.</span>
+            </div>
+
+            <div class="cfield" id="f-email">
+                <label for="email">Email<span class="req">*</span></label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    autocomplete="email"
+                    placeholder="so I can reply"
+                />
+                <span class="err-msg">That doesn't look like an email.</span>
+            </div>
+
+            <div class="cfield" id="f-message">
+                <label for="message">Message<span class="req">*</span></label>
+                <textarea
+                    id="message"
+                    name="message"
+                    rows="6"
+                    placeholder="No need to be polished. Half-formed is fine; I'll ask follow-ups."
+                ></textarea>
+                <div class="char-count" id="char-count">0 / 2000</div>
+                <span class="err-msg">Give me a sentence or two to work with.</span
+                >
+            </div>
+
+            <div class="csubmit">
+                <span class="priv"
+                    >Your email stays with me. No list, no auto-replies, no third
+                    party beyond the form host.</span
+                >
+                <button type="submit" class="btn-send" id="send-btn">
+                    <span class="spinner"></span>
+                    <span class="label">SEND</span>
+                    <span class="arrow">→</span>
+                </button>
+            </div>
+            <span class="err-msg" id="form-error" style="display:none;"
+                >Something went wrong sending that. Try again, or reach me on
+                LinkedIn below.</span
             >
-            <a class="door" href="/uses"
-                ><span class="num">02</span><div class="body">
-                    <span class="kick">What I work with</span><span class="ttl"
-                        >Uses</span
-                    ><span class="dsc"
-                        >The boring honest list of the tools and tech I actually
-                        reach for.</span
-                    >
-                </div><span class="arr">→</span></a
-            >
-            <a class="door" href="/contact"
-                ><span class="num">03</span><div class="body">
-                    <span class="kick">Get in touch</span><span class="ttl"
-                        >Contact</span
-                    ><span class="dsc"
-                        >Best for slow questions, engineering chat, or
-                        mentoring. I read everything; I reply to most.</span
-                    >
-                </div><span class="arr">→</span></a
-            >
+        </form>
+
+        <div class="csuccess" id="csuccess" hidden>
+            <div class="check">
+                <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    ><polyline points="20 6 9 17 4 12"></polyline></svg
+                >
+            </div>
+            <h3 id="success-title">Got it. Thanks for writing.</h3>
+            <p id="success-body">
+                I'll get back to you within a week, usually sooner. If you don't
+                hear back in two, assume the message slipped through and try
+                again.
+            </p>
+        </div>
+
+        <div class="calt">
+            <div class="alt">
+                <span class="alt-label">If forms aren't your thing</span>
+                <a href={site.socials.linkedin} target="_blank" rel="noreferrer"
+                    >LinkedIn</a
+                >
+                <span class="alt-note"
+                    >Faster for time-sensitive things and hiring.</span
+                >
+            </div>
+            <div class="alt">
+                <span class="alt-label">For code</span>
+                <a href={site.socials.github} target="_blank" rel="noreferrer"
+                    >GitHub @voidberg</a
+                >
+                <span class="alt-note"
+                    >Open an issue, or say hello if our repos overlap.</span
+                >
+            </div>
         </div>
     </section>
 
@@ -481,43 +521,7 @@ const nowRows = [
                 o.stop(t + (dur || 0.06));
             }
 
-            /* ---------- dithered avatar + project thumbs ---------- */
-            function ordered(x, y) {
-                var m = [
-                    [0, 8, 2, 10],
-                    [12, 4, 14, 6],
-                    [3, 11, 1, 9],
-                    [15, 7, 13, 5],
-                ];
-                return m[y & 3][x & 3] / 16;
-            }
-            function paintDither(cv, cols) {
-                var w = cv.width,
-                    h = cv.height,
-                    g = cv.getContext("2d");
-                var cx = w * 0.5,
-                    cy = h * 0.42;
-                for (var y = 0; y < h; y++)
-                    for (var x = 0; x < w; x++) {
-                        var dx = (x - cx) / (w * 0.34),
-                            dy = (y - cy) / (h * 0.34);
-                        var head =
-                            1 - Math.min(1, Math.sqrt(dx * dx + dy * dy));
-                        var shoulder = Math.max(0, y / h - 0.62) * 2.2;
-                        var v = Math.max(head * 0.95, Math.min(0.8, shoulder));
-                        v = v * 0.85 + 0.12;
-                        var lvl = v + (ordered(x, y) - 0.5) * 0.5;
-                        var idx = Math.max(
-                            0,
-                            Math.min(
-                                cols.length - 1,
-                                Math.round(lvl * (cols.length - 1)),
-                            ),
-                        );
-                        g.fillStyle = cols[idx];
-                        g.fillRect(x, y, 1, 1);
-                    }
-            }
+            /* ---------- project thumbs ---------- */
             function paintProj(cv, seed) {
                 var w = cv.width,
                     h = cv.height,
@@ -544,16 +548,6 @@ const nowRows = [
                         g.fillRect(x, y, 4, 4);
                     }
             }
-            var SPEC = [
-                "#000000",
-                "#0000aa",
-                "#aa00aa",
-                "#00aaaa",
-                "#bbbbbb",
-                "#ffffff",
-            ];
-            var av = document.getElementById("av");
-            if (av) paintDither(av, SPEC);
             document.querySelectorAll(".proj .px").forEach(function (c) {
                 paintProj(c, parseInt(c.dataset.seed, 10));
             });
@@ -629,10 +623,121 @@ const nowRows = [
                     bleep(660, 0.05);
                     runLoader();
                 });
-            document.querySelectorAll(".door,.proj").forEach(function (el) {
+            document.querySelectorAll(".proj").forEach(function (el) {
                 el.addEventListener("mouseenter", function () {
                     bleep(1320, 0.03);
                 });
+            });
+        })();
+    </script>
+
+    <script slot="scripts">
+        (function () {
+            var topicsRoot = document.getElementById("topics");
+            var topicField = document.getElementById("topic-field");
+            var topic = "hello";
+            topicsRoot.addEventListener("click", function (e) {
+                var btn = e.target.closest(".topic-btn");
+                if (!btn) return;
+                topic = btn.dataset.topic;
+                topicField.value = topic;
+                topicsRoot.querySelectorAll(".topic-btn").forEach(function (b) {
+                    b.classList.toggle("active", b === btn);
+                });
+            });
+
+            var msg = document.getElementById("message");
+            var cc = document.getElementById("char-count");
+            var MAX = 2000;
+            msg.addEventListener("input", function () {
+                var len = msg.value.length;
+                cc.textContent = len + " / " + MAX;
+                cc.classList.toggle("warn", len > MAX);
+            });
+
+            function clearError(id) {
+                document.getElementById(id).classList.remove("error");
+            }
+            function setError(id) {
+                document.getElementById(id).classList.add("error");
+            }
+            ["f-name", "f-email", "f-message"].forEach(function (id) {
+                var input = document.querySelector(
+                    "#" + id + " input, #" + id + " textarea",
+                );
+                if (input)
+                    input.addEventListener("input", function () {
+                        clearError(id);
+                    });
+            });
+            function validEmail(s) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+            }
+
+            var form = document.getElementById("cform");
+            var sendBtn = document.getElementById("send-btn");
+            var success = document.getElementById("csuccess");
+            var formError = document.getElementById("form-error");
+
+            form.addEventListener("submit", async function (e) {
+                e.preventDefault();
+                formError.style.display = "none";
+
+                var name = document.getElementById("name").value.trim();
+                var email = document.getElementById("email").value.trim();
+                var message = document.getElementById("message").value.trim();
+
+                var ok = true;
+                if (!name) {
+                    setError("f-name");
+                    ok = false;
+                }
+                if (!validEmail(email)) {
+                    setError("f-email");
+                    ok = false;
+                }
+                if (message.length < 4) {
+                    setError("f-message");
+                    ok = false;
+                }
+                if (message.length > MAX) {
+                    setError("f-message");
+                    ok = false;
+                }
+                if (!ok) return;
+
+                sendBtn.classList.add("loading");
+                sendBtn.disabled = true;
+
+                try {
+                    var res = await fetch(form.action, {
+                        method: "POST",
+                        headers: { Accept: "application/json" },
+                        body: new FormData(form),
+                    });
+                    if (!res.ok) throw new Error("Bad response");
+
+                    var titleByTopic = {
+                        hello: "Got it. Thanks for writing.",
+                        hiring: "Got it. Let's talk.",
+                        engineering: "Got it, engineering question received.",
+                        mentoring: "Got it. I'll have a think.",
+                        speaking: "Thanks, I'll consider it.",
+                        music: "Music notes, my favourite.",
+                    };
+                    document.getElementById("success-title").textContent =
+                        titleByTopic[topic] || titleByTopic.hello;
+
+                    form.style.display = "none";
+                    success.hidden = false;
+                    document
+                        .getElementById("contact")
+                        .scrollIntoView({ behavior: "smooth" });
+                } catch (err) {
+                    sendBtn.classList.remove("loading");
+                    sendBtn.disabled = false;
+                    formError.style.display = "block";
+                }
             });
         })();
     </script>

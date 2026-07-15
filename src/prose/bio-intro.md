@@ -1,5 +1,0 @@
-I'm an engineering leader based in London. For about thirteen years I was at one company as it kept changing shape around me: Demotix, then Corbis, then BENlabs. I started as a front-end developer and left as Senior Director of Engineering, leading teams across the US, the UK, Portugal, Slovakia and Brazil.
-
-BENlabs built AI-powered platforms for influencer marketing and product-placement measurement, spun out of Corbis (Bill Gates' old image-licensing company). It shut down in May 2026, which is why I'm writing "was" instead of "is". The job was part architecture, part hiring, part being the calm adult in a meeting that didn't need to exist. I stayed hands-on the whole way through, and kept building and shipping when I could find the gap.
-
-Before all that I wrote a lot of PHP and helped run an open-source community. I cofounded the Romanian Drupal Association in 2008, published a stack of Drupal modules, and taught computer science as a university teaching assistant for seven years. Romanian by origin, English-speaking by trade, still learning the theremin.
