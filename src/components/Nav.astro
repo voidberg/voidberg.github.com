@@ -1,25 +1,50 @@
 ---
-import { nav } from '../data/site';
+import { nav } from "../data/site";
 
 interface Props {
-  active?: string;
-  showControls?: boolean;
+    active?: string;
+    showControls?: boolean;
 }
 
 const { active, showControls = false } = Astro.props;
 ---
 
 <div class="statusbar">
-  <a class="brand" href="/"><span class="blink"></span><span>ALEX BADIU · 48K</span></a>
-  <div class="grp">
-    {nav.map((n) => (
-      <a class:list={['navlink', { active: active === n.href }]} href={n.href}>{n.label}</a>
-    ))}
-    {showControls && (
-      <>
-        <button id="sound-btn" class="iconbtn" title="Toggle bleeps" aria-label="Toggle sound">♪</button>
-        <button id="replay-btn" class="iconbtn" title="Replay loading screen" aria-label="Replay loader">⟲</button>
-      </>
-    )}
-  </div>
+    <a class="brand" href="/"
+        ><span class="blink"></span><span>ALEXANDRU BADIU · 48K</span></a
+    >
+    <div class="grp">
+        {
+            nav.map((n) => (
+                <a
+                    class:list={["navlink", { active: active === n.href }]}
+                    href={n.href}
+                >
+                    {n.label}
+                </a>
+            ))
+        }
+        {
+            showControls && (
+                <>
+                    <button
+                        id="sound-btn"
+                        class="iconbtn"
+                        title="Toggle bleeps"
+                        aria-label="Toggle sound"
+                    >
+                        ♪
+                    </button>
+                    <button
+                        id="replay-btn"
+                        class="iconbtn"
+                        title="Replay loading screen"
+                        aria-label="Replay loader"
+                    >
+                        ⟲
+                    </button>
+                </>
+            )
+        }
+    </div>
 </div>

@@ -21,7 +21,8 @@ const {
   showControls = false,
   backHref = '/',
   backLabel = '← Back to home',
-  footerExtra = '',
+  // Every page signs off the same way; pass footerExtra to override it.
+  footerExtra = ' · Bytes: andu',
 } = Astro.props;
 
 const year = new Date().getFullYear();

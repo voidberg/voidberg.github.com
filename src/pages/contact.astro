@@ -1,0 +1,69 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../data/site";
+
+const description =
+    "Get in touch with Alexandru Badiu. Good for engineering chat, mentoring, hiring, and charity or nonprofit work.";
+---
+
+<Base
+    title="Contact · Alexandru Badiu"
+    description={description}
+    active="/contact"
+>
+    <header class="page-head enter">
+        <div class="eyebrow">Contact</div>
+        <h1>Drop a line.</h1>
+        <p class="blurb">
+            I read everything, and I'll get back to you. Good for engineering
+            chat, mentoring, hiring, or if you're a charity or nonprofit that
+            needs a hand.
+        </p>
+    </header>
+
+    <div class="cmail enter">
+        <span class="cmail-label">Email</span>
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+    </div>
+
+    <div class="calt">
+        <span class="alt-label">Elsewhere</span>
+        <div class="alt-links">
+            <div class="alt">
+                <a href={site.socials.linkedin} target="_blank" rel="noreferrer"
+                    >LinkedIn</a
+                >
+                <span class="alt-note"
+                    >The usual professional stuff, if you want the CV version.</span
+                >
+            </div>
+            <div class="alt">
+                <a href={site.socials.github} target="_blank" rel="noreferrer"
+                    >GitHub @voidberg</a
+                >
+                <span class="alt-note"
+                    >Open an issue, or say hello if our repos overlap.</span
+                >
+            </div>
+            <div class="alt">
+                <a
+                    href={site.socials.soundcloud}
+                    target="_blank"
+                    rel="noreferrer">SoundCloud</a
+                >
+                <span class="alt-note"
+                    >Nothing new in years, but here's what I was doing.</span
+                >
+            </div>
+            <div class="alt">
+                <a href={site.socials.drupal} target="_blank" rel="noreferrer"
+                    >drupal.org</a
+                >
+                <span class="alt-note"
+                    >The early years, and the community that shaped how I
+                    work.</span
+                >
+            </div>
+        </div>
+    </div>
+</Base>

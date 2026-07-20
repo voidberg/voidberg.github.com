@@ -1,21 +1,11 @@
 ---
 import Base from "../layouts/Base.astro";
-import { featuredProjects } from "../data/projects";
-import { site } from "../data/site";
+import { featuredProjects, projectSlug } from "../data/projects";
+import { now, nowUpdated } from "../data/now";
+import { Content as Bio } from "../prose/bio.md";
 
 const description =
     "Alexandru Badiu, engineering leader in London. Twenty years building software, the last stretch leading teams across five countries. Currently looking for what's next.";
-
-const formAction = `https://formspree.io/f/${site.formspreeId}`;
-
-const topics = [
-    { id: "hello", label: "Just saying hi", active: true },
-    { id: "hiring", label: "Hiring" },
-    { id: "engineering", label: "Engineering" },
-    { id: "mentoring", label: "Mentoring" },
-    { id: "speaking", label: "Speaking" },
-    { id: "music", label: "Music" },
-];
 ---
 
 <Base
@@ -25,254 +15,25 @@ const topics = [
     showControls={true}
     backHref="#page"
     backLabel="Back to top ↑"
-    footerExtra={' · LOAD "" complete'}
 >
-    <style is:global slot="head">
-        /* ===== Landing-only styles ===== */
-        #loader {
-            position: fixed;
-            inset: 0;
-            z-index: 100;
-            background: var(--bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.35s ease;
-        }
-        #loader.done {
-            opacity: 0;
-            pointer-events: none;
-        }
-        #loader.hidden {
-            display: none;
-        }
-        .load-stripes {
-            position: absolute;
-            inset: 0;
-            opacity: 0.85;
-            background: repeating-linear-gradient(
-                0deg,
-                #5a3d3d 0 16px,
-                #3a5654 16px 32px
-            );
-            background-size: 100% 64px;
-            animation: drift 3.4s linear infinite;
-        }
-        .load-stripes.data {
-            background: repeating-linear-gradient(
-                0deg,
-                #3a3f63 0 16px,
-                #645a39 16px 32px
-            );
-            animation: drift 2.6s linear infinite;
-        }
-        @keyframes drift {
-            from {
-                background-position: 0 0;
-            }
-            to {
-                background-position: 0 64px;
-            }
-        }
-        .load-panel {
-            position: absolute;
-            inset: 46px;
-            background: var(--bg);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 26px;
-            gap: 14px;
-            border: 2px solid #111;
-        }
-        .load-line {
-            font-family: "Press Start 2P", monospace;
-            font-size: 13px;
-            color: #7fc9c7;
-        }
-        .load-line .nm {
-            color: #cdbf7a;
-        }
-        .load-status {
-            font-family: "Press Start 2P", monospace;
-            font-size: 11px;
-            line-height: 1.5;
-            letter-spacing: 0.03em;
-            color: var(--dim);
-            min-height: 1.5em;
-        }
-        .load-status .nm {
-            color: #cdbf7a;
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .load-stripes {
-                animation: none;
-            }
-        }
-
-        .statusbar .iconbtn {
-            min-width: 30px;
-            text-align: center;
-            font-size: 13px;
-            line-height: 1;
-        }
-        .statusbar .iconbtn.on {
-            background: var(--s-grn);
-            border-color: var(--s-grn);
-            color: var(--bg);
-        }
-        .statusbar .iconbtn.on:hover {
-            background: var(--s-cyan);
-            border-color: var(--s-cyan);
-        }
-
-        .hero {
-            display: flex;
-            gap: 30px;
-            align-items: center;
-            margin-top: 52px;
-        }
-        .hero-id {
-            flex: 1;
-            min-width: 0;
-        }
-        .avatar {
-            width: 150px;
-            height: 150px;
-        }
-        .avatar img {
-            display: block;
-            width: 100%;
-            height: 100%;
-            image-rendering: auto;
-        }
-        .hero h1 {
-            font-family: "Press Start 2P", monospace;
-            font-size: 23px;
-            line-height: 1.35;
-            margin: 0 0 14px;
-            color: var(--paper);
-            text-shadow: 3px 3px 0 var(--s-blue);
-            white-space: nowrap;
-        }
-        .subline {
-            font-family: "Spline Sans Mono", ui-monospace, monospace;
-            font-size: 13px;
-            color: var(--dim);
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .subline .sep {
-            color: var(--s-cyan);
-        }
-        .lede {
-            font-size: 16px;
-            line-height: 1.7;
-            color: var(--ink);
-            margin: 26px 0 0;
-        }
-        .lede a {
-            color: var(--s-cyan);
-            text-decoration: none;
-            border-bottom: 2px solid var(--s-cyan);
-            padding-bottom: 1px;
-        }
-        .lede a:hover {
-            color: var(--bg);
-            background: var(--s-cyan);
-        }
-
-        .slabel .see-all {
-            font-family: "Spline Sans Mono", ui-monospace, monospace;
-            font-size: 12px;
-            color: var(--s-cyan);
-            text-decoration: none;
-            white-space: nowrap;
-            border-bottom: 1px solid var(--s-cyan);
-            padding-bottom: 1px;
-        }
-        .slabel .see-all:hover {
-            color: var(--bg);
-            background: var(--s-cyan);
-        }
-        .proj-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-        }
-        .proj {
-            display: block;
-            text-decoration: none;
-            border: 2px solid var(--rule);
-            background: var(--card);
-            padding: 18px 18px 16px;
-            transition:
-                transform 0.12s ease,
-                border-color 0.12s ease,
-                box-shadow 0.12s ease;
-        }
-        .proj:hover {
-            transform: translate(-2px, -2px);
-            border-color: var(--accent);
-            box-shadow: 4px 4px 0 var(--accent);
-        }
-        .proj .px {
-            width: 100%;
-            height: 64px;
-            image-rendering: pixelated;
-            margin-bottom: 14px;
-            border: 1px solid #1c1c1c;
-        }
-        .proj .pname {
-            font-family: "Press Start 2P", monospace;
-            font-size: 11px;
-            color: var(--paper);
-            margin-bottom: 9px;
-            line-height: 1.5;
-        }
-        .proj .pdesc {
-            font-size: 14px;
-            color: var(--dim);
-            line-height: 1.6;
-        }
-        .proj .ptag {
-            font-family: "Spline Sans Mono", ui-monospace, monospace;
-            font-size: 10px;
-            color: var(--s-grn);
-            margin-top: 11px;
-            letter-spacing: 0.05em;
-        }
-
-        .contact-intro {
-            margin: 0 0 8px;
-            max-width: 60ch;
-        }
-
-        @media (max-width: 640px) {
-            .hero {
-                flex-direction: column;
-                gap: 20px;
-            }
-            .proj-grid {
-                grid-template-columns: 1fr;
-            }
-            .hero h1 {
-                font-size: 20px;
-                white-space: normal;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/landing.css" slot="head" />
 
     <!-- ===== LOADER ===== -->
     <div id="loader" aria-hidden="true" slot="preloader">
         <div class="load-stripes" id="stripes"></div>
-        <div class="load-panel">
-            <div class="load-line">
+        <!-- The three lines reveal in order, the way they arrive on a real
+             Spectrum: the typed command, the prompt to start the tape, then the
+             header the machine finds on it. -->
+        <div class="load-panel" id="loadlines">
+            <div class="load-line" hidden>
                 LOAD <span class="nm">"alex.badiu"</span>
             </div>
-            <div class="load-status" id="loadstatus">&nbsp;</div>
+            <div class="load-status" hidden>
+                Start tape, then press any key.
+            </div>
+            <div class="load-status" hidden>
+                Program: <span class="nm">alex.badiu</span>
+            </div>
         </div>
     </div>
 
@@ -280,37 +41,49 @@ const topics = [
     <header class="hero">
         <div class="avatar enter">
             <img
-                src="/img/hero.png"
-                width="384"
-                height="384"
-                alt="Alexandru Badiu with a rooster in a Faroese village, rendered in ZX Spectrum colours"
+                src="/img/hero-photo.png"
+                width="630"
+                height="378"
+                alt="Alexandru Badiu beside a rooster in a Faroese village, red and white houses on the hill behind"
             />
             <span class="tag">SCREEN$</span>
         </div>
         <div class="hero-id">
-            <div class="eyebrow enter">Me, in 10 seconds</div>
+            <div class="eyebrow enter">Me, in 30 seconds</div>
             <h1 class="enter">Alexandru Badiu</h1>
             <div class="subline enter mono">
-                <span>Engineering leader</span><span class="sep">▚</span><span
+                <span>Engineer</span><span class="sep">▚</span><span
                     >London</span
-                ><span class="sep">▚</span><span>open to what's next</span>
+                ><span class="sep">▚</span><span>Open to what's next</span>
             </div>
         </div>
     </header>
-    <p class="lede enter">
-        I'm Alex, an engineering leader based in London. I spent about thirteen
-        years at one company as it grew from Demotix to Corbis to BENlabs,
-        ending up as Senior Director of Engineering and leading teams across
-        five countries. BENlabs wound down in 2026, so right now I'm looking for
-        what's next in senior engineering or engineering leadership. In between
-        I'm reviving old open-source projects and learning the theremin, slowly.
-        Romanian by origin, easily bribed with strong coffee.
-    </p>
+    <div class="lede-body enter">
+        <Bio />
+    </div>
+
+    <!-- NOW -->
+    <section class="enter" style="margin-top: 42px;">
+        <div class="slabel">
+            <span class="k">NOW</span><h2>What I'm up to</h2><span class="line"
+            ></span><span class="see-all">{nowUpdated}</span>
+        </div>
+        <div class="now-list">
+            {
+                now.map((item) => (
+                    <div class="now-item">
+                        <span class="nk">{item.label}</span>
+                        <p set:html={item.body} />
+                    </div>
+                ))
+            }
+        </div>
+    </section>
 
     <!-- PROJECTS -->
-    <section class="enter">
+    <section class="enter" style="margin-top: 42px;">
         <div class="slabel">
-            <span class="k">PROJ</span><h2>Things I've built</h2><span
+            <span class="k">PROJ</span><h2>A few things I've built</h2><span
                 class="line"></span><a class="see-all" href="/projects"
                 >See all →</a
             >
@@ -318,7 +91,7 @@ const topics = [
         <div class="proj-grid">
             {
                 featuredProjects.map((p) => (
-                    <a class="proj" href="/projects">
+                    <a class="proj" href={`/projects#${projectSlug(p)}`}>
                         <canvas
                             class="px"
                             width="120"
@@ -331,156 +104,6 @@ const topics = [
                     </a>
                 ))
             }
-        </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section class="enter" id="contact">
-        <div class="slabel">
-            <span class="k">SEND</span><h2>Get in touch</h2><span class="line"
-            ></span>
-        </div>
-        <p class="blurb contact-intro">
-            I read everything; I reply to most. Best for slow questions,
-            engineering chat, mentoring, or hiring conversations. For anything
-            urgent, LinkedIn is faster.
-        </p>
-
-        <form
-            class="cform"
-            id="cform"
-            method="POST"
-            action={formAction}
-            novalidate
-            style="margin-top:28px;"
-        >
-            <input
-                type="hidden"
-                name="_subject"
-                value="New message from alexandrubadiu.ro"
-            />
-            <input type="hidden" name="topic" id="topic-field" value="hello" />
-            <input
-                type="text"
-                name="_gotcha"
-                tabindex="-1"
-                autocomplete="off"
-                style="position:absolute;left:-9999px;"
-                aria-hidden="true"
-            />
-
-            <div class="cfield cfield-topic">
-                <label>What's this about<span class="req">*</span></label>
-                <div class="topics" id="topics" role="radiogroup">
-                    {
-                        topics.map((t) => (
-                            <button
-                                type="button"
-                                class:list={["topic-btn", { active: t.active }]}
-                                data-topic={t.id}
-                            >
-                                {t.label}
-                            </button>
-                        ))
-                    }
-                </div>
-            </div>
-
-            <div class="cfield" id="f-name">
-                <label for="name">Your name<span class="req">*</span></label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    autocomplete="name"
-                    placeholder="What should I call you?"
-                />
-                <span class="err-msg">A name helps, even a first name.</span>
-            </div>
-
-            <div class="cfield" id="f-email">
-                <label for="email">Email<span class="req">*</span></label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    autocomplete="email"
-                    placeholder="so I can reply"
-                />
-                <span class="err-msg">That doesn't look like an email.</span>
-            </div>
-
-            <div class="cfield" id="f-message">
-                <label for="message">Message<span class="req">*</span></label>
-                <textarea
-                    id="message"
-                    name="message"
-                    rows="6"
-                    placeholder="No need to be polished. Half-formed is fine; I'll ask follow-ups."
-                ></textarea>
-                <div class="char-count" id="char-count">0 / 2000</div>
-                <span class="err-msg">Give me a sentence or two to work with.</span
-                >
-            </div>
-
-            <div class="csubmit">
-                <span class="priv"
-                    >Your email stays with me. No list, no auto-replies, no third
-                    party beyond the form host.</span
-                >
-                <button type="submit" class="btn-send" id="send-btn">
-                    <span class="spinner"></span>
-                    <span class="label">SEND</span>
-                    <span class="arrow">→</span>
-                </button>
-            </div>
-            <span class="err-msg" id="form-error" style="display:none;"
-                >Something went wrong sending that. Try again, or reach me on
-                LinkedIn below.</span
-            >
-        </form>
-
-        <div class="csuccess" id="csuccess" hidden>
-            <div class="check">
-                <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    ><polyline points="20 6 9 17 4 12"></polyline></svg
-                >
-            </div>
-            <h3 id="success-title">Got it. Thanks for writing.</h3>
-            <p id="success-body">
-                I'll get back to you within a week, usually sooner. If you don't
-                hear back in two, assume the message slipped through and try
-                again.
-            </p>
-        </div>
-
-        <div class="calt">
-            <div class="alt">
-                <span class="alt-label">If forms aren't your thing</span>
-                <a href={site.socials.linkedin} target="_blank" rel="noreferrer"
-                    >LinkedIn</a
-                >
-                <span class="alt-note"
-                    >Faster for time-sensitive things and hiring.</span
-                >
-            </div>
-            <div class="alt">
-                <span class="alt-label">For code</span>
-                <a href={site.socials.github} target="_blank" rel="noreferrer"
-                    >GitHub @voidberg</a
-                >
-                <span class="alt-note"
-                    >Open an issue, or say hello if our repos overlap.</span
-                >
-            </div>
         </div>
     </section>
 
@@ -555,28 +178,38 @@ const topics = [
             /* ---------- loader (authentic tape load: border bands + header message) ---------- */
             var loader = document.getElementById("loader");
             var stripes = document.getElementById("stripes");
-            var statusEl = document.getElementById("loadstatus");
+            var lines = document.getElementById("loadlines").children;
             var timers = [];
             function clearTimers() {
                 timers.forEach(clearTimeout);
                 timers = [];
             }
             var SEEN_KEY = "ab_tape_loaded";
+            /* The tab title follows the tape: it loads, then reports back the way a
+           Spectrum does when a program finishes without error. */
+            var TITLE_LOADING = document.title;
+            var TITLE_LOADED = "Alexandru Badiu · 0 OK, 0:1";
             function runLoader() {
                 clearTimers();
+                document.title = TITLE_LOADING;
                 loader.classList.remove("done", "hidden");
                 stripes.classList.remove("data");
                 document.body.classList.remove("revealed");
-                statusEl.innerHTML = "&nbsp;";
+                for (var i = 0; i < lines.length; i++) lines[i].hidden = true;
+                lines[0].hidden = false;
                 bleep(1200, 0.12);
-                /* Pilot tone gives way to the data stream: the header is found and the
-           Spectrum prints "Program: <name>" in the top-left. No bar, no counter. */
+                /* The prompt to start the tape, then the pilot tone gives way to the
+           data stream and the header appears. No bar, no byte counter. */
+                timers.push(
+                    setTimeout(function () {
+                        lines[1].hidden = false;
+                    }, 500),
+                );
                 timers.push(
                     setTimeout(function () {
                         stripes.classList.add("data");
-                        statusEl.innerHTML =
-                            'Program: <span class="nm">alex.badiu</span>';
-                    }, 700),
+                        lines[2].hidden = false;
+                    }, 1400),
                 );
                 /* Load completes: remember it, reveal the page, then hide the loader. */
                 timers.push(
@@ -587,6 +220,7 @@ const topics = [
                         } catch (e) {}
                         loader.classList.add("done");
                         document.body.classList.add("revealed");
+                        document.title = TITLE_LOADED;
                         timers.push(
                             setTimeout(function () {
                                 loader.classList.add("hidden");
@@ -602,6 +236,7 @@ const topics = [
             if (seen) {
                 loader.classList.add("done", "hidden");
                 document.body.classList.add("revealed");
+                document.title = TITLE_LOADED;
             } else {
                 runLoader();
             }
@@ -627,117 +262,6 @@ const topics = [
                 el.addEventListener("mouseenter", function () {
                     bleep(1320, 0.03);
                 });
-            });
-        })();
-    </script>
-
-    <script slot="scripts">
-        (function () {
-            var topicsRoot = document.getElementById("topics");
-            var topicField = document.getElementById("topic-field");
-            var topic = "hello";
-            topicsRoot.addEventListener("click", function (e) {
-                var btn = e.target.closest(".topic-btn");
-                if (!btn) return;
-                topic = btn.dataset.topic;
-                topicField.value = topic;
-                topicsRoot.querySelectorAll(".topic-btn").forEach(function (b) {
-                    b.classList.toggle("active", b === btn);
-                });
-            });
-
-            var msg = document.getElementById("message");
-            var cc = document.getElementById("char-count");
-            var MAX = 2000;
-            msg.addEventListener("input", function () {
-                var len = msg.value.length;
-                cc.textContent = len + " / " + MAX;
-                cc.classList.toggle("warn", len > MAX);
-            });
-
-            function clearError(id) {
-                document.getElementById(id).classList.remove("error");
-            }
-            function setError(id) {
-                document.getElementById(id).classList.add("error");
-            }
-            ["f-name", "f-email", "f-message"].forEach(function (id) {
-                var input = document.querySelector(
-                    "#" + id + " input, #" + id + " textarea",
-                );
-                if (input)
-                    input.addEventListener("input", function () {
-                        clearError(id);
-                    });
-            });
-            function validEmail(s) {
-                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
-            }
-
-            var form = document.getElementById("cform");
-            var sendBtn = document.getElementById("send-btn");
-            var success = document.getElementById("csuccess");
-            var formError = document.getElementById("form-error");
-
-            form.addEventListener("submit", async function (e) {
-                e.preventDefault();
-                formError.style.display = "none";
-
-                var name = document.getElementById("name").value.trim();
-                var email = document.getElementById("email").value.trim();
-                var message = document.getElementById("message").value.trim();
-
-                var ok = true;
-                if (!name) {
-                    setError("f-name");
-                    ok = false;
-                }
-                if (!validEmail(email)) {
-                    setError("f-email");
-                    ok = false;
-                }
-                if (message.length < 4) {
-                    setError("f-message");
-                    ok = false;
-                }
-                if (message.length > MAX) {
-                    setError("f-message");
-                    ok = false;
-                }
-                if (!ok) return;
-
-                sendBtn.classList.add("loading");
-                sendBtn.disabled = true;
-
-                try {
-                    var res = await fetch(form.action, {
-                        method: "POST",
-                        headers: { Accept: "application/json" },
-                        body: new FormData(form),
-                    });
-                    if (!res.ok) throw new Error("Bad response");
-
-                    var titleByTopic = {
-                        hello: "Got it. Thanks for writing.",
-                        hiring: "Got it. Let's talk.",
-                        engineering: "Got it, engineering question received.",
-                        mentoring: "Got it. I'll have a think.",
-                        speaking: "Thanks, I'll consider it.",
-                        music: "Music notes, my favourite.",
-                    };
-                    document.getElementById("success-title").textContent =
-                        titleByTopic[topic] || titleByTopic.hello;
-
-                    form.style.display = "none";
-                    success.hidden = false;
-                    document
-                        .getElementById("contact")
-                        .scrollIntoView({ behavior: "smooth" });
-                } catch (err) {
-                    sendBtn.classList.remove("loading");
-                    sendBtn.disabled = false;
-                    formError.style.display = "block";
-                }
             });
         })();
     </script>

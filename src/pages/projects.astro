@@ -1,75 +1,119 @@
 ---
-import Base from '../layouts/Base.astro';
-import { projects } from '../data/projects';
+import Base from "../layouts/Base.astro";
+import { projects, projectSlug } from "../data/projects";
 
 const description =
-  'Things Alexandru Badiu has built: Spotlight, Watch, small open-source tools used in surprising places, afternoon hacks, and chiptunes.';
+    "Things Alexandru Badiu has built: Spotlight, Watch, small open-source tools used in surprising places, afternoon hacks, and chiptunes.";
 ---
 
-<Base title="Projects · Alexandru Badiu" description={description} active="/projects">
-  <header class="page-head enter">
-    <div class="eyebrow">Projects · the directory</div>
-    <h1>Things I've built.</h1>
-    <p class="blurb">Some work I'm proud of, some open source, a couple of things built in an afternoon, and a bit of music. Some shipped, some archived, all honest about which.</p>
-  </header>
+<Base
+    title="Projects · Alexandru Badiu"
+    description={description}
+    active="/projects"
+>
+    <header class="page-head enter">
+        <div class="eyebrow">Projects · the directory</div>
+        <h1>Things I've built.</h1>
+        <p class="blurb">
+            Some things built carefully over years, some in an afternoon. Work
+            I'm proud of, open source, and a few things that got out of hand.
+        </p>
+    </header>
 
-  <section class="enter" style="margin-top:44px;">
-    <div class="project-list">
-      {projects.map((p, i) => (
-        <article class="project-entry">
-          <div class="pe-thumb">
-            <canvas width="170" height="114" data-seed={p.seed}></canvas>
-            <div class="pe-idx">PROG {String(i + 1).padStart(2, '0')}</div>
-          </div>
-          <div class="pe-body">
-            <div class="pe-head">
-              <h2 class="pe-name">{p.name}</h2>
-              <span class:list={['pe-status', p.status]}>{p.statusLabel}</span>
-            </div>
-            <div class="pe-meta">
-              {p.meta.map((m, j) => (
-                <>
-                  {j > 0 && <span class="dot">·</span>}
-                  <span>{m}</span>
-                </>
-              ))}
-            </div>
-            <p class="pe-desc">{p.desc}</p>
-            <div class="pe-stack">
-              {p.stack.map((s) => <span>{s}</span>)}
-            </div>
-            {p.links && p.links.length > 0 && (
-              <div class="pe-links">
-                {p.links.map((l) => (
-                  <a href={l.href} target="_blank" rel="noreferrer">{l.label}</a>
-                ))}
-              </div>
-            )}
-          </div>
-        </article>
-      ))}
+    <section class="enter" style="margin-top:44px;">
+        <div class="project-list">
+            {
+                projects.map((p, i) => (
+                    <article class="project-entry" id={projectSlug(p)}>
+                        <div class="pe-thumb">
+                            <canvas
+                                width="170"
+                                height="114"
+                                data-seed={p.seed}
+                            />
+                            <div class="pe-idx">
+                                PROG {String(i + 1).padStart(2, "0")}
+                            </div>
+                        </div>
+                        <div class="pe-body">
+                            <div class="pe-head">
+                                <h2 class="pe-name">{p.name}</h2>
+                                <span class:list={["pe-status", p.status]}>
+                                    {p.statusLabel}
+                                </span>
+                            </div>
+                            <div class="pe-meta">
+                                {p.meta.map((m, j) => (
+                                    <>
+                                        {j > 0 && <span class="dot">·</span>}
+                                        <span>{m}</span>
+                                    </>
+                                ))}
+                            </div>
+                            <p class="pe-desc">{p.desc}</p>
+                            <div class="pe-stack">
+                                {p.stack.map((s) => (
+                                    <span>{s}</span>
+                                ))}
+                            </div>
+                            {p.links && p.links.length > 0 && (
+                                <div class="pe-links">
+                                    {p.links.map((l) => (
+                                        <a
+                                            href={l.href}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            {l.label}
+                                        </a>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </article>
+                ))
+            }
+        </div>
+    </section>
+
+    <div class="now-foot">
+        Curious about any of them, or want to collaborate? <a href="/contact"
+            >Get in touch</a
+        >.
     </div>
-  </section>
 
-  <div class="now-foot">
-    A few of these are being revived right now, so some links point at my GitHub profile rather than the exact repo. I'll tidy those.
-    <br />
-    Curious about any of them, or want to collaborate? <a href="/#contact">Get in touch</a>.
-  </div>
-
-  <script slot="scripts">
-    (function () {
-      var pal = ["#000", "#22227a", "#7a227a", "#227a7a", "#227a22", "#7a6e22"];
-      document.querySelectorAll(".pe-thumb canvas").forEach(function (cv) {
-        var w = cv.width, h = cv.height, g = cv.getContext("2d");
-        var s = parseInt(cv.dataset.seed, 10) || 1;
-        for (var y = 0; y < h; y += 5) for (var x = 0; x < w; x += 5) {
-          s = (s * 1103515245 + 12345) & 0x7fffffff;
-          var r = (s >> 16) & 0xff;
-          g.fillStyle = r < 150 ? pal[0] : pal[1 + ((x + y + (r & 7)) % (pal.length - 1))];
-          g.fillRect(x, y, 5, 5);
-        }
-      });
-    })();
-  </script>
+    <script slot="scripts">
+        (function () {
+            var pal = [
+                "#000",
+                "#22227a",
+                "#7a227a",
+                "#227a7a",
+                "#227a22",
+                "#7a6e22",
+            ];
+            document
+                .querySelectorAll(".pe-thumb canvas")
+                .forEach(function (cv) {
+                    var w = cv.width,
+                        h = cv.height,
+                        g = cv.getContext("2d");
+                    var s = parseInt(cv.dataset.seed, 10) || 1;
+                    for (var y = 0; y < h; y += 5)
+                        for (var x = 0; x < w; x += 5) {
+                            s = (s * 1103515245 + 12345) & 0x7fffffff;
+                            var r = (s >> 16) & 0xff;
+                            g.fillStyle =
+                                r < 150
+                                    ? pal[0]
+                                    : pal[
+                                          1 +
+                                              ((x + y + (r & 7)) %
+                                                  (pal.length - 1))
+                                      ];
+                            g.fillRect(x, y, 5, 5);
+                        }
+                });
+        })();
+    </script>
 </Base>

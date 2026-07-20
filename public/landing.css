@@ -1,0 +1,281 @@
+/* Landing-page styles: the tape loader, hero, bio, now block and project grid.
+   Loaded only by src/pages/index.astro, after spectrum.css so it can override it.
+   Served straight from public/, same as spectrum.css. */
+
+#loader {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.35s ease;
+}
+#loader.done {
+    opacity: 0;
+    pointer-events: none;
+}
+#loader.hidden {
+    display: none;
+}
+.load-stripes {
+    position: absolute;
+    inset: 0;
+    opacity: 0.85;
+    background: repeating-linear-gradient(
+        0deg,
+        #5a3d3d 0 16px,
+        #3a5654 16px 32px
+    );
+    background-size: 100% 64px;
+    animation: drift 3.4s linear infinite;
+}
+.load-stripes.data {
+    background: repeating-linear-gradient(
+        0deg,
+        #3a3f63 0 16px,
+        #645a39 16px 32px
+    );
+    animation: drift 2.6s linear infinite;
+}
+@keyframes drift {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 0 64px;
+    }
+}
+.load-panel {
+    position: absolute;
+    inset: 46px;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 26px;
+    gap: 14px;
+    border: 2px solid #111;
+}
+.load-line {
+    font-family: "Press Start 2P", monospace;
+    font-size: 13px;
+    color: #7fc9c7;
+}
+.load-line .nm {
+    color: #cdbf7a;
+}
+.load-status {
+    font-family: "Press Start 2P", monospace;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.03em;
+    color: var(--dim);
+    min-height: 1.5em;
+}
+.load-status .nm {
+    color: #cdbf7a;
+}
+@media (prefers-reduced-motion: reduce) {
+    .load-stripes {
+        animation: none;
+    }
+}
+
+.statusbar .iconbtn {
+    min-width: 30px;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1;
+}
+.statusbar .iconbtn.on {
+    background: var(--s-grn);
+    border-color: var(--s-grn);
+    color: var(--bg);
+}
+.statusbar .iconbtn.on:hover {
+    background: var(--s-cyan);
+    border-color: var(--s-cyan);
+}
+
+.hero {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    margin-top: 52px;
+}
+.hero-id {
+    flex: 1;
+    min-width: 0;
+}
+/* Landscape rather than the 128px square in spectrum.css: the photo has the
+   rooster on one side and me on the other, so a square wastes half the frame
+   on sky. */
+.avatar {
+    width: 210px;
+    height: 126px;
+}
+.avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: auto;
+}
+.hero h1 {
+    font-family: "Press Start 2P", monospace;
+    font-size: 23px;
+    line-height: 1.35;
+    margin: 0 0 14px;
+    color: var(--paper);
+    text-shadow: 3px 3px 0 var(--s-blue);
+    white-space: nowrap;
+}
+.subline {
+    font-family: "Spline Sans Mono", ui-monospace, monospace;
+    font-size: 13px;
+    color: var(--dim);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.subline .sep {
+    color: var(--s-cyan);
+}
+/* The bio, rendered from src/prose/bio.md, so these style plain markdown. */
+.lede-body {
+    margin-top: 26px;
+}
+.lede-body p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink);
+    margin: 0;
+}
+.lede-body p + p {
+    margin-top: 16px;
+}
+.lede-body a {
+    color: var(--s-cyan);
+    text-decoration: none;
+    border-bottom: 2px solid var(--s-cyan);
+    padding-bottom: 1px;
+}
+.lede-body a:hover {
+    color: var(--bg);
+    background: var(--s-cyan);
+}
+
+.slabel .see-all {
+    font-family: "Spline Sans Mono", ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--s-cyan);
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--s-cyan);
+    padding-bottom: 1px;
+}
+.slabel .see-all:hover {
+    color: var(--bg);
+    background: var(--s-cyan);
+}
+.now-list {
+    display: grid;
+    gap: 12px;
+    border-left: 2px solid var(--rule);
+    padding-left: 18px;
+}
+.now-item {
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    gap: 14px;
+    align-items: baseline;
+}
+.now-item .nk {
+    font-family: "Press Start 2P", monospace;
+    font-size: 9px;
+    color: var(--s-grn);
+    letter-spacing: 0.05em;
+    line-height: 1.8;
+}
+.now-item p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--dim);
+}
+.now-item a {
+    color: var(--s-cyan);
+    text-decoration: none;
+    border-bottom: 1px solid var(--s-cyan);
+}
+.now-item a:hover {
+    color: var(--bg);
+    background: var(--s-cyan);
+}
+.proj-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+.proj {
+    display: block;
+    text-decoration: none;
+    border: 2px solid var(--rule);
+    background: var(--card);
+    padding: 18px 18px 16px;
+    transition:
+        transform 0.12s ease,
+        border-color 0.12s ease,
+        box-shadow 0.12s ease;
+}
+.proj:hover {
+    transform: translate(-2px, -2px);
+    border-color: var(--accent);
+    box-shadow: 4px 4px 0 var(--accent);
+}
+.proj .px {
+    width: 100%;
+    height: 64px;
+    image-rendering: pixelated;
+    margin-bottom: 14px;
+    border: 1px solid #1c1c1c;
+}
+.proj .pname {
+    font-family: "Press Start 2P", monospace;
+    font-size: 11px;
+    color: var(--paper);
+    margin-bottom: 9px;
+    line-height: 1.5;
+}
+.proj .pdesc {
+    font-size: 14px;
+    color: var(--dim);
+    line-height: 1.6;
+}
+.proj .ptag {
+    font-family: "Spline Sans Mono", ui-monospace, monospace;
+    font-size: 10px;
+    color: var(--s-grn);
+    margin-top: 11px;
+    letter-spacing: 0.05em;
+}
+
+@media (max-width: 640px) {
+    .hero {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .proj-grid {
+        grid-template-columns: 1fr;
+    }
+    .now-item {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+    .hero h1 {
+        font-size: 20px;
+        white-space: normal;
+    }
+}

@@ -1,10 +1,10 @@
-// Site-wide constants: nav, social links, and the Formspree form id.
+// Site-wide constants: nav, contact address and social links.
 // Edit these instead of hunting through page markup.
 
 export const site = {
   name: 'Alexandru Badiu',
-  // The id from the Formspree form (the part after /f/ in the endpoint).
-  formspreeId: 'xnjejnlo',
+  // Published on /contact as a mailto link.
+  email: 'alexandru@badiu.me',
   socials: {
     github: 'https://github.com/voidberg',
     linkedin: 'https://www.linkedin.com/in/alexandrubadiu',
@@ -20,5 +20,5 @@ export interface NavItem {
 
 export const nav: NavItem[] = [
   { label: 'Projects', href: '/projects' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'Contact', href: '/contact' },
 ];
