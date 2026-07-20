@@ -12,6 +12,9 @@ file.tar
 dist/
 .astro/
 
+# Wrangler local state
+.wrangler/
+
 # Local reference material (not part of the published site)
 design_handoff_personal_site/
 SITE-BUILD-CONTEXT.md
