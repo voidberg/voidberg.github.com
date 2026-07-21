@@ -160,6 +160,21 @@ const fontHref =
                 )
                     return;
 
+                // The boat and fish start at the screen edge, so a wider monitor
+                // gives them a longer distance to cross. Duration is fixed in CSS,
+                // which makes that look faster on a big screen. Scale it with width
+                // (from ~1440px up) so the visual speed stays roughly constant.
+                var rail = document.querySelector(".dive-rail");
+                var shoal = document.querySelector(".dive-shoal");
+                function sizeSlide() {
+                    var extra = Math.max(0, window.innerWidth - 1440);
+                    var dur = Math.min(4.6, 2.8 + extra * 0.003).toFixed(2) + "s";
+                    if (rail) rail.style.animationDuration = dur;
+                    if (shoal) shoal.style.animationDuration = dur;
+                }
+                sizeSlide();
+                window.addEventListener("resize", sizeSlide, { passive: true });
+
                 // The statusbar is sticky: it slides up with the page until its
                 // top hits stickyTop, then holds. MAXSHIFT is how far it travels
                 // (its natural top minus its stuck top), read from the layout so
