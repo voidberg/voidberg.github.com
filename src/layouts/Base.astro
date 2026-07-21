@@ -61,8 +61,7 @@ const fontHref =
                 <span><a href={backHref}>{backLabel}</a></span>
             </footer>
             <div class="foot-credit">
-                Diver from <a href="/glug-glug">Glug Glug</a> (CRL, 1984), the
-                game that started it.
+                Diver from Glug Glug (CRL, 1984), the game that started it.
             </div>
         </div>
 
@@ -155,16 +154,6 @@ const fontHref =
                 var boat = document.getElementById("dive-boat");
                 var hoseClip = document.getElementById("dive-hose-clip");
                 if (!diver || !hose || !boat || !hoseClip) return;
-
-                // Easter-egg links: clicking the boat or diver opens the Glug
-                // Glug page. Wired before the reduced-motion bail-out so it
-                // works even when the scroll animation doesn't run.
-                function toGlug() {
-                    window.location.href = "/glug-glug";
-                }
-                boat.addEventListener("click", toGlug);
-                diver.addEventListener("click", toGlug);
-
                 if (
                     window.matchMedia("(prefers-reduced-motion: reduce)")
                         .matches

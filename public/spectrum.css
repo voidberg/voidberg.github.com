@@ -250,9 +250,6 @@ section{margin-top:72px;}
    is 40x16 -> 80x32, split evenly, so top:52 puts that split on the ~68px border
    (the header now starts collapsed, 22px higher than before). */
 .dive-boat{position:absolute;right:calc(100% + 48px);top:52px;width:80px;height:32px;}
-/* The boat and diver are easter-egg links to the Glug Glug page: re-enable
-   pointer events (the rest of .dive is pointer-events:none) and hint the click. */
-.dive-boat,.dive-diver{pointer-events:auto;cursor:pointer;}
 /* Clip runs from just under the hull to the foot of the viewport; the hose is a
    tall strip inside it whose bottom edge is translated up to the diver, so the
    dot pattern never stretches. Boat, hose and helmet centre all land at the same
@@ -322,8 +319,6 @@ section{margin-top:72px;}
 }
 .foot-credit{margin-top:14px;font-family:"Spline Sans Mono",ui-monospace,monospace;
   font-size:11px;color:var(--faint);line-height:1.6;}
-.foot-credit a{color:var(--s-cyan);text-decoration:none;border-bottom:1px solid var(--s-cyan);}
-.foot-credit a:hover{color:var(--bg);background:var(--s-cyan);border-color:var(--s-cyan);}
 .foot{margin-top:64px;padding-top:22px;border-top:1px solid var(--rule);
   display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
   font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:12px;color:var(--faint);}
