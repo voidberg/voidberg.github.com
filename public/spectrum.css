@@ -28,6 +28,8 @@
 html{scroll-behavior:smooth;}
 body{
   margin:0;
+  /* anchors .dive-floor to the bottom of the document rather than the viewport */
+  position:relative;
   background:var(--bg);
   color:var(--ink);
   font-family:"Spline Sans Mono",ui-monospace,monospace;
@@ -56,7 +58,9 @@ em{font-style:italic;color:var(--paper);}
 .tape-frame .rgt{right:0;}
 
 /* ---- shell ---- */
-.wrap{max-width:820px;margin:0 auto;padding:30px 28px 80px;}
+/* Top padding matches the statusbar's sticky offset (8px), so the header starts
+   at its collapsed size instead of drifting up through empty space on scroll. */
+.wrap{max-width:820px;margin:0 auto;padding:8px 28px 80px;}
 section{margin-top:72px;}
 
 /* ---- status / sub nav ---- */
@@ -64,6 +68,12 @@ section{margin-top:72px;}
   gap:14px;font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:12px;color:var(--dim);
   padding:18px 0 12px;border-bottom:1px solid var(--rule);flex-wrap:wrap;
   position:sticky;top:8px;background:var(--bg);z-index:30;}
+/* Extend the statusbar's bottom border across the whole viewport as a waterline,
+   so the boat in the margin sits on a surface rather than floating. The .wrap is
+   centred, so left:50% + margin-left:-50vw + width:100vw spans edge to edge; it
+   rides the sticky statusbar automatically and stays flush with the border. */
+.statusbar::after{content:"";position:absolute;bottom:-1px;left:50%;margin-left:-50vw;
+  width:100vw;height:1px;background:var(--rule);pointer-events:none;}
 .statusbar .left{display:flex;align-items:center;gap:10px;min-width:0;}
 .statusbar .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--dim);}
 .statusbar .brand:hover{color:var(--s-yel);}
@@ -220,6 +230,83 @@ section{margin-top:72px;}
 .door .arr,.door .door-arrow{font-family:"Press Start 2P",monospace;font-size:14px;color:var(--s-cyan);}
 
 /* ---- footer ---- */
+/* ---- decorative diving scene (Glug Glug, CRL 1984) ---- */
+/* Purely ornamental: everything below is aria-hidden and pointer-events:none.
+   Sprites are extracted by scripts/extract_sprites.py and scaled x3 with
+   nearest-neighbour, so 16x32 diver -> 48x96 etc. The rail is a centred box the
+   same width as .wrap, so sprites can be pinned just outside the text column
+   with right:calc(100% + Npx) and never overlap content. */
+.dive{position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden;display:none;}
+/* The rail holds the boat, hose and diver; on load it sails in from the left as
+   one piece so the hose stays attached. The children's own transforms (scroll
+   descent, header tracking) compose under this. .dive clips it while off-screen. */
+.dive-rail{position:absolute;left:50%;top:0;bottom:0;width:820px;margin-left:-410px;
+  animation:rig-in 2.8s cubic-bezier(.2,.75,.3,1) both;}
+@keyframes rig-in{from{transform:translate3d(-300px,0,0);}to{transform:translate3d(0,0,0);}}
+.dive img{display:block;image-rendering:pixelated;}
+/* All sprites scale x2 (native px -> display px). The statusbar's bottom border
+   is the waterline: the pink cabin rides above it, the green hull below. The boat
+   is 40x16 -> 80x32, split evenly, so top:52 puts that split on the ~68px border
+   (the header now starts collapsed, 22px higher than before). */
+.dive-boat{position:absolute;right:calc(100% + 48px);top:52px;width:80px;height:32px;}
+/* Clip runs from just under the hull to the foot of the viewport; the hose is a
+   tall strip inside it whose bottom edge is translated up to the diver, so the
+   dot pattern never stretches. Boat, hose and helmet centre all land at the same
+   x: the diver's helmet sits 9px into its box and the boat's hose nub 13px into
+   its, so the offsets below put all three at 115px from the content edge. */
+.dive-hose-clip{position:absolute;right:calc(100% + 114px);top:84px;bottom:0;width:2px;overflow:hidden;}
+.dive-hose{position:absolute;left:0;bottom:0;width:2px;height:300vh;
+  background:repeating-linear-gradient(to bottom,var(--s-yel) 0 2px,transparent 2px 4px);
+  will-change:transform;}
+.dive-diver{position:absolute;right:calc(100% + 92px);top:98px;width:32px;height:64px;
+  will-change:transform;}
+/* Seabed and treasure are anchored to the document, not the viewport, so they
+   sit at the true bottom of the page. */
+.dive-floor{position:absolute;left:0;right:0;bottom:0;height:16px;z-index:0;
+  pointer-events:none;background:url("/seabed.png") repeat-x left bottom;background-size:16px 16px;
+  image-rendering:pixelated;}
+/* All three seabed treasures, resting in a row on the floor in the right margin,
+   opposite the diver. Anchored 20px past the content column so they never touch
+   text; they need a wider viewport than the diver/boat, hence the 1320 gate. */
+.dive-hoard{position:absolute;left:50%;margin-left:420px;bottom:16px;
+  display:flex;gap:12px;align-items:flex-end;display:none;}
+.dive-hoard img{display:block;image-rendering:pixelated;}
+.dive-t1{width:48px;height:32px;}
+.dive-t2{width:32px;height:32px;}
+.dive-t3{width:48px;height:32px;}
+@media (min-width:1200px){.dive{display:block;}}
+@media (min-width:1320px){.dive-hoard{display:flex;}}
+/* Fish sit at fixed points down the page, in the right margin just past the
+   content column (left:50% + 420px clears the 820px column). Anchored to the
+   document so they scroll with the page; each drifts a few px very slowly, out
+   of sync via animation-delay. */
+.dive-school{position:absolute;top:0;left:0;right:0;height:100%;z-index:0;
+  pointer-events:none;overflow:hidden;display:none;}
+/* Inner wrapper carries the load-time slide-in from the right, kept separate
+   from the fish so their drift transform isn't overwritten. */
+.dive-shoal{position:absolute;inset:0;
+  animation:shoal-in 2.8s cubic-bezier(.2,.75,.3,1) .2s both;}
+@keyframes shoal-in{from{transform:translate3d(260px,0,0);}to{transform:translate3d(0,0,0);}}
+.dive-fish{position:absolute;left:50%;width:48px;height:32px;image-rendering:pixelated;
+  animation:fish-drift 17s ease-in-out infinite;}
+/* x staggered so the three don't sit on one vertical line (safe band at 1200px
+   is roughly margin-left 412-544: clears the content column, no overflow). */
+.dive-fish-1{top:24%;margin-left:428px;}
+.dive-fish-2{top:49%;margin-left:522px;animation-delay:-6s;}
+.dive-fish-3{top:73%;margin-left:462px;animation-delay:-11s;}
+@keyframes fish-drift{0%,100%{transform:translate3d(0,0,0);}
+  50%{transform:translate3d(-5px,2px,0);}}
+@media (min-width:1200px){.dive-school{display:block;}}
+/* No scroll-driven movement: the diver stays where it starts, hose stays short,
+   and the fish hold still. */
+@media (prefers-reduced-motion:reduce){
+  .dive-diver,.dive-hose{transform:none !important;}
+  .dive-fish{animation:none;}
+  /* No slide-in either: the rig and fish appear in place. */
+  .dive-rail,.dive-shoal{animation:none;}
+}
+.foot-credit{margin-top:14px;font-family:"Spline Sans Mono",ui-monospace,monospace;
+  font-size:11px;color:var(--faint);line-height:1.6;}
 .foot{margin-top:64px;padding-top:22px;border-top:1px solid var(--rule);
   display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
   font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:12px;color:var(--faint);}

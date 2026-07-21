@@ -1,67 +1,241 @@
 ---
-import Nav from '../components/Nav.astro';
+import Nav from "../components/Nav.astro";
 
 interface Props {
-  title: string;
-  description?: string;
-  active?: string;
-  /** '' on the home page (loader controls the reveal); 'no-loader' elsewhere. */
-  bodyClass?: string;
-  showControls?: boolean;
-  backHref?: string;
-  backLabel?: string;
-  footerExtra?: string;
+    title: string;
+    description?: string;
+    active?: string;
+    /** '' on the home page (loader controls the reveal); 'no-loader' elsewhere. */
+    bodyClass?: string;
+    showControls?: boolean;
+    backHref?: string;
+    backLabel?: string;
+    footerExtra?: string;
 }
 
 const {
-  title,
-  description = '',
-  active,
-  bodyClass = 'no-loader',
-  showControls = false,
-  backHref = '/',
-  backLabel = '← Back to home',
-  // Every page signs off the same way; pass footerExtra to override it.
-  footerExtra = ' · Bytes: andu',
+    title,
+    description = "",
+    active,
+    bodyClass = "no-loader",
+    showControls = false,
+    backHref = "/",
+    backLabel = "← Back to home",
+    // Every page signs off the same way; pass footerExtra to override it.
+    footerExtra = " · Bytes: andu",
 } = Astro.props;
 
 const year = new Date().getFullYear();
 const fontHref =
-  'https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Spline+Sans+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap';
+    "https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Spline+Sans+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap";
 ---
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    {description && <meta name="description" content={description} />}
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href={fontHref} rel="stylesheet" />
-    <link rel="stylesheet" href="/spectrum.css" />
-    <slot name="head" />
-  </head>
-  <body class={bodyClass}>
-    <div class="tape-frame" aria-hidden="true">
-      <div class="bar top"></div><div class="bar bot"></div>
-      <div class="bar lft"></div><div class="bar rgt"></div>
-    </div>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{title}</title>
+        {description && <meta name="description" content={description} />}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href={fontHref} rel="stylesheet" />
+        <link rel="stylesheet" href="/spectrum.css" />
+        <slot name="head" />
+    </head>
+    <body class={bodyClass}>
+        <div class="tape-frame" aria-hidden="true">
+            <div class="bar top"></div><div class="bar bot"></div>
+            <div class="bar lft"></div><div class="bar rgt"></div>
+        </div>
 
-    <slot name="preloader" />
+        <slot name="preloader" />
 
-    <div class="wrap" id="page">
-      <Nav active={active} showControls={showControls} />
+        <div class="wrap" id="page">
+            <Nav active={active} showControls={showControls} />
 
-      <slot />
+            <slot />
 
-      <footer class="foot">
-        <span>© {year} Alexandru Badiu{footerExtra}</span>
-        <span><a href={backHref}>{backLabel}</a></span>
-      </footer>
-    </div>
+            <footer class="foot">
+                <span>© {year} Alexandru Badiu{footerExtra}</span>
+                <span><a href={backHref}>{backLabel}</a></span>
+            </footer>
+            <div class="foot-credit">
+                Diver from Glug Glug (CRL, 1984), the game that started it.
+            </div>
+        </div>
 
-    <slot name="scripts" />
-  </body>
+        <!-- Decorative only: sprites from the Glug Glug loading screen, kept in the
+         margins and hidden from assistive tech. -->
+        <div class="dive" aria-hidden="true">
+            <div class="dive-rail">
+                <img
+                    class="dive-boat"
+                    id="dive-boat"
+                    src="/boat.png"
+                    width="80"
+                    height="32"
+                    alt=""
+                />
+                <div class="dive-hose-clip" id="dive-hose-clip">
+                    <div class="dive-hose" id="dive-hose"></div>
+                </div>
+                <img
+                    class="dive-diver"
+                    id="dive-diver"
+                    src="/diver.png"
+                    width="32"
+                    height="64"
+                    alt=""
+                />
+            </div>
+        </div>
+        <!-- Fish sit at fixed points down the page (anchored to the document, not
+             the viewport) in the right margin, so the descending diver draws
+             level with each in turn and looks at them across the content. -->
+        <div class="dive-school" aria-hidden="true">
+            <div class="dive-shoal">
+                <img
+                    class="dive-fish dive-fish-1"
+                    src="/fish.png"
+                    width="48"
+                    height="32"
+                    alt=""
+                />
+                <img
+                    class="dive-fish dive-fish-2"
+                    src="/fish.png"
+                    width="48"
+                    height="32"
+                    alt=""
+                />
+                <img
+                    class="dive-fish dive-fish-3"
+                    src="/fish.png"
+                    width="48"
+                    height="32"
+                    alt=""
+                />
+            </div>
+        </div>
+        <div class="dive-floor" aria-hidden="true">
+            <div class="dive-hoard">
+                <img
+                    class="dive-t3"
+                    src="/treasure3.png"
+                    width="48"
+                    height="32"
+                    alt=""
+                />
+                <img
+                    class="dive-t2"
+                    src="/treasure2.png"
+                    width="32"
+                    height="32"
+                    alt=""
+                />
+                <img
+                    class="dive-t1"
+                    src="/treasure.png"
+                    width="48"
+                    height="32"
+                    alt=""
+                />
+            </div>
+        </div>
+
+        <script>
+            // Drives the diver down the page as you scroll. Transform only, one write
+            // per animation frame, and nothing runs if the visitor asked for less
+            // motion (CSS pins the sprites in that case).
+            (function () {
+                var diver = document.getElementById("dive-diver");
+                var hose = document.getElementById("dive-hose");
+                var boat = document.getElementById("dive-boat");
+                var hoseClip = document.getElementById("dive-hose-clip");
+                if (!diver || !hose || !boat || !hoseClip) return;
+                if (
+                    window.matchMedia("(prefers-reduced-motion: reduce)")
+                        .matches
+                )
+                    return;
+
+                // The statusbar is sticky: it slides up with the page until its
+                // top hits stickyTop, then holds. MAXSHIFT is how far it travels
+                // (its natural top minus its stuck top), read from the layout so
+                // there are no magic numbers. The boat and the top of the hose
+                // ride along so they stay pinned to the name row.
+                var wrap = document.getElementById("page");
+                var statusbar = document.querySelector(".statusbar");
+                var MAXSHIFT = 0;
+                if (wrap && statusbar) {
+                    var padTop =
+                        parseFloat(getComputedStyle(wrap).paddingTop) || 0;
+                    var stickyTop =
+                        parseFloat(getComputedStyle(statusbar).top) || 0;
+                    MAXSHIFT = Math.max(0, padTop - stickyTop);
+                }
+
+                var START = 98; // matches .dive-diver top, in px
+                // The sprite box is padded by transparent rows: 7 above the helmet and
+                // 1 below the boots, x2. HEAD is how far the hose runs into the box to
+                // touch his head; FOOT is the gap under his boots.
+                var HEAD = 14;
+                var FOOT = 2;
+                var FLOOR = 16; // seabed strip height, matches .dive-floor
+                var DIVER_H = 64;
+                var ticking = false;
+
+                function draw() {
+                    ticking = false;
+                    var vh = window.innerHeight;
+                    var span = document.documentElement.scrollHeight - vh;
+                    var p =
+                        span > 0
+                            ? Math.min(1, Math.max(0, window.scrollY / span))
+                            : 0;
+
+                    // At full scroll the document bottom is the viewport bottom, so the
+                    // seabed occupies the last FLOOR px. Land his boots on top of it
+                    // rather than letting him swim off the screen.
+                    var rest = vh - FLOOR - DIVER_H + FOOT;
+                    var y = p * Math.max(0, rest - START);
+                    // Slight sideways drift, tied to depth so it never twitches in place.
+                    var bob = Math.sin(y / 90) * 2;
+                    diver.style.transform =
+                        "translate3d(" +
+                        bob.toFixed(2) +
+                        "px," +
+                        y.toFixed(2) +
+                        "px,0)";
+
+                    // Follow the sticky header: the boat and the hose's top edge
+                    // rise by the same amount the statusbar does, then hold.
+                    var shift = Math.min(window.scrollY, MAXSHIFT);
+                    var st = (-shift).toFixed(2);
+                    boat.style.transform = "translate3d(0," + st + "px,0)";
+                    hoseClip.style.transform = "translate3d(0," + st + "px,0)";
+                    // The hose strip's bottom must still land on the diver's head.
+                    // The clip moved up by `shift`, so add it back here.
+                    hose.style.transform =
+                        "translate3d(0," +
+                        (START + y + HEAD - vh + shift).toFixed(2) +
+                        "px,0)";
+                }
+
+                function onScroll() {
+                    if (!ticking) {
+                        ticking = true;
+                        requestAnimationFrame(draw);
+                    }
+                }
+
+                window.addEventListener("scroll", onScroll, { passive: true });
+                window.addEventListener("resize", onScroll, { passive: true });
+                draw();
+            })();
+        </script>
+
+        <slot name="scripts" />
+    </body>
 </html>

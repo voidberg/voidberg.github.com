@@ -4,7 +4,7 @@
 export const site = {
   name: 'Alexandru Badiu',
   // Published on /contact as a mailto link.
-  email: 'alexandru@badiu.me',
+  email: 'hello@badiu.me',
   socials: {
     github: 'https://github.com/voidberg',
     linkedin: 'https://www.linkedin.com/in/alexandrubadiu',
