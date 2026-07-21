@@ -241,8 +241,10 @@ section{margin-top:72px;}
    one piece so the hose stays attached. The children's own transforms (scroll
    descent, header tracking) compose under this. .dive clips it while off-screen. */
 .dive-rail{position:absolute;left:50%;top:0;bottom:0;width:820px;margin-left:-410px;
-  animation:rig-in 2.8s cubic-bezier(.2,.75,.3,1) both;}
-@keyframes rig-in{from{transform:translate3d(-300px,0,0);}to{transform:translate3d(0,0,0);}}
+  animation:rig-in 2.8s cubic-bezier(.2,.75,.3,1) both;animation-play-state:paused;}
+/* Start value is viewport-relative so the boat begins just off the left edge on
+   any width (the boat's right edge rests at 50vw-458px; -50vw+440px clears it). */
+@keyframes rig-in{from{transform:translate3d(calc(-50vw + 440px),0,0);}to{transform:translate3d(0,0,0);}}
 .dive img{display:block;image-rendering:pixelated;}
 /* All sprites scale x2 (native px -> display px). The statusbar's bottom border
    is the waterline: the pink cabin rides above it, the green hull below. The boat
@@ -285,8 +287,10 @@ section{margin-top:72px;}
 /* Inner wrapper carries the load-time slide-in from the right, kept separate
    from the fish so their drift transform isn't overwritten. */
 .dive-shoal{position:absolute;inset:0;
-  animation:shoal-in 2.8s cubic-bezier(.2,.75,.3,1) .2s both;}
-@keyframes shoal-in{from{transform:translate3d(260px,0,0);}to{transform:translate3d(0,0,0);}}
+  animation:shoal-in 2.8s cubic-bezier(.2,.75,.3,1) .2s both;animation-play-state:paused;}
+/* Mirror of the boat: start just off the right edge on any width (the leftmost
+   fish rests at 50vw+428px; 50vw-408px pushes it past the viewport). */
+@keyframes shoal-in{from{transform:translate3d(calc(50vw - 408px),0,0);}to{transform:translate3d(0,0,0);}}
 .dive-fish{position:absolute;left:50%;width:48px;height:32px;image-rendering:pixelated;
   animation:fish-drift 17s ease-in-out infinite;}
 /* x staggered so the three don't sit on one vertical line (safe band at 1200px
@@ -297,6 +301,12 @@ section{margin-top:72px;}
 @keyframes fish-drift{0%,100%{transform:translate3d(0,0,0);}
   50%{transform:translate3d(-5px,2px,0);}}
 @media (min-width:1200px){.dive-school{display:block;}}
+/* Hold the slide-in until the page is revealed. The home page reveals when the
+   tape loader finishes (body gets .revealed); other pages carry .no-loader and
+   reveal at once. Without this the boat and fish would slide in behind the
+   loader and already be parked when it lifts. */
+.revealed .dive-rail,.no-loader .dive-rail,
+.revealed .dive-shoal,.no-loader .dive-shoal{animation-play-state:running;}
 /* No scroll-driven movement: the diver stays where it starts, hose stays short,
    and the fish hold still. */
 @media (prefers-reduced-motion:reduce){
