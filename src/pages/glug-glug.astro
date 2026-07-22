@@ -16,7 +16,16 @@ const description =
 >
     <style>
         .gg-figure {
-            margin: 44px 0 0;
+            /* Symmetric, so an inline figure inside prose has the same room below
+               it (before the next paragraph) as above. Standalone figures between
+               sections collapse this bottom margin into the section's larger top
+               margin, so their spacing is unchanged. */
+            margin: 44px 0;
+        }
+        /* The two intro paragraphs sit flush otherwise (.blurb has margin:0);
+           give them the same breathing room as the rest of the page. */
+        .blurb + .blurb {
+            margin-top: 16px;
         }
         .gg-figure img {
             display: block;
@@ -84,7 +93,9 @@ const description =
            mono attribution, matching the site's bordered-card / accent look. */
         .gg-quote {
             position: relative;
-            margin: 30px 0 8px;
+            /* Symmetric top/bottom so the quote isn't jammed against the
+               paragraph that follows it. */
+            margin: 30px 0;
             padding: 22px 24px 20px 28px;
             background: var(--card);
             border: 2px solid var(--rule);
@@ -380,12 +391,13 @@ const description =
                 allow="fullscreen; autoplay"></iframe>
         </div>
         <p class="gg-cap left">
-            The real thing, running in your browser via <a
-                href="http://qaop.speccy.org/">Qaop</a
+            The real thing, running via <a href="http://qaop.speccy.org/"
+                >Qaop</a
             >. Click it, then press <kbd class="gg-key">0</kbd> to start. Swim with
             <kbd class="gg-key">A</kbd> (up), <kbd class="gg-key">Z</kbd> (down),
             <kbd class="gg-key">M</kbd> (left) and <kbd class="gg-key">,</kbd> (right);
-            <kbd class="gg-key">Space</kbd> fires. Prefer to watch? Here's a
+            <kbd class="gg-key">Space</kbd> fires the harpoon. Prefer to watch? Here's
+            a
             <a href="https://www.youtube.com/watch?v=-LDk8orRmfM">playthrough</a
             >.
         </p>
