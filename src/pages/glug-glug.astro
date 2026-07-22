@@ -428,6 +428,17 @@ const description =
             background: var(--s-wht);
             box-shadow: 0 0 4px var(--s-wht);
         }
+        /* Death bubble: a ring in the creature's colour (set inline by JS) that
+           swells from small to large and pops. Sized by the animation. */
+        .gg-bubble {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 2px solid;
+            border-radius: 50%;
+            background: transparent;
+            box-sizing: border-box;
+        }
         @media (max-width: 1199px) {
             .gg-bullets {
                 display: none;
@@ -462,10 +473,10 @@ const description =
             var BOLT_W = 12;
             var SPEED = 0.45; // px/ms for the visible segments (kept unhurried)
             var HIDDEN_MS = 300; // time spent unseen behind the content column
-            // Fire this far above the target's centre so the bolt clears its
-            // head as it passes: a clean miss, nothing harmed. Bigger than half
-            // the tallest sprite, so it clears fish, jellyfish and squid alike.
-            var AIM_ABOVE = 28;
+            // Fire at the target's body (a touch above centre) so the bolt reads
+            // as a hit rather than a clear miss; when it lands the creature bursts.
+            var AIM_ABOVE = 6;
+            var RESPAWN_MS = 4000; // a downed creature fades back in after this
 
             function spawn(x, y, dist, dur, fadeIn) {
                 var b = document.createElement("div");
@@ -508,20 +519,104 @@ const description =
                 };
             }
 
+            // The bubble burst is drawn in the creature's own colour.
+            function deathColor(enemy) {
+                if (enemy.classList.contains("dive-jelly"))
+                    return "rgb(57,255,255)";
+                if (enemy.classList.contains("dive-squid"))
+                    return "rgb(255,57,57)";
+                return "rgb(200,200,0)"; // fish
+            }
+
+            // Two to four little bubbles that swell from small to large, drift up
+            // a touch, then pop — the game's death puff.
+            function burst(cx, cy, color) {
+                var n = 2 + Math.floor(Math.random() * 3);
+                for (var k = 0; k < n; k++) {
+                    var bub = document.createElement("div");
+                    bub.className = "gg-bubble";
+                    bub.style.borderColor = color;
+                    bub.style.left = cx + (Math.random() - 0.5) * 12 + "px";
+                    bub.style.top = cy + (Math.random() - 0.5) * 8 + "px";
+                    layer.appendChild(bub);
+                    bub.animate(
+                        [
+                            {
+                                transform: "translate(-50%,-50%) scale(0.25)",
+                                opacity: 0,
+                            },
+                            {
+                                transform: "translate(-50%,-80%) scale(1)",
+                                opacity: 1,
+                                offset: 0.45,
+                            },
+                            {
+                                transform: "translate(-50%,-150%) scale(1.5)",
+                                opacity: 0,
+                            },
+                        ],
+                        { duration: 500, delay: k * 85, easing: "ease-out" },
+                    ).onfinish = (function (el) {
+                        return function () {
+                            el.remove();
+                        };
+                    })(bub);
+                }
+            }
+
+            // The harpoon connects: burst bubbles where the creature was, hide it,
+            // then fade it back in later so the scene refills.
+            function die(enemy) {
+                if (enemy.dataset.dead) return;
+                enemy.dataset.dead = "1";
+                var r = enemy.getBoundingClientRect();
+                burst(
+                    r.left + r.width / 2,
+                    r.top + r.height / 2,
+                    deathColor(enemy),
+                );
+                enemy.style.transition = "opacity .1s";
+                enemy.style.opacity = "0";
+                setTimeout(function () {
+                    enemy.style.transition = "opacity .5s";
+                    enemy.style.opacity = "1";
+                    delete enemy.dataset.dead;
+                }, RESPAWN_MS);
+            }
+
+            // The bolt is a flat streak at a fixed height (gunY). It hits only if
+            // that height is inside the creature's body when it arrives. HIT_INSET
+            // trims the sprite's transparent margin so a graze past the edge, or a
+            // bolt that has drifted over/under while the page scrolled, just misses.
+            var HIT_INSET = 6;
+            function hits(gunY, enemy) {
+                var r = enemy.getBoundingClientRect();
+                return (
+                    gunY >= r.top + HIT_INSET && gunY <= r.bottom - HIT_INSET
+                );
+            }
+
             // A streak across the left margin that fades as it reaches the text
             // column (slips behind it), then, after crossing unseen, one that
-            // emerges on the right, passes just over the target and carries on
-            // off the edge of the page.
-            function fire(gunX, gunY, contentL, contentR) {
+            // emerges on the right and races out over the target. If the bolt is
+            // level with the creature as it arrives, that creature bursts.
+            function fire(gunX, gunY, contentL, contentR, enemy) {
                 var seg1 = contentL - gunX;
                 if (seg1 > 6) spawn(gunX, gunY, seg1, seg1 / SPEED, false);
                 var seg2 = window.innerWidth + BOLT_W - contentR; // to off-screen
-                setTimeout(
-                    function () {
-                        spawn(contentR, gunY, seg2, seg2 / SPEED, true);
-                    },
-                    Math.max(0, seg1) / SPEED + HIDDEN_MS,
-                );
+                var emerge = Math.max(0, seg1) / SPEED + HIDDEN_MS;
+                setTimeout(function () {
+                    spawn(contentR, gunY, seg2, seg2 / SPEED, true);
+                }, emerge);
+                if (enemy) {
+                    var ex = enemy.getBoundingClientRect().left;
+                    setTimeout(
+                        function () {
+                            if (hits(gunY, enemy)) die(enemy);
+                        },
+                        emerge + Math.max(0, ex - contentR) / SPEED,
+                    );
+                }
             }
 
             // Which side of each target's aim-line the gun was last on; a sign
@@ -547,9 +642,10 @@ const description =
                         side[i] &&
                         side[i] !== s &&
                         r.top < vh &&
-                        r.bottom > 0
+                        r.bottom > 0 &&
+                        !enemies[i].dataset.dead
                     ) {
-                        fire(gunX, gunY, p.left, p.right);
+                        fire(gunX, gunY, p.left, p.right, enemies[i]);
                     }
                     side[i] = s;
                 }
