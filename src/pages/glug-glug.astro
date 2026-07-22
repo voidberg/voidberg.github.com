@@ -414,9 +414,15 @@ const description =
         JS-created, so its styles are global, not scoped. */
     }
     <style is:global>
+        /* Anchored to the document (not the viewport) so bolts and death bubbles
+           scroll with the creatures — a viewport-fixed layer left the streak
+           under a target that had scrolled up since firing. */
         .gg-bullets {
-            position: fixed;
-            inset: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
             pointer-events: none;
             z-index: 6;
             overflow: hidden;
@@ -471,12 +477,13 @@ const description =
             document.body.appendChild(layer);
 
             var BOLT_W = 12;
-            var SPEED = 0.45; // px/ms for the visible segments (kept unhurried)
-            var HIDDEN_MS = 300; // time spent unseen behind the content column
-            // Fire at the target's body (a touch above centre) so the bolt reads
-            // as a hit rather than a clear miss; when it lands the creature bursts.
-            var AIM_ABOVE = 6;
-            var RESPAWN_MS = 4000; // a downed creature fades back in after this
+            var SPEED = 0.4; // px/ms — an unhurried harpoon streak
+            var HIDDEN_MS = 280; // time spent unseen behind the content column
+            // Fire the instant the gun is level with the target's centre; every
+            // pass then downs the creature. Not a real hit test — just a small,
+            // deliberate bit of fun on this one page.
+            var AIM_ABOVE = 0;
+            var RESPAWN_MS = 700; // gap before a replacement slides in
 
             function spawn(x, y, dist, dur, fadeIn) {
                 var b = document.createElement("div");
@@ -564,55 +571,85 @@ const description =
                 }
             }
 
+            // A replacement can be any creature, not the one that died.
+            var TYPES = [
+                { cls: "dive-fish", src: "/fish.png" },
+                { cls: "dive-jelly", src: "/jellyfish.png" },
+                { cls: "dive-squid", src: "/squid.png" },
+            ];
+
+            // Bring a fresh creature in for the one just killed: a random type, a
+            // nudged vertical position so it isn't exactly where the last fell,
+            // sliding in from off the right edge. The drift animation (turned off
+            // for the slide) takes back over once it has arrived.
+            function respawn(enemy) {
+                enemy.style.transition = "";
+                enemy.classList.remove("dive-fish", "dive-jelly", "dive-squid");
+                var t = TYPES[Math.floor(Math.random() * TYPES.length)];
+                enemy.classList.add(t.cls);
+                enemy.src = t.src;
+                enemy.style.marginTop =
+                    Math.round((Math.random() - 0.5) * 80) + "px";
+                enemy.style.animation = "none";
+                enemy.style.opacity = "1";
+                var from =
+                    window.innerWidth - enemy.getBoundingClientRect().left + 40;
+                enemy.animate(
+                    [
+                        { transform: "translateX(" + from + "px)" },
+                        { transform: "translateX(0)" },
+                    ],
+                    { duration: 1500, easing: "cubic-bezier(.2,.75,.3,1)" },
+                ).onfinish = function () {
+                    enemy.style.animation = ""; // hand back to the drift
+                    delete enemy.dataset.dead; // hittable again once it is in
+                };
+            }
+
             // The harpoon connects: burst bubbles where the creature was, hide it,
-            // then fade it back in later so the scene refills.
+            // then slide a replacement in a moment later.
             function die(enemy) {
                 if (enemy.dataset.dead) return;
                 enemy.dataset.dead = "1";
                 var r = enemy.getBoundingClientRect();
                 burst(
                     r.left + r.width / 2,
-                    r.top + r.height / 2,
+                    r.top + r.height / 2 + window.scrollY, // document-space
                     deathColor(enemy),
                 );
                 enemy.style.transition = "opacity .1s";
                 enemy.style.opacity = "0";
                 setTimeout(function () {
-                    enemy.style.transition = "opacity .5s";
-                    enemy.style.opacity = "1";
-                    delete enemy.dataset.dead;
+                    respawn(enemy);
                 }, RESPAWN_MS);
-            }
-
-            // The bolt is a flat streak at a fixed height (gunY). It hits only if
-            // that height is inside the creature's body when it arrives. HIT_INSET
-            // trims the sprite's transparent margin so a graze past the edge, or a
-            // bolt that has drifted over/under while the page scrolled, just misses.
-            var HIT_INSET = 6;
-            function hits(gunY, enemy) {
-                var r = enemy.getBoundingClientRect();
-                return (
-                    gunY >= r.top + HIT_INSET && gunY <= r.bottom - HIT_INSET
-                );
             }
 
             // A streak across the left margin that fades as it reaches the text
             // column (slips behind it), then, after crossing unseen, one that
-            // emerges on the right and races out over the target. If the bolt is
-            // level with the creature as it arrives, that creature bursts.
+            // emerges on the right and races out over the target. The creature
+            // bursts as the bolt reaches its column.
             function fire(gunX, gunY, contentL, contentR, enemy) {
                 var seg1 = contentL - gunX;
-                if (seg1 > 6) spawn(gunX, gunY, seg1, seg1 / SPEED, false);
+                // y values are document-space (viewport + scrollY) to match the layer.
+                if (seg1 > 6)
+                    spawn(gunX, gunY + window.scrollY, seg1, seg1 / SPEED, false);
                 var seg2 = window.innerWidth + BOLT_W - contentR; // to off-screen
                 var emerge = Math.max(0, seg1) / SPEED + HIDDEN_MS;
                 setTimeout(function () {
-                    spawn(contentR, gunY, seg2, seg2 / SPEED, true);
+                    // Emerge level with the target's CURRENT position, so any
+                    // scrolling since firing can't leave the streak off its line.
+                    var ey = gunY;
+                    if (enemy) {
+                        var r = enemy.getBoundingClientRect();
+                        ey = r.top + r.height / 2;
+                    }
+                    spawn(contentR, ey + window.scrollY, seg2, seg2 / SPEED, true);
                 }, emerge);
                 if (enemy) {
                     var ex = enemy.getBoundingClientRect().left;
                     setTimeout(
                         function () {
-                            if (hits(gunY, enemy)) die(enemy);
+                            die(enemy);
                         },
                         emerge + Math.max(0, ex - contentR) / SPEED,
                     );
