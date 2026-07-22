@@ -1,10 +1,12 @@
 ---
 // Unlisted page (not in the main nav). Reached from the footer credit and by
-// clicking the boat or diver in the dive scene. Content to be filled in.
+// clicking the boat or diver in the dive scene.
+// NOTE: the prose below is PLACEHOLDER. Bracketed [...] bits are cues for the
+// personal story — replace them. Verify any game facts before publishing.
 import Base from "../layouts/Base.astro";
 
 const description =
-    "Glug Glug (CRL, 1984) and why it stuck with Alexandru Badiu.";
+    "Glug Glug (CRL, 1984), the ZX Spectrum diving game behind the little scene on this site, and what it means to Alexandru Badiu.";
 ---
 
 <Base
@@ -12,11 +14,535 @@ const description =
     description={description}
     active="/glug-glug"
 >
+    <style>
+        .gg-figure {
+            margin: 44px 0 0;
+        }
+        .gg-figure img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            /* A mat + border so the frame reads on the black page. */
+            padding: 8px;
+            background: var(--card);
+            border: 2px solid var(--rule);
+            /* Same lift-and-highlight as the project cards. */
+            transition:
+                transform 0.12s ease,
+                border-color 0.12s ease,
+                box-shadow 0.12s ease;
+        }
+        .gg-figure img:hover {
+            transform: translate(-2px, -2px);
+            border-color: var(--accent);
+            box-shadow: 4px 4px 0 var(--accent);
+        }
+        /* Painted inlay art: smooth, capped and centred. */
+        .gg-cover {
+            max-width: 440px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .gg-cover img {
+            image-rendering: auto;
+        }
+        /* Loading screen: pixel art, full width, kept crisp. */
+        .gg-pixel {
+            width: 100%;
+            image-rendering: pixelated;
+        }
+        .gg-cap {
+            margin-top: 12px;
+            font-family: "Spline Sans Mono", ui-monospace, monospace;
+            font-size: 12px;
+            color: var(--faint);
+            line-height: 1.6;
+            text-align: center;
+        }
+        .gg-cap.left {
+            text-align: left;
+        }
+        /* Keycaps for the controls line, so a bare "," reads as the right-move
+           key rather than punctuation. Boxed, mono, with a thicker bottom edge
+           for a little keycap depth. */
+        .gg-key {
+            display: inline-block;
+            min-width: 1.5em;
+            padding: 1px 5px;
+            margin: 0 1px;
+            font-family: "Spline Sans Mono", ui-monospace, monospace;
+            font-size: 11px;
+            line-height: 1.5;
+            text-align: center;
+            color: var(--paper);
+            background: var(--card);
+            border: 1px solid var(--rule);
+            border-bottom-width: 2px;
+            border-radius: 2px;
+        }
+        /* Pull quote: card + cyan accent bar, a pixel quote mark, and a small
+           mono attribution, matching the site's bordered-card / accent look. */
+        .gg-quote {
+            position: relative;
+            margin: 30px 0 8px;
+            padding: 22px 24px 20px 28px;
+            background: var(--card);
+            border: 2px solid var(--rule);
+            border-left: 3px solid var(--s-cyan);
+            color: var(--paper);
+            font-size: 17px;
+            line-height: 1.75;
+        }
+        .gg-quote::before {
+            content: "\201C";
+            position: absolute;
+            top: 8px;
+            right: 14px;
+            font-family: "Press Start 2P", monospace;
+            font-size: 22px;
+            line-height: 1;
+            color: var(--s-cyan);
+            opacity: 0.5;
+        }
+        .gg-quote cite {
+            display: block;
+            margin-top: 14px;
+            font-family: "Spline Sans Mono", ui-monospace, monospace;
+            font-style: normal;
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            color: var(--s-cyan);
+        }
+        .gg-quote cite::before {
+            content: "— ";
+            color: var(--faint);
+        }
+        /* Playable emulator (Qaop, in an iframe). Bordered to match the figures;
+           the 4:3 frame scales with the column. */
+        .gg-emu {
+            margin-top: 26px;
+            border: 2px solid var(--rule);
+            background: #000;
+            line-height: 0;
+        }
+        .gg-emu .gg-frame {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            border: 0;
+        }
+    </style>
+
     <header class="page-head enter">
         <div class="eyebrow">Glug Glug · CRL 1984</div>
         <h1>The game that started it.</h1>
-        <p class="blurb">Placeholder. The story goes here.</p>
+        <p class="blurb">
+            You're probably wondering why this site is themed around the ZX
+            Spectrum, and why there's a diver, a boat and a few fish swimming
+            around.
+        </p>
+        <p class="blurb">
+            TL;DR: That computer and that diver game (called GlugGlug) are the
+            reasons I became a programmer. Would I have ended up in the same
+            situation without them? Very possible, but we'll never know.
+        </p>
     </header>
 
-    {/* Content to be added. */}
+    <figure class="gg-figure gg-cover enter">
+        <img
+            src="/img/glugglug-cover.jpg"
+            width="938"
+            height="900"
+            alt="Glug Glug cassette inlay: a painted deep-sea diver in a red suit and brass helmet on the ocean floor, a shark and octopus behind him"
+        />
+        <figcaption class="gg-cap">
+            The cassette inlay. CRL, 1984. [Phil Gascoine]
+        </figcaption>
+    </figure>
+
+    <section class="enter">
+        <div class="slabel">
+            <span class="k">CRL</span><h2>The game</h2><span class="line"
+            ></span>
+        </div>
+        <div class="prose">
+            <p>
+                <a href="https://www.clemchambers.com/">Clem Chambers</a> started
+                Computer Rentals Limited in 1982 in London, as a computer rental business,
+                before pivoting to game publishing. During its run, it released some
+                of the first video games to receive age ratings from the BBFC. Some
+                of the notable titles include <a
+                    href="https://spectrumcomputing.co.uk/entry/6211/ZX-Spectrum/Dracula"
+                    >Dracula</a
+                >, <a
+                    href="https://spectrumcomputing.co.uk/entry/6331/ZX-Spectrum/Frankenstein"
+                    >Frankenstein</a
+                >, <a
+                    href="https://spectrumcomputing.co.uk/entry/5156/ZX-Spectrum/Academy"
+                    >Academy</a
+                > and <a
+                    href="https://spectrumcomputing.co.uk/entry/5153/ZX-Spectrum/Tau_Ceti"
+                    >Tau Ceti</a
+                >.
+            </p>
+            <p>
+                <a
+                    href="https://spectrumcomputing.co.uk/entry/5193/ZX-Spectrum/Terrahawks"
+                    >Terrahawks</a
+                > was one of the first video games based on a TV show.
+            </p>
+            <p>
+                One less notable game was <a
+                    href="https://spectrumcomputing.co.uk/entry/2062/ZX-Spectrum/Glug_Glug"
+                    >Glug Glug</a
+                >. Created by <a
+                    href="https://spectrumcomputing.co.uk/list?label_id=13873"
+                    >Steve Evans</a
+                > with poster and inlay art from <a
+                    href="https://spectrumcomputing.co.uk/list?label_id=18110"
+                    >Phil Gascoine</a
+                >, it puts you into the shoes (or better said, lead boots) of a
+                diver, who needs to collect treasures from the bottom of the
+                ocean. While doing this, you need to evade various traps and sea
+                creatures that want to kill you. Good thing you have a harpoon.
+            </p>
+            <p>
+                Glug Glug took its cue from Kaitei Takara Sagashi, a Namco
+                arcade cabinet. CRL sold it for £5.95. While super fun, it was a
+                bit of a flop.
+            </p>
+            <blockquote class="gg-quote">
+                I always thought that was one of our best games, but the critics
+                killed it at retail... It probably sold less than 2000 copies.
+                So it was a rare spice that blew on the winds of commerce.
+                <cite>Clem Chambers</cite>
+            </blockquote>
+            <p>
+                While not a success, the game ended up on a cassette that found
+                its way to <a href="https://en.wikipedia.org/wiki/One%C8%99ti"
+                    >Onești, Romania</a
+                > around 1990.
+            </p>
+        </div>
+    </section>
+
+    <figure class="gg-figure enter">
+        <img
+            class="gg-pixel"
+            src="/img/glugglug-loading.png"
+            width="640"
+            height="480"
+            alt="The Glug Glug ZX Spectrum loading screen."
+        />
+        <figcaption class="gg-cap">The loading screen.</figcaption>
+    </figure>
+
+    <section class="enter">
+        <div class="slabel">
+            <span class="k">HC-89</span><h2>
+                Tech in communist and post-communist Romania
+            </h2><span class="line"></span>
+        </div>
+        <div class="prose">
+            <p>
+                The computer scene in Romania at that time was... interesting to
+                say the least. Due to the CoCom embargo which blocked exports of
+                Western technology into the Eastern bloc, everything was reverse
+                engineered and state-owned companies were building unlicensed ZX
+                Spectrum clones. <a
+                    href="https://en.wikipedia.org/wiki/ICE_Felix">ICE Felix</a
+                > was probably the most common, with their HC (Home Computer) line.
+            </p>
+            <p>
+                To get access to one, at least in the early days, you had to be
+                connected to the regime. As a result, a thriving DIY homebrew
+                scene flourished, with <a
+                    href="https://museum.dataart.com/short-stories/romanian-diy-computer-cobra"
+                    >CoBra</a
+                > being the most popular.
+            </p>
+            <p>
+                Quick aside: if this sounds interesting to you and you like
+                long-form reads, make sure to check out this article: <a
+                    href="https://arstechnica.com/gadgets/2017/11/the-underground-story-of-cobra-the-1980s-illicit-handmade-computer/"
+                    >The underground story of Cobra, the 1980s’ illicit handmade
+                    computer</a
+                >.
+            </p>
+            <p>
+                Following the fall of the communist regime in late 1989, access
+                to western technology and the previously hard-to-get Romanian
+                computers started to become a lot easier, if you had the
+                ridiculous amount of money required to buy one.
+            </p>
+        </div>
+    </section>
+
+    <section class="enter">
+        <div class="slabel">
+            <span class="k">ME</span><h2>
+                Fascinating, but what is the deal exactly?
+            </h2><span class="line"></span>
+        </div>
+        <div class="prose">
+            <p>
+                Sometime in 1990, I was playing outside, when my grandmother
+                yelled from the window:
+            </p>
+            <blockquote class="gg-quote">
+                Alexandru! Go to your uncle, he has <strong
+                    >GAMES ON THE TV</strong
+                >!!!
+                <cite>Ica Badiu, my grandmother</cite>
+            </blockquote>
+            <p>
+                My uncle was the one person in my family that was interested in
+                computers, and had the chance to work with them before in a
+                professional setting. Until then, I had only seen them at his
+                work place.
+            </p>
+            <p>
+                In his house, connected to the TV and a cassette deck, was a
+                brand spanking new HC-89 computer. He loaded a tape, typed
+            </p>
+            <blockquote class="gg-quote">LOAD ""</blockquote>
+            <p>
+                And pressed play. A screeching sound soon followed, while the
+                screen was filled with the image of a diver. He showed me what
+                keys I needed to press and I started hunting for treasure.
+            </p>
+            <p>
+                At the end of that play session, I got up and decided on the
+                spot that this was what I wanted to do. I wanted to make games,
+                and there was nothing else I could have imagined myself doing
+                with my life. I started to learn BASIC, then got my own HC, then
+                graduated to C and an 80286 PC, and the rest is, as they say,
+                history.
+            </p>
+            <figure class="gg-figure enter">
+                <img
+                    class="gg-pixel"
+                    src="/img/pc.jpg"
+                    width="640"
+                    height="480"
+                    alt="1998. 486DX2/66, 8 MB of RAM and lots of floppy disks."
+                />
+                <figcaption class="gg-cap">
+                    1998. 486DX2/66, 8 MB of RAM and lots of floppy disks.
+                </figcaption>
+            </figure>
+            <p>
+                I never became a games programmer (and, looking at the gamedev
+                industry, that's probably for the best) but I tried my hardest
+                for many years, learned a lot, and became fascinated with what
+                technology can do.
+            </p>
+            <p>
+                Remember that earlier quote from Clem Chambers? It's actually
+                incomplete. I wrote to him years ago, asking for permission to
+                revive Glug Glug on modern platforms, for free, and coupled with
+                a small game dev tutorial (which I never got around to doing).
+            </p>
+            <blockquote class="gg-quote">
+                I always thought that was one of our best games, but the critics
+                killed it at retail... <strong
+                    >I'm glad it inspired you. It was worth releasing it just
+                    for that, though it's taken 30 years to find out.</strong
+                > It probably sold less than 2000 copies. So it was a rare spice that
+                blew on the winds of commerce.
+                <cite>Clem Chambers</cite>
+            </blockquote>
+            <p>
+                A Japanese game inspires a British game, then gets copied on
+                cassettes and ends up smuggled into a country under an embargo,
+                where, due to said embargo, the computers are clones of a
+                British computer. In the middle of it, a kid whose life changes.
+            </p>
+        </div>
+    </section>
+
+    <section class="enter">
+        <div class="slabel">
+            <span class="k">PLAY</span><h2>Have a go</h2><span class="line"
+            ></span>
+        </div>
+        <div class="gg-emu">
+            {
+                /* Qaop emulator running the snapshot. It runs Glug Glug faithfully
+                where JSSpeccy's core froze. loading="lazy" defers the ~136KB
+                until the frame is near the viewport. */
+            }
+            <iframe
+                class="gg-frame"
+                src="/qaop/qaop.html#/glugglug.z80"
+                title="Glug Glug (CRL, 1984), playable"
+                loading="lazy"
+                allow="fullscreen; autoplay"></iframe>
+        </div>
+        <p class="gg-cap left">
+            The real thing, running in your browser via <a
+                href="http://qaop.speccy.org/">Qaop</a
+            >. Click it, then press <kbd class="gg-key">0</kbd> to start. Swim with
+            <kbd class="gg-key">A</kbd> (up), <kbd class="gg-key">Z</kbd> (down),
+            <kbd class="gg-key">M</kbd> (left) and <kbd class="gg-key">,</kbd> (right);
+            <kbd class="gg-key">Space</kbd> fires. Prefer to watch? Here's a
+            <a href="https://www.youtube.com/watch?v=-LDk8orRmfM">playthrough</a
+            >.
+        </p>
+    </section>
+
+    {
+        /* Glug-Glug-only flourish: the diver fires a harpoon as he draws level
+        with a fish. The bolt travels a short fixed distance and fades, so it
+        never reaches the fish (diver and fish are a whole content column apart).
+        JS-created, so its styles are global, not scoped. */
+    }
+    <style is:global>
+        .gg-bullets {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 6;
+            overflow: hidden;
+        }
+        .gg-bullet {
+            position: absolute;
+            width: 14px;
+            height: 2px;
+            background: var(--s-wht);
+            box-shadow: 0 0 4px var(--s-wht);
+        }
+        @media (max-width: 1199px) {
+            .gg-bullets {
+                display: none;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .gg-bullets {
+                display: none;
+            }
+        }
+    </style>
+    <script>
+        (function () {
+            var diver = document.getElementById("dive-diver");
+            var page = document.getElementById("page"); // the content column
+            var fish = Array.prototype.slice.call(
+                document.querySelectorAll(".dive-fish"),
+            );
+            if (!diver || !page || !fish.length) return;
+            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+                return;
+
+            var layer = document.createElement("div");
+            layer.className = "gg-bullets";
+            layer.setAttribute("aria-hidden", "true");
+            document.body.appendChild(layer);
+
+            var BOLT_W = 12;
+            var SPEED = 0.45; // px/ms for the visible segments (kept unhurried)
+            var HIDDEN_MS = 300; // time spent unseen behind the content column
+            // Fire this far above the fish's centre so the bolt clears its head
+            // as it passes: a clean miss, no fish harmed. > half the fish height.
+            var AIM_ABOVE = 28;
+
+            function spawn(x, y, dist, dur, fadeIn) {
+                var b = document.createElement("div");
+                b.className = "gg-bullet";
+                b.style.left = x + "px";
+                b.style.top = y - 1 + "px";
+                layer.appendChild(b);
+                var frames = fadeIn
+                    ? // emerges from behind the column, then flies off the edge
+                      [
+                          { transform: "translateX(0)", opacity: 0 },
+                          {
+                              transform: "translateX(" + dist * 0.12 + "px)",
+                              opacity: 1,
+                              offset: 0.12,
+                          },
+                          {
+                              transform: "translateX(" + dist + "px)",
+                              opacity: 1,
+                          },
+                      ]
+                    : // crosses the left margin, fading as it slips behind the column
+                      [
+                          { transform: "translateX(0)", opacity: 1 },
+                          {
+                              transform: "translateX(" + dist * 0.75 + "px)",
+                              opacity: 1,
+                              offset: 0.75,
+                          },
+                          {
+                              transform: "translateX(" + dist + "px)",
+                              opacity: 0,
+                          },
+                      ];
+                b.animate(frames, {
+                    duration: dur,
+                    easing: "linear",
+                }).onfinish = function () {
+                    b.remove();
+                };
+            }
+
+            // A streak across the left margin that fades as it reaches the text
+            // column (slips behind it), then, after crossing unseen, one that
+            // emerges on the right, passes just over the fish and carries on off
+            // the edge of the page.
+            function fire(gunX, gunY, contentL, contentR) {
+                var seg1 = contentL - gunX;
+                if (seg1 > 6) spawn(gunX, gunY, seg1, seg1 / SPEED, false);
+                var seg2 = window.innerWidth + BOLT_W - contentR; // to off-screen
+                setTimeout(
+                    function () {
+                        spawn(contentR, gunY, seg2, seg2 / SPEED, true);
+                    },
+                    Math.max(0, seg1) / SPEED + HIDDEN_MS,
+                );
+            }
+
+            // Which side of each fish's aim-line the gun was last on; a sign flip
+            // means the descending diver just reached firing height for it.
+            var side = fish.map(function () {
+                return 0;
+            });
+            var ticking = false;
+
+            function check() {
+                ticking = false;
+                var d = diver.getBoundingClientRect();
+                if (!d.width) return; // scene hidden on narrow screens
+                var p = page.getBoundingClientRect();
+                var gunX = d.right - 2;
+                var gunY = d.top + d.height * 0.52; // roughly the arm/gun row
+                var vh = window.innerHeight;
+                for (var i = 0; i < fish.length; i++) {
+                    var r = fish[i].getBoundingClientRect();
+                    var aimY = r.top + r.height / 2 - AIM_ABOVE;
+                    var s = gunY < aimY ? -1 : 1;
+                    if (
+                        side[i] &&
+                        side[i] !== s &&
+                        r.top < vh &&
+                        r.bottom > 0
+                    ) {
+                        fire(gunX, gunY, p.left, p.right);
+                    }
+                    side[i] = s;
+                }
+            }
+
+            function onScroll() {
+                if (!ticking) {
+                    ticking = true;
+                    requestAnimationFrame(check);
+                }
+            }
+            window.addEventListener("scroll", onScroll, { passive: true });
+            window.addEventListener("resize", onScroll, { passive: true });
+            check();
+        })();
+    </script>
 </Base>

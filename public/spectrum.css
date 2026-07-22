@@ -68,6 +68,14 @@ section{margin-top:72px;}
   gap:14px;font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:12px;color:var(--dim);
   padding:18px 0 12px;border-bottom:1px solid var(--rule);flex-wrap:wrap;
   position:sticky;top:8px;background:var(--bg);z-index:30;}
+/* Full-bleed background behind the header. The .wrap is centred, so the header is
+   only column-width; a full-width figure's hover decoration (the -2px lift and the
+   box-shadow) pokes a few px past the column on both sides and would show above the
+   sticky bar. This 100vw panel sits at the header's own stacking level (z-index:-1
+   keeps it behind the name/links) so it covers that spill. It's the same black as
+   the page, so it's invisible except for the fix. */
+.statusbar::before{content:"";position:absolute;top:0;bottom:0;left:50%;margin-left:-50vw;
+  width:100vw;background:var(--bg);z-index:-1;pointer-events:none;}
 /* Extend the statusbar's bottom border across the whole viewport as a waterline,
    so the boat in the margin sits on a surface rather than floating. The .wrap is
    centred, so left:50% + margin-left:-50vw + width:100vw spans edge to edge; it
@@ -250,6 +258,9 @@ section{margin-top:72px;}
    is 40x16 -> 80x32, split evenly, so top:52 puts that split on the ~68px border
    (the header now starts collapsed, 22px higher than before). */
 .dive-boat{position:absolute;right:calc(100% + 48px);top:52px;width:80px;height:32px;}
+/* The boat and diver are easter-egg links to the Glug Glug page: re-enable
+   pointer events (the rest of .dive is pointer-events:none) and hint the click. */
+.dive-boat,.dive-diver{pointer-events:auto;cursor:pointer;}
 /* Clip runs from just under the hull to the foot of the viewport; the hose is a
    tall strip inside it whose bottom edge is translated up to the diver, so the
    dot pattern never stretches. Boat, hose and helmet centre all land at the same
@@ -319,6 +330,8 @@ section{margin-top:72px;}
 }
 .foot-credit{margin-top:14px;font-family:"Spline Sans Mono",ui-monospace,monospace;
   font-size:11px;color:var(--faint);line-height:1.6;}
+.foot-credit a{color:var(--s-cyan);text-decoration:none;border-bottom:1px solid var(--s-cyan);}
+.foot-credit a:hover{color:var(--bg);background:var(--s-cyan);border-color:var(--s-cyan);}
 .foot{margin-top:64px;padding-top:22px;border-top:1px solid var(--rule);
   display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
   font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:12px;color:var(--faint);}
@@ -327,8 +340,14 @@ section{margin-top:72px;}
 
 /* ---- entrance ---- */
 .enter{opacity:0;transform:translateY(10px);}
-.revealed .enter,.no-loader .enter{animation:rise .5s cubic-bezier(.2,.7,.3,1) forwards;}
-@keyframes rise{to{opacity:1;transform:none;}}
+/* Set the resting state directly (opacity:1, no transform) and play the reveal
+   WITHOUT `forwards`. With `forwards` the filling transform animation keeps the
+   element on its own composited layer for good, which paints above the sticky
+   header on hover (e.g. a figure's magenta hover border bleeding over the bar).
+   Dropping the fill releases that layer once the .5s animation ends. */
+.revealed .enter,.no-loader .enter{opacity:1;transform:none;
+  animation:rise .5s cubic-bezier(.2,.7,.3,1);}
+@keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
 
 @media (max-width:640px){
   .uses-list li{grid-template-columns:1fr;gap:6px;}
