@@ -22,6 +22,10 @@ export interface Project {
   tag?: string; // e.g. "// work" — shown on the home card
   short?: string; // shorter blurb for the home card
   slug?: string; // optional anchor override; defaults to the slugified name
+  // Real thumbnail key: uses /projects-<image>-card.png on the projects page and
+  // /projects-<image>-featured.png on the home page. Without it the project keeps
+  // the procedural `seed` thumbnail.
+  image?: string;
 }
 
 // The id each project gets on /projects, so home cards can link straight to it.
@@ -45,6 +49,7 @@ export const projects: Project[] = [
     desc: "Sole engineer on a pipeline that turned a partner's raw feed into scored brand placements. Each row resolved to a brand, product and title, enriched with commercial and industry metadata; the attached video went through transcription, then multi-modal LLMs for grading and scene description. 600k+ files, 100k+ placements, roughly 90% agreement with a domain expert. It won Netflix's evaluation and brought them on as a client.",
     stack: ['TypeScript', 'AI', 'Inngest', 'PostgreSQL', 'SQLite', 'AWS'],
     seed: 1103,
+    image: 'pipeline',
     featured: true,
     tag: '// work',
     short: '600k+ media files, 100k+ placements resolved and scored, with multi-modal LLMs grading and describing each scene. Won Netflix\'s evaluation and brought them on as a client.',
@@ -57,6 +62,7 @@ export const projects: Project[] = [
     desc: 'Correlated Nielsen, Gracenote, Luminate and YouGov with box office, historical and manual inputs into unified analytics across 1.5M+ titles. Replaced a $13k/month system covering only select linear TV and film; ran at around $600/month on Snowflake and AWS, data licensed separately. Adopted by Microsoft\'s measurement team, and all client reporting ran on it.',
     stack: ['Snowflake', 'TypeScript', 'ElasticSearch'],
     seed: 2741,
+    image: 'measurement',
     featured: true,
     tag: '// work',
     short: 'Media analytics across 1.5M+ titles from Nielsen, Gracenote, Luminate and YouGov. Replaced a $13k/month system with one running at $600.',
@@ -70,6 +76,7 @@ export const projects: Project[] = [
     stack: ['TypeScript', 'Deno', 'Go'],
     links: [{ label: 'GitHub ↗', href: 'https://github.com/voidberg/instakobo' }],
     seed: 3319,
+    image: 'kobo',
     featured: true,
     tag: '// open source',
     short: 'Read your Instapaper queue on a Kobo, with highlights synced back. Runs on the device or your desktop. reMarkable version in progress.',
@@ -83,6 +90,7 @@ export const projects: Project[] = [
     stack: ['TypeScript', 'ESLint', 'Bamboo'],
     links: [{ label: 'Source ↗', href: 'https://github.com/voidberg/eslint-bamboo-formatter' }],
     seed: 4507,
+    image: 'eslint',
     featured: true,
     tag: '// open source',
     short: 'A tiny ESLint reporter for Atlassian Bamboo. Barely any code, and it quietly ended up used by NASA and a UK government research body.',
@@ -99,6 +107,7 @@ export const projects: Project[] = [
       { label: 'Quarto Go ↗', href: 'https://github.com/voidberg/quarto-go' }
     ],
     seed: 5171,
+    image: 'quarto',
     featured: true,
     tag: '// open source',
     short: 'EPUB and KEPUB generation with zero native dependencies, in JavaScript and Go. The same library twice, because I needed it in both. Both are in use across my own reading tools.',
@@ -111,9 +120,10 @@ export const projects: Project[] = [
     desc: 'A Node image processing library built on sharp. You define presets as chains of operations, resize, watermark, blur, flip, and apply them by name. Named after Drupal\'s imagecache module, now image styles, which is where the idea came from.',
     stack: ['TypeScript', 'Sharp'],
     links: [
-      { label: 'Source ↗', href: 'https://github.com/voidberg/imagecache-sharp' }
+      { label: 'GitHub ↗', href: 'https://github.com/voidberg/imagecache-sharp' }
     ],
     seed: 6673,
+    image: 'imagecache',
     featured: true,
     tag: '// open source',
     short: 'Node image processing on top of sharp: define presets as chains of resize, watermark, blur and so on. Named after Drupal imagecache, which is where the idea came from.',
@@ -126,6 +136,7 @@ export const projects: Project[] = [
     desc: 'A Safari extension for sending articles to a reMarkable. reMarkable ship a Chrome extension and the open source alternatives are Chrome-only too, so Safari users have had nothing. Working, not yet on the App Store.',
     stack: ['TypeScript', 'Swift', 'Safari Web Extensions'],
     seed: 7919,
+    image: 'resafari',
     featured: false,
     tag: '// wip',
     short: 'Send articles to your reMarkable from Safari. reMarkable only ship a Chrome extension, so I built the missing one.',
@@ -138,6 +149,7 @@ export const projects: Project[] = [
     desc: 'A debugging tool for when your console output has become unreadable. Drop in the client library instead of your logging one and messages go to a separate macOS app, locally or over the network, where you can actually find the ones you want. Client libraries for multiple languages. Built it because I was working on something that drowned everything useful in noise.',
     stack: ['Swift', 'Multi-language clients'],
     seed: 8443,
+    image: 'phosphor',
     featured: false,
     tag: '// wip',
     short: 'Send log messages from your app to a separate viewer, so the thing you care about is not buried in console noise. Native macOS app, client libraries across languages.',
@@ -151,6 +163,7 @@ export const projects: Project[] = [
     stack: ['Deno', 'AI', 'Swift', 'Svelte'],
     seed: 9127,
     featured: false,
+    image: 'zare',
     tag: '// wip',
     short: 'Throw anything at it: a link, a screenshot, a concert flyer. It works out what it is, files it, and reminds you before the date passes.',
   },
@@ -162,6 +175,10 @@ export const projects: Project[] = [
     desc: 'A self-hosted manager for the EPUBs you already own. It acts as a Kobo sync proxy, so your own DRM-free books arrive on the device the same way store-bought ones do, with reading position synced back, rather than dumped over USB.',
     stack: ['Go', 'Svelte', 'Huma'],
     seed: 10651,
+    image: 'incunable',
+    links: [
+      { label: 'GitHub ↗', href: 'https://github.com/voidberg/incunable'}
+    ],
     featured: false,
     tag: '// wip',
     short: 'Self-hosted EPUB library that syncs to a Kobo properly, via a sync proxy rather than dragging files over USB.',
@@ -174,6 +191,11 @@ export const projects: Project[] = [
     desc: 'Field recordings from Romania\'s forests, made into an acoustic track with the band Coma, released to raise money for forest protection. Developed the website and handled the audio distribution via Bandcamp.',
     stack: ['Bulma', 'Howler', 'Plyr'],
     seed: 11743,
+    image: 'uncut',
+    links: [
+      { label: 'Bandcamp ↗', href: 'https://greenpeace.bandcamp.com/album/uncut' },
+      { label: 'COMA feat. Sunetele Padurilor - C.M.F.L.D.P.P. ↗', href: 'https://www.youtube.com/watch?v=39AwSkDQQxs' }
+    ],
     short: 'Real recordings from Romanian forests, turned into a track with the band Coma to fund forest protection.'
   },
   {
@@ -184,6 +206,10 @@ export const projects: Project[] = [
     desc: 'Developed an interactive map of Romania\'s potential virgin forests, layering official government data over independent research to show what was there and what wasn\'t being protected.',
     stack: ['Carto', 'Leaflet', 'Mapbox', 'Google Maps', 'Bulma'],
     seed: 12281,
+    image: 'forests',
+    links: [
+      { label: 'Press Release ↗', href: 'https://www.greenpeace.org/romania/comunicat-presa/1154/greenpeace-lanseaza-harta-padurilor-virgine-potentiale-din-romania/'}
+    ],
     short: 'Interactive map of Romania\'s potential virgin forests, layering government data with independent research.'
   },
   {
@@ -193,6 +219,10 @@ export const projects: Project[] = [
     meta: ['The internet did the rest'],
     desc: 'Snoop Dogg tagged himself in a random Romanian village and the internet lost it. I built a small site (with friends from ISOBAR Romania) reacting to it in a couple of hours; it went viral, and the team ended up interviewed by the BBC. Won a Bronze Fibra Award.',
     stack: ['PHP', 'A slow afternoon'],
+    links: [
+      { label: 'BBC ↗', href: 'https://www.bbc.co.uk/news/newsbeat-35845502'}
+    ],
+    image: 'bogata',
     seed: 13417,
   },
   {
@@ -202,6 +232,7 @@ export const projects: Project[] = [
     meta: ['With a friend at the UNHCR'],
     desc: 'A friend at the UNHCR needed to know when trains carrying refugees would arrive. We scraped unofficial timetables and turned them into alerts for aid workers, built in a single day. Scrappy, and it mattered.',
     stack: ['PHP', 'Scraping'],
+    image: 'unhcr',
     seed: 14741,
   },
   {
@@ -213,6 +244,7 @@ export const projects: Project[] = [
     stack: ['PHP', 'Drupal'],
     links: [{ label: 'drupal.org ↗', href: 'https://www.drupal.org/u/voidberg' }],
     seed: 15683,
+    image: 'drupal',
   }
 ];
 

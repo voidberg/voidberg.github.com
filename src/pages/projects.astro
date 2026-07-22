@@ -26,11 +26,21 @@ const description =
                 projects.map((p, i) => (
                     <article class="project-entry" id={projectSlug(p)}>
                         <div class="pe-thumb">
-                            <canvas
-                                width="170"
-                                height="114"
-                                data-seed={p.seed}
-                            />
+                            {p.image ? (
+                                <img
+                                    class="pe-thumb-img"
+                                    src={`/projects-${p.image}-card.png`}
+                                    width="340"
+                                    height="228"
+                                    alt=""
+                                />
+                            ) : (
+                                <canvas
+                                    width="170"
+                                    height="114"
+                                    data-seed={p.seed}
+                                />
+                            )}
                             <div class="pe-idx">
                                 PROG {String(i + 1).padStart(2, "0")}
                             </div>

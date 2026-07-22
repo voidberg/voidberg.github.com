@@ -92,12 +92,22 @@ const description =
             {
                 featuredProjects.map((p) => (
                     <a class="proj" href={`/projects#${projectSlug(p)}`}>
-                        <canvas
-                            class="px"
-                            width="120"
-                            height="64"
-                            data-seed={p.seed}
-                        />
+                        {p.image ? (
+                            <img
+                                class="pimg"
+                                src={`/projects-${p.image}-featured.png`}
+                                width="670"
+                                height="128"
+                                alt=""
+                            />
+                        ) : (
+                            <canvas
+                                class="px"
+                                width="120"
+                                height="64"
+                                data-seed={p.seed}
+                            />
+                        )}
                         <div class="pname">{p.name}</div>
                         <div class="pdesc">{p.short ?? p.desc}</div>
                         <div class="ptag">{p.tag}</div>

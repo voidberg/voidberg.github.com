@@ -199,6 +199,8 @@ section{margin-top:72px;}
 .project-entry:target{background:var(--card);box-shadow:-14px 0 0 var(--card),14px 0 0 var(--card);}
 .project-entry:target .pe-name{color:var(--accent);}
 .pe-thumb canvas{width:170px;height:114px;border:2px solid var(--rule);image-rendering:pixelated;display:block;}
+/* Real project thumbnail (a logo/graphic); same frame as the seed canvas. */
+.pe-thumb-img{width:170px;height:114px;border:2px solid var(--rule);object-fit:cover;display:block;}
 .pe-idx{font-family:"Press Start 2P",monospace;font-size:9px;color:var(--faint);margin-top:12px;letter-spacing:.04em;}
 .pe-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px;}
 .pe-name{font-family:"Press Start 2P",monospace;font-size:14px;color:var(--paper);margin:0;line-height:1.5;}
@@ -220,7 +222,7 @@ section{margin-top:72px;}
 .pe-links a:hover{color:var(--bg);background:var(--s-cyan);}
 @media (max-width:640px){
   .project-entry{grid-template-columns:1fr;gap:16px;}
-  .pe-thumb canvas{width:100%;height:120px;}
+  .pe-thumb canvas,.pe-thumb-img{width:100%;height:120px;}
   .pe-idx{display:none;}
 }
 
