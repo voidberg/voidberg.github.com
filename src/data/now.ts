@@ -1,8 +1,12 @@
 // The "now" block on the landing page. Edit the entries here; the page just
-// maps over them. `updated` is printed next to the section heading, so bump it
-// whenever the text below stops being true.
+// maps over them.
 
-export const nowUpdated = 'July 2026';
+// Printed next to the section heading. Set to the current month at build time,
+// so every deploy refreshes it — no need to bump it by hand.
+export const nowUpdated = new Date().toLocaleDateString('en-GB', {
+  month: 'long',
+  year: 'numeric',
+});
 
 export interface NowItem {
   /** Short pixel-font label in the left column. Keep it to one word. */
