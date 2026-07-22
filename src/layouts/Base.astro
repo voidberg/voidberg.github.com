@@ -148,12 +148,21 @@ const fontHref =
             </div>
         </div>
         <div class="dive-floor" aria-hidden="true">
+            <!-- Seabed items: treasures and crabs, interleaved here so JS scatters
+                 them alternating across the floor (see the scatter script below). -->
             <div class="dive-hoard">
                 <img
                     class="dive-t3"
                     src="/treasure3.png"
                     width="48"
                     height="32"
+                    alt=""
+                />
+                <img
+                    class="dive-crab"
+                    src="/crab.png"
+                    width="32"
+                    height="20"
                     alt=""
                 />
                 <img
@@ -164,12 +173,34 @@ const fontHref =
                     alt=""
                 />
                 <img
+                    class="dive-crab"
+                    src="/crab.png"
+                    width="32"
+                    height="20"
+                    alt=""
+                />
+                <img
                     class="dive-t1"
                     src="/treasure.png"
                     width="48"
                     height="32"
                     alt=""
                 />
+                <img
+                    class="dive-crab"
+                    src="/crab.png"
+                    width="32"
+                    height="20"
+                    alt=""
+                />
+            </div>
+        </div>
+        <div class="dive-mines" aria-hidden="true">
+            <div class="dive-bomb dive-bomb-left">
+                <img src="/bomb.png" width="32" height="32" alt="" />
+            </div>
+            <div class="dive-bomb dive-bomb-right">
+                <img src="/bomb.png" width="32" height="32" alt="" />
             </div>
         </div>
 
@@ -287,6 +318,62 @@ const fontHref =
                 window.addEventListener("scroll", onScroll, { passive: true });
                 window.addEventListener("resize", onScroll, { passive: true });
                 draw();
+            })();
+        </script>
+
+        <script>
+            // Scatter the seabed items (treasures and crabs) along the floor.
+            // Each is dropped at a randomised x from the content edge rightward,
+            // so none sits under the diver's landing area on the left, and each
+            // is nudged clear of a mine's chain so a stalk never lands on one.
+            (function () {
+                var hoard = document.querySelector(".dive-hoard");
+                if (!hoard) return;
+                var treasures = Array.prototype.slice.call(
+                    hoard.querySelectorAll("img"),
+                );
+                if (!treasures.length) return;
+                var page = document.getElementById("page"); // content column
+                var bombs = Array.prototype.slice.call(
+                    document.querySelectorAll(".dive-bomb"),
+                );
+
+                // One random fraction per treasure, chosen once, so resizing
+                // repositions them proportionally instead of reshuffling.
+                var fracs = treasures.map(function () {
+                    return Math.random();
+                });
+
+                function place() {
+                    if (window.innerWidth < 1200 || !page) return;
+                    // Start at the content edge; never reach the diver on the left.
+                    var left = page.getBoundingClientRect().left;
+                    var right = window.innerWidth - 24;
+                    if (right - left < 120) return;
+                    // x of each mine's chain, to keep treasures clear of.
+                    var chains = bombs.map(function (b) {
+                        var r = b.getBoundingClientRect();
+                        return r.left + r.width / 2;
+                    });
+                    // One treasure per equal slot, randomised within it, so they
+                    // spread out and never overlap each other.
+                    var slot = (right - left) / treasures.length;
+                    treasures.forEach(function (img, i) {
+                        var w = img.offsetWidth || 48;
+                        var x = left + i * slot + fracs[i] * (slot - w);
+                        for (var k = 0; k < chains.length; k++) {
+                            if (Math.abs(x + w / 2 - chains[k]) < w / 2 + 16) {
+                                x = chains[k] + w / 2 + 18;
+                                if (x + w > right)
+                                    x = chains[k] - w / 2 - 18 - w;
+                            }
+                        }
+                        img.style.left = Math.round(x) + "px";
+                    });
+                }
+
+                place();
+                window.addEventListener("resize", place, { passive: true });
             })();
         </script>
 

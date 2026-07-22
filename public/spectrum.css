@@ -277,17 +277,33 @@ section{margin-top:72px;}
 .dive-floor{position:absolute;left:0;right:0;bottom:0;height:16px;z-index:0;
   pointer-events:none;background:url("/seabed.png") repeat-x left bottom;background-size:16px 16px;
   image-rendering:pixelated;}
-/* All three seabed treasures, resting in a row on the floor in the right margin,
-   opposite the diver. Anchored 20px past the content column so they never touch
-   text; they need a wider viewport than the diver/boat, hence the 1320 gate. */
-.dive-hoard{position:absolute;left:50%;margin-left:420px;bottom:16px;
-  display:flex;gap:12px;align-items:flex-end;display:none;}
-.dive-hoard img{display:block;image-rendering:pixelated;}
+/* Seabed items, scattered along the floor: treasures and crabs. The band is a
+   full-width strip on the seabed; each item's x is set by JS (see Base.astro) to
+   a randomised spot from the content edge rightward, so none sits under the
+   diver's landing area and none overlaps a mine's chain. */
+.dive-hoard{position:absolute;left:0;right:0;bottom:16px;height:32px;display:none;}
+.dive-hoard img{position:absolute;bottom:0;image-rendering:pixelated;}
 .dive-t1{width:48px;height:32px;}
 .dive-t2{width:32px;height:32px;}
 .dive-t3{width:48px;height:32px;}
+.dive-crab{width:32px;height:20px;}
 @media (min-width:1200px){.dive{display:block;}}
-@media (min-width:1320px){.dive-hoard{display:flex;}}
+@media (min-width:1200px){.dive-hoard{display:block;}}
+/* Game mines: a spiky bomb floating on a chain that rises from the seabed.
+   Anchored to the document bottom like the treasures. The chain is drawn with a
+   red repeating-gradient (same trick as the diver's hose), so only the mine
+   itself needs a sprite. The two float at different heights; the left one is
+   offset well clear of the diver's descent line so they never overlap. */
+.dive-mines{position:absolute;top:0;left:0;right:0;height:100%;z-index:0;
+  pointer-events:none;overflow:hidden;display:none;}
+@media (min-width:1200px){.dive-mines{display:block;}}
+.dive-bomb{position:absolute;bottom:16px;left:50%;width:2px;}
+.dive-bomb::before{content:"";position:absolute;left:0;bottom:0;width:2px;height:100%;
+  background:repeating-linear-gradient(to bottom,var(--s-red) 0 2px,transparent 2px 4px);}
+.dive-bomb img{position:absolute;left:50%;bottom:calc(100% - 3px);transform:translateX(-50%);
+  width:32px;height:32px;image-rendering:pixelated;}
+.dive-bomb-left{margin-left:-448px;height:150px;}
+.dive-bomb-right{margin-left:505px;height:212px;}
 /* Fish sit at fixed points down the page, in the right margin just past the
    content column (left:50% + 420px clears the 820px column). Anchored to the
    document so they scroll with the page; each drifts a few px very slowly, out
