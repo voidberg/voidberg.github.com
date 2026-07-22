@@ -442,10 +442,14 @@ const description =
         (function () {
             var diver = document.getElementById("dive-diver");
             var page = document.getElementById("page"); // the content column
-            var fish = Array.prototype.slice.call(
-                document.querySelectorAll(".dive-fish"),
+            // Every sea creature in the right margin is a target: fish, and the
+            // two enemies lifted from the game (jellyfish, squid).
+            var enemies = Array.prototype.slice.call(
+                document.querySelectorAll(
+                    ".dive-fish, .dive-jelly, .dive-squid",
+                ),
             );
-            if (!diver || !page || !fish.length) return;
+            if (!diver || !page || !enemies.length) return;
             if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
                 return;
 
@@ -457,8 +461,9 @@ const description =
             var BOLT_W = 12;
             var SPEED = 0.45; // px/ms for the visible segments (kept unhurried)
             var HIDDEN_MS = 300; // time spent unseen behind the content column
-            // Fire this far above the fish's centre so the bolt clears its head
-            // as it passes: a clean miss, no fish harmed. > half the fish height.
+            // Fire this far above the target's centre so the bolt clears its
+            // head as it passes: a clean miss, nothing harmed. Bigger than half
+            // the tallest sprite, so it clears fish, jellyfish and squid alike.
             var AIM_ABOVE = 28;
 
             function spawn(x, y, dist, dur, fadeIn) {
@@ -504,8 +509,8 @@ const description =
 
             // A streak across the left margin that fades as it reaches the text
             // column (slips behind it), then, after crossing unseen, one that
-            // emerges on the right, passes just over the fish and carries on off
-            // the edge of the page.
+            // emerges on the right, passes just over the target and carries on
+            // off the edge of the page.
             function fire(gunX, gunY, contentL, contentR) {
                 var seg1 = contentL - gunX;
                 if (seg1 > 6) spawn(gunX, gunY, seg1, seg1 / SPEED, false);
@@ -518,9 +523,9 @@ const description =
                 );
             }
 
-            // Which side of each fish's aim-line the gun was last on; a sign flip
-            // means the descending diver just reached firing height for it.
-            var side = fish.map(function () {
+            // Which side of each target's aim-line the gun was last on; a sign
+            // flip means the descending diver just reached firing height for it.
+            var side = enemies.map(function () {
                 return 0;
             });
             var ticking = false;
@@ -533,8 +538,8 @@ const description =
                 var gunX = d.right - 2;
                 var gunY = d.top + d.height * 0.52; // roughly the arm/gun row
                 var vh = window.innerHeight;
-                for (var i = 0; i < fish.length; i++) {
-                    var r = fish[i].getBoundingClientRect();
+                for (var i = 0; i < enemies.length; i++) {
+                    var r = enemies[i].getBoundingClientRect();
                     var aimY = r.top + r.height / 2 - AIM_ABOVE;
                     var s = gunY < aimY ? -1 : 1;
                     if (

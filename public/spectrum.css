@@ -301,14 +301,31 @@ section{margin-top:72px;}
    fish rests at 50vw+428px; 50vw-408px pushes it past the viewport). */
 @keyframes shoal-in{from{transform:translate3d(calc(50vw - 408px),0,0);}to{transform:translate3d(0,0,0);}}
 .dive-fish{position:absolute;left:50%;width:48px;height:32px;image-rendering:pixelated;
-  animation:fish-drift 17s ease-in-out infinite;}
+  animation:fish-drift 12s ease-in-out infinite;}
 /* x staggered so the three don't sit on one vertical line (safe band at 1200px
    is roughly margin-left 412-544: clears the content column, no overflow). */
 .dive-fish-1{top:24%;margin-left:428px;}
 .dive-fish-2{top:49%;margin-left:522px;animation-delay:-6s;}
 .dive-fish-3{top:73%;margin-left:462px;animation-delay:-11s;}
 @keyframes fish-drift{0%,100%{transform:translate3d(0,0,0);}
-  50%{transform:translate3d(-5px,2px,0);}}
+  30%{transform:translate3d(-5px,-4px,0);}
+  65%{transform:translate3d(-12px,4px,0);}}
+/* Two enemies from the game join the fish in the right margin: same document
+   anchoring, staggered into the gaps between the fish rows. The jellyfish bobs
+   gently up and down; the squid drifts sideways like the fish. Sprites pulled
+   from an in-game screen grab. */
+.dive-jelly,.dive-squid{position:absolute;left:50%;image-rendering:pixelated;}
+.dive-jelly{width:28px;height:30px;animation:jelly-drift 7s ease-in-out infinite;}
+.dive-squid{width:30px;height:28px;animation:fish-drift 12s ease-in-out infinite;}
+/* Enemies staggered down the right margin, into the gaps left by the fish rows
+   (24/49/73%) and each other, with varied margin-left inside the safe band and
+   out-of-sync drift delays so they never sit in a line or pulse together. */
+.dive-jelly-1{top:13%;margin-left:472px;}
+.dive-jelly-2{top:40%;margin-left:512px;animation-delay:-4s;}
+.dive-squid-1{top:60%;margin-left:500px;animation-delay:-8s;}
+.dive-squid-2{top:86%;margin-left:452px;animation-delay:-2s;}
+@keyframes jelly-drift{0%,100%{transform:translate3d(0,0,0);}
+  50%{transform:translate3d(-2px,-11px,0);}}
 @media (min-width:1200px){.dive-school{display:block;}}
 /* The slide-in is attached to the reveal state, not paused/resumed, so it
    restarts cleanly every time the page is revealed. The home page reveals when
@@ -325,7 +342,7 @@ section{margin-top:72px;}
    and the fish hold still. */
 @media (prefers-reduced-motion:reduce){
   .dive-diver,.dive-hose{transform:none !important;}
-  .dive-fish{animation:none;}
+  .dive-fish,.dive-jelly,.dive-squid{animation:none;}
   /* The slide-in is only defined under no-preference, so nothing to disable. */
 }
 .foot-credit{margin-top:14px;font-family:"Spline Sans Mono",ui-monospace,monospace;
