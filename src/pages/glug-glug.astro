@@ -224,7 +224,6 @@ const { Content } = await render(await getEntry("prose", "glug-glug"));
             layer.setAttribute("aria-hidden", "true");
             document.body.appendChild(layer);
 
-            var BOLT_W = 12;
             var SPEED = 0.4; // px/ms — an unhurried harpoon streak
             var HIDDEN_MS = 280; // time spent unseen behind the content column
             // Fire the instant the gun is level with the target's centre; every
@@ -347,7 +346,7 @@ const { Content } = await render(await getEntry("prose", "glug-glug"));
                         { transform: "translateX(" + from + "px)" },
                         { transform: "translateX(0)" },
                     ],
-                    { duration: 1500, easing: "cubic-bezier(.2,.75,.3,1)" },
+                    { duration: 2400, easing: "ease-out" },
                 ).onfinish = function () {
                     enemy.style.animation = ""; // hand back to the drift
                     delete enemy.dataset.dead; // hittable again once it is in
@@ -374,34 +373,33 @@ const { Content } = await render(await getEntry("prose", "glug-glug"));
 
             // A streak across the left margin that fades as it reaches the text
             // column (slips behind it), then, after crossing unseen, one that
-            // emerges on the right and races out over the target. The creature
-            // bursts as the bolt reaches its column.
+            // emerges on the right and travels to the target. The bolt stops at
+            // the creature and is pulled the instant it lands, together with the
+            // burst — no flying off past it.
             function fire(gunX, gunY, contentL, contentR, enemy) {
                 var seg1 = contentL - gunX;
                 // y values are document-space (viewport + scrollY) to match the layer.
                 if (seg1 > 6)
                     spawn(gunX, gunY + window.scrollY, seg1, seg1 / SPEED, false);
-                var seg2 = window.innerWidth + BOLT_W - contentR; // to off-screen
                 var emerge = Math.max(0, seg1) / SPEED + HIDDEN_MS;
                 setTimeout(function () {
-                    // Emerge level with the target's CURRENT position, so any
-                    // scrolling since firing can't leave the streak off its line.
-                    var ey = gunY;
+                    // Aim at the target's CURRENT position, so scrolling since
+                    // firing can't leave the streak off its line or overshooting.
+                    var ey = gunY,
+                        tx = window.innerWidth; // fallback: off the edge
                     if (enemy) {
                         var r = enemy.getBoundingClientRect();
                         ey = r.top + r.height / 2;
+                        tx = r.left + r.width / 2;
                     }
-                    spawn(contentR, ey + window.scrollY, seg2, seg2 / SPEED, true);
-                }, emerge);
-                if (enemy) {
-                    var ex = enemy.getBoundingClientRect().left;
-                    setTimeout(
-                        function () {
+                    var dist = Math.max(0, tx - contentR);
+                    spawn(contentR, ey + window.scrollY, dist, dist / SPEED, true);
+                    if (enemy) {
+                        setTimeout(function () {
                             die(enemy);
-                        },
-                        emerge + Math.max(0, ex - contentR) / SPEED,
-                    );
-                }
+                        }, dist / SPEED);
+                    }
+                }, emerge);
             }
 
             // Which side of each target's aim-line the gun was last on; a sign
