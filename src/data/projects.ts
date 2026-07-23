@@ -22,8 +22,8 @@ export interface Project {
   tag?: string; // e.g. "// work" — shown on the home card
   short?: string; // shorter blurb for the home card
   slug?: string; // optional anchor override; defaults to the slugified name
-  // Real thumbnail key: uses /projects-<image>-card.png on the projects page and
-  // /projects-<image>-featured.png on the home page. Without it the project keeps
+  // Real thumbnail key: uses /projects/<image>-card.png on the projects page and
+  // /projects/<image>-featured.png on the home page. Without it the project keeps
   // the procedural `seed` thumbnail.
   image?: string;
 }

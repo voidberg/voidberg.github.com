@@ -277,7 +277,7 @@ section{margin-top:72px;}
 /* Seabed and treasure are anchored to the document, not the viewport, so they
    sit at the true bottom of the page. */
 .dive-floor{position:absolute;left:0;right:0;bottom:0;height:16px;z-index:0;
-  pointer-events:none;background:url("/seabed.png") repeat-x left bottom;background-size:16px 16px;
+  pointer-events:none;background:url("/sprites/seabed.png") repeat-x left bottom;background-size:16px 16px;
   image-rendering:pixelated;}
 /* Seabed items, scattered along the floor: treasures and crabs. The band is a
    full-width strip on the seabed; each item's x is set by JS (see Base.astro) to
