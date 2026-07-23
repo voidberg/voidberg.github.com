@@ -1,11 +1,33 @@
 ---
 import Base from "../layouts/Base.astro";
-import { featuredProjects, projectSlug } from "../data/projects";
-import { now, nowUpdated } from "../data/now";
-import { Content as Bio } from "../prose/bio.md";
+import { getCollection, getEntry, render } from "astro:content";
 
 const description =
     "Alexandru Badiu, engineering leader in London. Twenty years building software, the last stretch leading teams across five countries. Currently looking for what's next.";
+
+// Featured projects, in listed order.
+const projects = (await getCollection("projects")).sort(
+    (a, b) => a.data.order - b.data.order,
+);
+const featured = projects.filter((p) => p.data.featured);
+
+// Now block: render each line's Markdown body to a component.
+const nowItems = (await getCollection("now")).sort(
+    (a, b) => a.data.order - b.data.order,
+);
+const nowLines = await Promise.all(
+    nowItems.map(async (item) => ({
+        label: item.data.label,
+        Body: (await render(item)).Content,
+    })),
+);
+// Printed next to the heading; the current month at build time.
+const nowUpdated = new Date().toLocaleDateString("en-GB", {
+    month: "long",
+    year: "numeric",
+});
+
+const { Content: Bio } = await render(await getEntry("prose", "bio"));
 ---
 
 <Base
@@ -70,10 +92,10 @@ const description =
         </div>
         <div class="now-list">
             {
-                now.map((item) => (
+                nowLines.map((item) => (
                     <div class="now-item">
                         <span class="nk">{item.label}</span>
-                        <p set:html={item.body} />
+                        <item.Body />
                     </div>
                 ))
             }
@@ -90,12 +112,12 @@ const description =
         </div>
         <div class="proj-grid">
             {
-                featuredProjects.map((p) => (
-                    <a class="proj" href={`/projects#${projectSlug(p)}`}>
-                        {p.image ? (
+                featured.map((p) => (
+                    <a class="proj" href={`/projects#${p.id}`}>
+                        {p.data.image ? (
                             <img
                                 class="pimg"
-                                src={`/projects/${p.image}-featured.png`}
+                                src={`/projects/${p.data.image}-featured.png`}
                                 width="670"
                                 height="128"
                                 alt=""
@@ -105,12 +127,12 @@ const description =
                                 class="px"
                                 width="120"
                                 height="64"
-                                data-seed={p.seed}
+                                data-seed={p.data.seed}
                             />
                         )}
-                        <div class="pname">{p.name}</div>
-                        <div class="pdesc">{p.short ?? p.desc}</div>
-                        <div class="ptag">{p.tag}</div>
+                        <div class="pname">{p.data.name}</div>
+                        <div class="pdesc">{p.data.short}</div>
+                        <div class="ptag">{p.data.tag}</div>
                     </a>
                 ))
             }

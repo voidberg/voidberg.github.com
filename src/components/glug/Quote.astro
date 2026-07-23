@@ -1,0 +1,12 @@
+---
+// Pull quote. Pass `cite` for the attribution line.
+interface Props {
+  cite?: string;
+}
+const { cite } = Astro.props;
+---
+
+<blockquote class="gg-quote">
+  <slot />
+  {cite && <cite>{cite}</cite>}
+</blockquote>

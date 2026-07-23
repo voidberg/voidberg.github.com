@@ -1,0 +1,104 @@
+---
+title: Glug Glug
+---
+
+import Figure from "../../components/glug/Figure.astro";
+import Section from "../../components/glug/Section.astro";
+import Quote from "../../components/glug/Quote.astro";
+import Emulator from "../../components/glug/Emulator.astro";
+
+<header class="page-head enter">
+  <div class="eyebrow">Glug Glug · CRL 1984</div>
+  <h1>The game that started it.</h1>
+  <p class="blurb">
+    You're probably wondering why this site is themed around the <a href="https://en.wikipedia.org/wiki/ZX_Spectrum">ZX Spectrum</a>, and why there's a diver, a boat and a few sea creatures swimming around.
+  </p>
+  <p class="blurb">
+    TL;DR: That computer and that diver game (called <a href="https://spectrumcomputing.co.uk/entry/2062/ZX-Spectrum/Glug_Glug">Glug Glug</a>) are the reasons I became a programmer. Would I have ended up in the same situation without them? Very possible, but we'll never know.
+  </p>
+</header>
+
+<Figure
+  cover
+  src="/img/glugglug-cover.jpg"
+  width={938}
+  height={900}
+  alt="Glug Glug cassette inlay: a painted deep-sea diver in a red suit and brass helmet on the ocean floor, a shark and octopus behind him"
+  caption="The cassette inlay. CRL, 1984. [Phil Gascoine]"
+/>
+
+<Section k="CRL" title="The game">
+[Clem Chambers](https://www.clemchambers.com/) started Computer Rentals Limited in 1982 in London, as a computer rental business, before pivoting to game publishing. During its run, it released some of the first video games to receive age ratings from the BBFC. Some of the notable titles include [Dracula](https://spectrumcomputing.co.uk/entry/6211/ZX-Spectrum/Dracula), [Frankenstein](https://spectrumcomputing.co.uk/entry/6331/ZX-Spectrum/Frankenstein), [Academy](https://spectrumcomputing.co.uk/entry/5156/ZX-Spectrum/Academy) and [Tau Ceti](https://spectrumcomputing.co.uk/entry/5153/ZX-Spectrum/Tau_Ceti).
+
+[Terrahawks](https://spectrumcomputing.co.uk/entry/5193/ZX-Spectrum/Terrahawks) was one of the first video games based on a TV show.
+
+One less notable game was [Glug Glug](https://spectrumcomputing.co.uk/entry/2062/ZX-Spectrum/Glug_Glug). Created by [Steve Evans](https://spectrumcomputing.co.uk/list?label_id=13873) with poster and inlay art from [Phil Gascoine](https://spectrumcomputing.co.uk/list?label_id=18110), it puts you into the shoes (or better said, lead boots) of a diver, who needs to collect treasures from the bottom of the ocean. While doing this, you need to evade various traps and sea creatures that want to kill you. Good thing you have a harpoon.
+
+Glug Glug took its cue from Kaitei Takara Sagashi, a Namco arcade cabinet. CRL sold it for £5.95. While super fun, it was a bit of a flop.
+
+<Quote cite="Clem Chambers">
+I always thought that was one of our best games, but the critics killed it at retail... It probably sold less than 2000 copies. So it was a rare spice that blew on the winds of commerce.
+</Quote>
+
+While not a success, the game ended up on a cassette that found its way to [Onești, Romania](https://en.wikipedia.org/wiki/One%C8%99ti) around 1990.
+</Section>
+
+<Figure
+  pixel
+  src="/img/glugglug-loading.png"
+  width={640}
+  height={480}
+  alt="The Glug Glug ZX Spectrum loading screen."
+  caption="The loading screen."
+/>
+
+<Section k="HC-89" title="Tech in communist and post-communist Romania">
+The computer scene in Romania at that time was... interesting to say the least. Due to the CoCom embargo which blocked exports of Western technology into the Eastern bloc, everything was reverse engineered and state-owned companies were building unlicensed ZX Spectrum clones. [ICE Felix](https://en.wikipedia.org/wiki/ICE_Felix) was probably the most common, with their HC (Home Computer) line.
+
+To get access to one, at least in the early days, you had to be connected to the regime. As a result, a thriving DIY homebrew scene flourished, with [CoBra](https://museum.dataart.com/short-stories/romanian-diy-computer-cobra) being the most popular.
+
+Quick aside: if this sounds interesting to you and you like long-form reads, make sure to check out this article: [The underground story of Cobra, the 1980s' illicit handmade computer](https://arstechnica.com/gadgets/2017/11/the-underground-story-of-cobra-the-1980s-illicit-handmade-computer/).
+
+Following the fall of the communist regime in late 1989, access to western technology and the previously hard-to-get Romanian computers started to become a lot easier, if you had the ridiculous amount of money required to buy one.
+</Section>
+
+<Section k="ME" title="Fascinating, but what is the deal exactly?">
+Sometime in 1990, I was playing outside, when my grandmother yelled from the window:
+
+<Quote cite="Ica Badiu, my grandmother">
+Alexandru! Go to your uncle, he has **GAMES ON THE TV**!!!
+</Quote>
+
+My uncle was the one person in my family that was interested in computers, and had the chance to work with them before in a professional setting. Until then, I had only seen them at his work place.
+
+In his house, connected to the TV and a cassette deck, was a brand spanking new HC-89 computer. He loaded a tape, typed
+
+<Quote>LOAD ""</Quote>
+
+And pressed play. A screeching sound soon followed, while the screen was filled with the image of a diver. He showed me what keys I needed to press and I started hunting for treasure.
+
+At the end of that play session, I got up and decided on the spot that this was what I wanted to do. I wanted to make games, and there was nothing else I could have imagined myself doing with my life. I started to learn BASIC, then got my own HC, then graduated to C and an 80286 PC, and the rest is, as they say, history.
+
+<Figure
+  pixel
+  src="/img/pc.jpg"
+  width={640}
+  height={480}
+  alt="1998. 486DX2/66, 8 MB of RAM and lots of floppy disks."
+  caption="1998. 486DX2/66, 8 MB of RAM and lots of floppy disks."
+/>
+
+I never became a games programmer (and, looking at the gamedev industry, that's probably for the best) but I tried my hardest for many years, learned a lot, and became fascinated with what technology can do.
+
+Remember that earlier quote from Clem Chambers? It's actually incomplete. I wrote to him years ago, asking for permission to revive Glug Glug on modern platforms, for free, and coupled with a small game dev tutorial (which I never got around to doing).
+
+<Quote cite="Clem Chambers">
+I always thought that was one of our best games, but the critics killed it at retail... **I'm glad it inspired you. It was worth releasing it just for that, though it's taken 30 years to find out.** It probably sold less than 2000 copies. So it was a rare spice that blew on the winds of commerce.
+</Quote>
+
+A Japanese game inspires a British game, then gets copied on cassettes and ends up smuggled into a country under an embargo, where, due to said embargo, the computers are clones of a British computer. In the middle of it, a kid whose life changes.
+</Section>
+
+<Section k="PLAY" title="Have a go">
+<Emulator />
+</Section>

@@ -1,9 +1,17 @@
 ---
 import Base from "../layouts/Base.astro";
-import { projects, projectSlug } from "../data/projects";
+import { getCollection, render } from "astro:content";
 
 const description =
     "Things Alexandru Badiu has built: Spotlight, Watch, small open-source tools used in surprising places, afternoon hacks, and chiptunes.";
+
+const projects = (await getCollection("projects")).sort(
+    (a, b) => a.data.order - b.data.order,
+);
+// Render each project's Markdown description to a component up front.
+const entries = await Promise.all(
+    projects.map(async (p) => ({ ...p, Desc: (await render(p)).Content })),
+);
 ---
 
 <Base
@@ -23,13 +31,13 @@ const description =
     <section class="enter" style="margin-top:44px;">
         <div class="project-list">
             {
-                projects.map((p, i) => (
-                    <article class="project-entry" id={projectSlug(p)}>
+                entries.map((p, i) => (
+                    <article class="project-entry" id={p.id}>
                         <div class="pe-thumb">
-                            {p.image ? (
+                            {p.data.image ? (
                                 <img
                                     class="pe-thumb-img"
-                                    src={`/projects/${p.image}-card.png`}
+                                    src={`/projects/${p.data.image}-card.png`}
                                     width="340"
                                     height="228"
                                     alt=""
@@ -38,7 +46,7 @@ const description =
                                 <canvas
                                     width="170"
                                     height="114"
-                                    data-seed={p.seed}
+                                    data-seed={p.data.seed}
                                 />
                             )}
                             <div class="pe-idx">
@@ -47,28 +55,30 @@ const description =
                         </div>
                         <div class="pe-body">
                             <div class="pe-head">
-                                <h2 class="pe-name">{p.name}</h2>
-                                <span class:list={["pe-status", p.status]}>
-                                    {p.statusLabel}
+                                <h2 class="pe-name">{p.data.name}</h2>
+                                <span class:list={["pe-status", p.data.status]}>
+                                    {p.data.statusLabel}
                                 </span>
                             </div>
                             <div class="pe-meta">
-                                {p.meta.map((m, j) => (
+                                {p.data.meta.map((m, j) => (
                                     <>
                                         {j > 0 && <span class="dot">·</span>}
                                         <span>{m}</span>
                                     </>
                                 ))}
                             </div>
-                            <p class="pe-desc">{p.desc}</p>
+                            <div class="pe-desc">
+                                <p.Desc />
+                            </div>
                             <div class="pe-stack">
-                                {p.stack.map((s) => (
+                                {p.data.stack.map((s) => (
                                     <span>{s}</span>
                                 ))}
                             </div>
-                            {p.links && p.links.length > 0 && (
+                            {p.data.links && p.data.links.length > 0 && (
                                 <div class="pe-links">
-                                    {p.links.map((l) => (
+                                    {p.data.links.map((l) => (
                                         <a
                                             href={l.href}
                                             target="_blank"

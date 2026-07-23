@@ -1,12 +1,15 @@
 ---
 // Unlisted page (not in the main nav). Reached from the footer credit and by
-// clicking the boat or diver in the dive scene.
-// NOTE: the prose below is PLACEHOLDER. Bracketed [...] bits are cues for the
-// personal story — replace them. Verify any game facts before publishing.
+// clicking the boat or diver in the dive scene. The article lives in
+// src/content/prose/glug-glug.mdx; this page is the shell (styles + the harpoon
+// flourish) that renders it.
 import Base from "../layouts/Base.astro";
+import { getEntry, render } from "astro:content";
 
 const description =
     "Glug Glug (CRL, 1984), the ZX Spectrum diving game behind the little scene on this site, and what it means to Alexandru Badiu.";
+
+const { Content } = await render(await getEntry("prose", "glug-glug"));
 ---
 
 <Base
@@ -14,7 +17,8 @@ const description =
     description={description}
     active="/glug-glug"
 >
-    <style>
+    {/* Global (not scoped) so these reach the MDX article rendered below. */}
+    <style is:global>
         .gg-figure {
             /* Symmetric, so an inline figure inside prose has the same room below
                it (before the next paragraph) as above. Standalone figures between
@@ -128,6 +132,11 @@ const description =
             content: "— ";
             color: var(--faint);
         }
+        /* The MDX body wraps the quote text in a paragraph; drop its margins so
+           the blockquote's own padding sets the spacing. */
+        .gg-quote p {
+            margin: 0;
+        }
         /* Playable emulator (Qaop, in an iframe). Bordered to match the figures;
            the 4:3 frame scales with the column. */
         .gg-emu {
@@ -144,268 +153,7 @@ const description =
         }
     </style>
 
-    <header class="page-head enter">
-        <div class="eyebrow">Glug Glug · CRL 1984</div>
-        <h1>The game that started it.</h1>
-        <p class="blurb">
-            You're probably wondering why this site is themed around the <a
-                href="https://en.wikipedia.org/wiki/ZX_Spectrum">ZX Spectrum</a
-            >, and why there's a diver, a boat and a few sea creatures swimming
-            around.
-        </p>
-        <p class="blurb">
-            TL;DR: That computer and that diver game (called <a
-                href="https://spectrumcomputing.co.uk/entry/2062/ZX-Spectrum/Glug_Glug"
-                >Glug Glug</a
-            >) are the reasons I became a programmer. Would I have ended up in
-            the same situation without them? Very possible, but we'll never
-            know.
-        </p>
-    </header>
-
-    <figure class="gg-figure gg-cover enter">
-        <img
-            src="/img/glugglug-cover.jpg"
-            width="938"
-            height="900"
-            alt="Glug Glug cassette inlay: a painted deep-sea diver in a red suit and brass helmet on the ocean floor, a shark and octopus behind him"
-        />
-        <figcaption class="gg-cap">
-            The cassette inlay. CRL, 1984. [Phil Gascoine]
-        </figcaption>
-    </figure>
-
-    <section class="enter">
-        <div class="slabel">
-            <span class="k">CRL</span><h2>The game</h2><span class="line"
-            ></span>
-        </div>
-        <div class="prose">
-            <p>
-                <a href="https://www.clemchambers.com/">Clem Chambers</a> started
-                Computer Rentals Limited in 1982 in London, as a computer rental business,
-                before pivoting to game publishing. During its run, it released some
-                of the first video games to receive age ratings from the BBFC. Some
-                of the notable titles include <a
-                    href="https://spectrumcomputing.co.uk/entry/6211/ZX-Spectrum/Dracula"
-                    >Dracula</a
-                >, <a
-                    href="https://spectrumcomputing.co.uk/entry/6331/ZX-Spectrum/Frankenstein"
-                    >Frankenstein</a
-                >, <a
-                    href="https://spectrumcomputing.co.uk/entry/5156/ZX-Spectrum/Academy"
-                    >Academy</a
-                > and <a
-                    href="https://spectrumcomputing.co.uk/entry/5153/ZX-Spectrum/Tau_Ceti"
-                    >Tau Ceti</a
-                >.
-            </p>
-            <p>
-                <a
-                    href="https://spectrumcomputing.co.uk/entry/5193/ZX-Spectrum/Terrahawks"
-                    >Terrahawks</a
-                > was one of the first video games based on a TV show.
-            </p>
-            <p>
-                One less notable game was <a
-                    href="https://spectrumcomputing.co.uk/entry/2062/ZX-Spectrum/Glug_Glug"
-                    >Glug Glug</a
-                >. Created by <a
-                    href="https://spectrumcomputing.co.uk/list?label_id=13873"
-                    >Steve Evans</a
-                > with poster and inlay art from <a
-                    href="https://spectrumcomputing.co.uk/list?label_id=18110"
-                    >Phil Gascoine</a
-                >, it puts you into the shoes (or better said, lead boots) of a
-                diver, who needs to collect treasures from the bottom of the
-                ocean. While doing this, you need to evade various traps and sea
-                creatures that want to kill you. Good thing you have a harpoon.
-            </p>
-            <p>
-                Glug Glug took its cue from Kaitei Takara Sagashi, a Namco
-                arcade cabinet. CRL sold it for £5.95. While super fun, it was a
-                bit of a flop.
-            </p>
-            <blockquote class="gg-quote">
-                I always thought that was one of our best games, but the critics
-                killed it at retail... It probably sold less than 2000 copies.
-                So it was a rare spice that blew on the winds of commerce.
-                <cite>Clem Chambers</cite>
-            </blockquote>
-            <p>
-                While not a success, the game ended up on a cassette that found
-                its way to <a href="https://en.wikipedia.org/wiki/One%C8%99ti"
-                    >Onești, Romania</a
-                > around 1990.
-            </p>
-        </div>
-    </section>
-
-    <figure class="gg-figure enter">
-        <img
-            class="gg-pixel"
-            src="/img/glugglug-loading.png"
-            width="640"
-            height="480"
-            alt="The Glug Glug ZX Spectrum loading screen."
-        />
-        <figcaption class="gg-cap">The loading screen.</figcaption>
-    </figure>
-
-    <section class="enter">
-        <div class="slabel">
-            <span class="k">HC-89</span><h2>
-                Tech in communist and post-communist Romania
-            </h2><span class="line"></span>
-        </div>
-        <div class="prose">
-            <p>
-                The computer scene in Romania at that time was... interesting to
-                say the least. Due to the CoCom embargo which blocked exports of
-                Western technology into the Eastern bloc, everything was reverse
-                engineered and state-owned companies were building unlicensed ZX
-                Spectrum clones. <a
-                    href="https://en.wikipedia.org/wiki/ICE_Felix">ICE Felix</a
-                > was probably the most common, with their HC (Home Computer) line.
-            </p>
-            <p>
-                To get access to one, at least in the early days, you had to be
-                connected to the regime. As a result, a thriving DIY homebrew
-                scene flourished, with <a
-                    href="https://museum.dataart.com/short-stories/romanian-diy-computer-cobra"
-                    >CoBra</a
-                > being the most popular.
-            </p>
-            <p>
-                Quick aside: if this sounds interesting to you and you like
-                long-form reads, make sure to check out this article: <a
-                    href="https://arstechnica.com/gadgets/2017/11/the-underground-story-of-cobra-the-1980s-illicit-handmade-computer/"
-                    >The underground story of Cobra, the 1980s’ illicit handmade
-                    computer</a
-                >.
-            </p>
-            <p>
-                Following the fall of the communist regime in late 1989, access
-                to western technology and the previously hard-to-get Romanian
-                computers started to become a lot easier, if you had the
-                ridiculous amount of money required to buy one.
-            </p>
-        </div>
-    </section>
-
-    <section class="enter">
-        <div class="slabel">
-            <span class="k">ME</span><h2>
-                Fascinating, but what is the deal exactly?
-            </h2><span class="line"></span>
-        </div>
-        <div class="prose">
-            <p>
-                Sometime in 1990, I was playing outside, when my grandmother
-                yelled from the window:
-            </p>
-            <blockquote class="gg-quote">
-                Alexandru! Go to your uncle, he has <strong
-                    >GAMES ON THE TV</strong
-                >!!!
-                <cite>Ica Badiu, my grandmother</cite>
-            </blockquote>
-            <p>
-                My uncle was the one person in my family that was interested in
-                computers, and had the chance to work with them before in a
-                professional setting. Until then, I had only seen them at his
-                work place.
-            </p>
-            <p>
-                In his house, connected to the TV and a cassette deck, was a
-                brand spanking new HC-89 computer. He loaded a tape, typed
-            </p>
-            <blockquote class="gg-quote">LOAD ""</blockquote>
-            <p>
-                And pressed play. A screeching sound soon followed, while the
-                screen was filled with the image of a diver. He showed me what
-                keys I needed to press and I started hunting for treasure.
-            </p>
-            <p>
-                At the end of that play session, I got up and decided on the
-                spot that this was what I wanted to do. I wanted to make games,
-                and there was nothing else I could have imagined myself doing
-                with my life. I started to learn BASIC, then got my own HC, then
-                graduated to C and an 80286 PC, and the rest is, as they say,
-                history.
-            </p>
-            <figure class="gg-figure enter">
-                <img
-                    class="gg-pixel"
-                    src="/img/pc.jpg"
-                    width="640"
-                    height="480"
-                    alt="1998. 486DX2/66, 8 MB of RAM and lots of floppy disks."
-                />
-                <figcaption class="gg-cap">
-                    1998. 486DX2/66, 8 MB of RAM and lots of floppy disks.
-                </figcaption>
-            </figure>
-            <p>
-                I never became a games programmer (and, looking at the gamedev
-                industry, that's probably for the best) but I tried my hardest
-                for many years, learned a lot, and became fascinated with what
-                technology can do.
-            </p>
-            <p>
-                Remember that earlier quote from Clem Chambers? It's actually
-                incomplete. I wrote to him years ago, asking for permission to
-                revive Glug Glug on modern platforms, for free, and coupled with
-                a small game dev tutorial (which I never got around to doing).
-            </p>
-            <blockquote class="gg-quote">
-                I always thought that was one of our best games, but the critics
-                killed it at retail... <strong
-                    >I'm glad it inspired you. It was worth releasing it just
-                    for that, though it's taken 30 years to find out.</strong
-                > It probably sold less than 2000 copies. So it was a rare spice that
-                blew on the winds of commerce.
-                <cite>Clem Chambers</cite>
-            </blockquote>
-            <p>
-                A Japanese game inspires a British game, then gets copied on
-                cassettes and ends up smuggled into a country under an embargo,
-                where, due to said embargo, the computers are clones of a
-                British computer. In the middle of it, a kid whose life changes.
-            </p>
-        </div>
-    </section>
-
-    <section class="enter">
-        <div class="slabel">
-            <span class="k">PLAY</span><h2>Have a go</h2><span class="line"
-            ></span>
-        </div>
-        <div class="gg-emu">
-            {
-                /* Qaop emulator running the snapshot. It runs Glug Glug faithfully
-                where JSSpeccy's core froze. loading="lazy" defers the ~136KB
-                until the frame is near the viewport. */
-            }
-            <iframe
-                class="gg-frame"
-                src="/qaop/qaop.html#/glugglug.z80"
-                title="Glug Glug (CRL, 1984), playable"
-                loading="lazy"
-                allow="fullscreen; autoplay"></iframe>
-        </div>
-        <p class="gg-cap left">
-            The real thing, running via <a href="http://qaop.speccy.org/"
-                >Qaop</a
-            >. Click it, then press <kbd class="gg-key">0</kbd> to start. Swim with
-            <kbd class="gg-key">A</kbd> (up), <kbd class="gg-key">Z</kbd> (down),
-            <kbd class="gg-key">M</kbd> (left) and <kbd class="gg-key">,</kbd> (right);
-            <kbd class="gg-key">Space</kbd> fires the harpoon. Prefer to watch? Here's
-            a
-            <a href="https://www.youtube.com/watch?v=-LDk8orRmfM">playthrough</a
-            >.
-        </p>
-    </section>
+    <Content />
 
     {
         /* Glug-Glug-only flourish: the diver fires a harpoon as he draws level

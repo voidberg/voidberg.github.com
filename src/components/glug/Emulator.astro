@@ -1,0 +1,24 @@
+---
+// The playable Qaop emulator running the Glug Glug snapshot, plus its controls
+// caption (with keycaps).
+import Kbd from "./Kbd.astro";
+---
+
+<div class="gg-emu">
+  {/* Qaop runs Glug Glug faithfully where JSSpeccy's core froze. loading="lazy"
+     defers the ~136KB until the frame is near the viewport. */}
+  <iframe
+    class="gg-frame"
+    src="/qaop/qaop.html#/glugglug.z80"
+    title="Glug Glug (CRL, 1984), playable"
+    loading="lazy"
+    allow="fullscreen; autoplay"></iframe>
+</div>
+<p class="gg-cap left">
+  The real thing, running via <a href="http://qaop.speccy.org/">Qaop</a>. Click
+  it, then press <Kbd>0</Kbd> to start. Swim with <Kbd>A</Kbd> (up), <Kbd>Z</Kbd> (down),
+  <Kbd>M</Kbd> (left) and <Kbd>,</Kbd> (right); <Kbd>Space</Kbd> fires the harpoon.
+  Prefer to watch? Here's a <a
+    href="https://www.youtube.com/watch?v=-LDk8orRmfM">playthrough</a
+  >.
+</p>

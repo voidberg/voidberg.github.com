@@ -1,0 +1,16 @@
+---
+// A labelled article section: the pixel chip + heading, then the prose body
+// (the Markdown children).
+interface Props {
+  k: string;
+  title: string;
+}
+const { k, title } = Astro.props;
+---
+
+<section class="enter">
+  <div class="slabel">
+    <span class="k">{k}</span><h2>{title}</h2><span class="line"></span>
+  </div>
+  <div class="prose"><slot /></div>
+</section>

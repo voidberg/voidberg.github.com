@@ -1,3 +1,7 @@
+---
+title: Bio
+---
+
 **Salut! 👋**
 
 I'm Alexandru, but you can call me Andu (pronounced as undo). I'm an engineer who's led teams and still likes to build things; I spent the last decade at BENlabs, going from developer to Senior Director of Engineering and back to building hands-on.

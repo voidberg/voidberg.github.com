@@ -1,0 +1,28 @@
+---
+// A framed figure with caption for the Glug Glug article. `cover` is the smooth
+// painted inlay; `pixel` renders crisp for the pixel-art screenshots.
+interface Props {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+  caption?: string;
+  cover?: boolean;
+  pixel?: boolean;
+}
+const { src, width, height, alt, caption, cover, pixel } = Astro.props;
+const figClass = ["gg-figure", "enter", cover && "gg-cover"]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<figure class={figClass}>
+  <img
+    class={pixel ? "gg-pixel" : undefined}
+    src={src}
+    width={width}
+    height={height}
+    alt={alt}
+  />
+  {caption && <figcaption class="gg-cap">{caption}</figcaption>}
+</figure>

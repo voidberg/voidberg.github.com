@@ -213,6 +213,7 @@ section{margin-top:72px;}
   margin-bottom:14px;display:flex;gap:9px;flex-wrap:wrap;align-items:center;}
 .pe-meta .dot{color:var(--s-cyan);}
 .pe-desc{font-size:15px;color:var(--dim);line-height:1.7;margin:0 0 16px;max-width:60ch;}
+.pe-desc p{margin:0;}
 .pe-stack{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
 .pe-stack span{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:11px;color:var(--ink);
   border:1px solid var(--rule);padding:4px 9px;}
