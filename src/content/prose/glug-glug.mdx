@@ -10,12 +10,11 @@ import Emulator from "../../components/glug/Emulator.astro";
 <header class="page-head enter">
   <div class="eyebrow">Glug Glug · CRL 1984</div>
   <h1>The game that started it.</h1>
-  <p class="blurb">
-    You're probably wondering why this site is themed around the <a href="https://en.wikipedia.org/wiki/ZX_Spectrum">ZX Spectrum</a>, and why there's a diver, a boat and a few sea creatures swimming around.
-  </p>
-  <p class="blurb">
-    TL;DR: That computer and that diver game (called <a href="https://spectrumcomputing.co.uk/entry/2062/ZX-Spectrum/Glug_Glug">Glug Glug</a>) are the reasons I became a programmer. Would I have ended up in the same situation without them? Very possible, but we'll never know.
-  </p>
+  {/* Each paragraph stays on one line: with the text on its own line, MDX reads
+      it as a markdown block and wraps it in a second <p>, which the browser then
+      unnests, leaving the class on an empty <p> and the text unstyled. */}
+  <p class="blurb">You're probably wondering why this site is themed around the <a href="https://en.wikipedia.org/wiki/ZX_Spectrum">ZX Spectrum</a>, and why there's a diver, a boat and a few sea creatures swimming around.</p>
+  <p class="blurb">TL;DR: That computer and that diver game (called <a href="https://spectrumcomputing.co.uk/entry/2062/ZX-Spectrum/Glug_Glug">Glug Glug</a>) are the reasons I became a programmer. Would I have ended up in the same situation without them? Very possible, but we'll never know.</p>
 </header>
 
 <Figure
