@@ -164,21 +164,13 @@ const fontHref =
             </div>
         </div>
         <div class="dive-floor" aria-hidden="true">
-            <!-- Seabed items: treasures and crabs, interleaved here so JS scatters
-                 them alternating across the floor (see the scatter script below). -->
+            <!-- Treasures, scattered across the floor by the script below. -->
             <div class="dive-hoard">
                 <img
                     class="dive-t3"
                     src="/sprites/treasure3.png"
                     width="48"
                     height="32"
-                    alt=""
-                />
-                <img
-                    class="dive-crab"
-                    src="/sprites/crab.png"
-                    width="32"
-                    height="20"
                     alt=""
                 />
                 <img
@@ -189,26 +181,18 @@ const fontHref =
                     alt=""
                 />
                 <img
-                    class="dive-crab"
-                    src="/sprites/crab.png"
-                    width="32"
-                    height="20"
-                    alt=""
-                />
-                <img
                     class="dive-t1"
                     src="/sprites/treasure.png"
                     width="48"
                     height="32"
                     alt=""
                 />
-                <img
-                    class="dive-crab"
-                    src="/sprites/crab.png"
-                    width="32"
-                    height="20"
-                    alt=""
-                />
+            </div>
+            <!-- One crab, patrolling the seabed in front of the treasures. All
+                 CSS: the outer element walks a fixed span and turns around at
+                 each end, the inner one cycles the two leg poses. -->
+            <div class="dive-crab-walk">
+                <div class="dive-crab"></div>
             </div>
         </div>
         <div class="dive-mines" aria-hidden="true">
@@ -338,10 +322,10 @@ const fontHref =
         </script>
 
         <script>
-            // Scatter the seabed items (treasures and crabs) along the floor.
-            // Each is dropped at a randomised x from the content edge rightward,
-            // so none sits under the diver's landing area on the left, and each
-            // is nudged clear of a mine's chain so a stalk never lands on one.
+            // Scatter the treasures along the floor. Each is dropped at a
+            // randomised x from the content edge rightward, so none sits under
+            // the diver's landing area on the left, and each is nudged clear of
+            // a mine's chain so a stalk never lands on one.
             (function () {
                 var hoard = document.querySelector(".dive-hoard");
                 if (!hoard) return;

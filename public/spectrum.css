@@ -247,7 +247,12 @@ section{margin-top:72px;}
    nearest-neighbour, so 16x32 diver -> 48x96 etc. The rail is a centred box the
    same width as .wrap, so sprites can be pinned just outside the text column
    with right:calc(100% + Npx) and never overlap content. */
-.dive{position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden;display:none;}
+/* Above the statusbar (z-index 30), below the tape frame (40). The statusbar's
+   ::before is a full-viewport-width panel, so at z-index 5 it painted over the
+   boat's cabin, which rides above the waterline and so overlaps the header's
+   band. Nothing in here sits over the content column -- the sprites are pinned
+   outside .dive-rail -- so nothing can cover the header's own text. */
+.dive{position:fixed;inset:0;pointer-events:none;z-index:35;overflow:hidden;display:none;}
 /* The rail holds the boat, hose and diver; on load it sails in from the left as
    one piece so the hose stays attached. The children's own transforms (scroll
    descent, header tracking) compose under this. .dive clips it while off-screen. */
@@ -280,16 +285,39 @@ section{margin-top:72px;}
 .dive-floor{position:absolute;left:0;right:0;bottom:0;height:16px;z-index:0;
   pointer-events:none;background:url("/sprites/seabed.png") repeat-x left bottom;background-size:16px 16px;
   image-rendering:pixelated;}
-/* Seabed items, scattered along the floor: treasures and crabs. The band is a
-   full-width strip on the seabed; each item's x is set by JS (see Base.astro) to
-   a randomised spot from the content edge rightward, so none sits under the
-   diver's landing area and none overlaps a mine's chain. */
+/* Treasures, scattered along the floor. The band is a full-width strip on the
+   seabed; each item's x is set by JS (see Base.astro) to a randomised spot from
+   the content edge rightward, so none sits under the diver's landing area and
+   none overlaps a mine's chain. */
 .dive-hoard{position:absolute;left:0;right:0;bottom:16px;height:32px;display:none;}
 .dive-hoard img{position:absolute;bottom:0;image-rendering:pixelated;}
 .dive-t1{width:48px;height:32px;}
 .dive-t2{width:32px;height:32px;}
 .dive-t3{width:48px;height:32px;}
-.dive-crab{width:32px;height:20px;}
+/* The one crab on the floor walks its own patrol, so it isn't placed by the
+   scatter script. It starts level with the content column's left edge (50% -
+   380px, just clear of the diver's landing spot) and travels 620px right, which
+   keeps it inside the column even at the 1200px breakpoint. It paints after the
+   hoard, so it passes in front of the treasures rather than behind them. */
+.dive-crab-walk{position:absolute;bottom:16px;left:50%;margin-left:-380px;
+  width:32px;height:20px;display:none;animation:crab-walk 34s linear infinite;}
+@media (min-width:1200px){.dive-crab-walk{display:block;}}
+/* Both ends hold the crab still for 4% of the cycle while scaleX crosses zero,
+   which reads as it turning around before it heads back. */
+@keyframes crab-walk{
+  0%{transform:translateX(0) scaleX(1);}
+  46%{transform:translateX(620px) scaleX(1);}
+  50%{transform:translateX(620px) scaleX(-1);}
+  96%{transform:translateX(0) scaleX(-1);}
+  100%{transform:translateX(0) scaleX(1);}}
+/* The legs, on a two-frame sheet: crab-walk.png is 32x10, two 16x10 poses with
+   the legs on alternating sides raised (scripts/make_crab_frames.py). Drawn at
+   x2, so the sheet is 64x20 and each step slides it a frame across. steps(2)
+   snaps between the poses instead of tweening them. */
+.dive-crab{width:32px;height:20px;image-rendering:pixelated;
+  background:url("/sprites/crab-walk.png") 0 0/64px 20px;
+  animation:crab-legs .36s steps(2) infinite;}
+@keyframes crab-legs{to{background-position:-64px 0;}}
 @media (min-width:1200px){.dive{display:block;}}
 @media (min-width:1200px){.dive-hoard{display:block;}}
 /* Game mines: a spiky bomb floating on a chain that rises from the seabed.
@@ -358,10 +386,11 @@ section{margin-top:72px;}
     animation:shoal-in 2.8s cubic-bezier(.2,.75,.3,1) .2s both;}
 }
 /* No scroll-driven movement: the diver stays where it starts, hose stays short,
-   and the fish hold still. */
+   and the fish and the crab hold still. */
 @media (prefers-reduced-motion:reduce){
   .dive-diver,.dive-hose{transform:none !important;}
   .dive-fish,.dive-jelly,.dive-squid{animation:none;}
+  .dive-crab-walk,.dive-crab{animation:none;}
   /* The slide-in is only defined under no-preference, so nothing to disable. */
 }
 .foot-credit{margin-top:14px;font-family:"Spline Sans Mono",ui-monospace,monospace;
