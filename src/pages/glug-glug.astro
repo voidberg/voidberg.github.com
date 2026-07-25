@@ -64,6 +64,32 @@ const { Content } = await render(await getEntry("prose", "glug-glug"));
             width: 100%;
             image-rendering: pixelated;
         }
+        /* Two photos side by side: half the vertical run of stacking them, and
+           they read as one stretch of time rather than two separate moments.
+           The shared aspect ratio is what lands both captions on one line —
+           without it the 3:2 and the 4:3 end at different heights. */
+        .gg-pair {
+            display: flex;
+            gap: 14px;
+            margin: 44px 0;
+        }
+        .gg-pair .gg-figure {
+            flex: 1;
+            /* Without this the wider image refuses to shrink past its
+               intrinsic width and the pair overflows the column. */
+            min-width: 0;
+            margin: 0;
+        }
+        .gg-pair .gg-figure img {
+            width: 100%;
+            aspect-ratio: 3 / 2;
+            object-fit: cover;
+        }
+        @media (max-width: 640px) {
+            .gg-pair {
+                flex-direction: column;
+            }
+        }
         .gg-cap {
             margin-top: 12px;
             font-family: "Spline Sans Mono", ui-monospace, monospace;
