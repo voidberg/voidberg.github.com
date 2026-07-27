@@ -11,6 +11,10 @@ interface Props {
     backHref?: string;
     backLabel?: string;
     footerExtra?: string;
+    /** How many sea creatures hang in the right margin (0-7). They sit at fixed
+     *  percentages of the document height, so a short page packs the whole lot
+     *  into one screen; turn it down there. */
+    critters?: number;
 }
 
 const {
@@ -23,7 +27,22 @@ const {
     backLabel = "← Back to home",
     // Every page signs off the same way; pass footerExtra to override it.
     footerExtra = " · Bytes: andu",
+    critters = 7,
 } = Astro.props;
+
+// The creatures, listed so that any prefix of the list stays spread down the
+// page rather than clumping at the top: first the three that split the page in
+// thirds, then the ones that fill the gaps. Each keeps its own numbered class,
+// which is what carries its top/margin-left/drift delay in spectrum.css.
+const CRITTERS = [
+    { cls: "dive-jelly dive-jelly-1", src: "jellyfish", w: 28, h: 30 }, // 13%
+    { cls: "dive-fish dive-fish-2", src: "fish", w: 48, h: 32 }, // 49%
+    { cls: "dive-squid dive-squid-2", src: "squid", w: 30, h: 28 }, // 86%
+    { cls: "dive-fish dive-fish-1", src: "fish", w: 48, h: 32 }, // 24%
+    { cls: "dive-squid dive-squid-1", src: "squid", w: 30, h: 28 }, // 60%
+    { cls: "dive-jelly dive-jelly-2", src: "jellyfish", w: 28, h: 30 }, // 40%
+    { cls: "dive-fish dive-fish-3", src: "fish", w: 48, h: 32 }, // 73%
+].slice(0, critters);
 
 const year = new Date().getFullYear();
 const fontHref =
@@ -112,55 +131,17 @@ const fontHref =
              level with each in turn and looks at them across the content. -->
         <div class="dive-school" aria-hidden="true">
             <div class="dive-shoal">
-                <img
-                    class="dive-fish dive-fish-1"
-                    src="/sprites/fish.png"
-                    width="48"
-                    height="32"
-                    alt=""
-                />
-                <img
-                    class="dive-fish dive-fish-2"
-                    src="/sprites/fish.png"
-                    width="48"
-                    height="32"
-                    alt=""
-                />
-                <img
-                    class="dive-fish dive-fish-3"
-                    src="/sprites/fish.png"
-                    width="48"
-                    height="32"
-                    alt=""
-                />
-                <img
-                    class="dive-jelly dive-jelly-1"
-                    src="/sprites/jellyfish.png"
-                    width="28"
-                    height="30"
-                    alt=""
-                />
-                <img
-                    class="dive-jelly dive-jelly-2"
-                    src="/sprites/jellyfish.png"
-                    width="28"
-                    height="30"
-                    alt=""
-                />
-                <img
-                    class="dive-squid dive-squid-1"
-                    src="/sprites/squid.png"
-                    width="30"
-                    height="28"
-                    alt=""
-                />
-                <img
-                    class="dive-squid dive-squid-2"
-                    src="/sprites/squid.png"
-                    width="30"
-                    height="28"
-                    alt=""
-                />
+                {
+                    CRITTERS.map((c) => (
+                        <img
+                            class={c.cls}
+                            src={`/sprites/${c.src}.png`}
+                            width={c.w}
+                            height={c.h}
+                            alt=""
+                        />
+                    ))
+                }
             </div>
         </div>
         <div class="dive-floor" aria-hidden="true">
