@@ -27,7 +27,11 @@ const nowUpdated = new Date().toLocaleDateString("en-GB", {
     year: "numeric",
 });
 
-const { Content: Bio } = await render(await getEntry("prose", "bio"));
+// getEntry is typed as possibly undefined (the file could be renamed), so narrow
+// it rather than passing it straight to render.
+const bio = await getEntry("prose", "bio");
+if (!bio) throw new Error("Missing prose entry: bio");
+const { Content: Bio } = await render(bio);
 ---
 
 <Base

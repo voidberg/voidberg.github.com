@@ -9,7 +9,11 @@ import { getEntry, render } from "astro:content";
 const description =
     "Glug Glug (CRL, 1984), the ZX Spectrum diving game behind the little scene on this site, and what it means to Alexandru Badiu.";
 
-const { Content } = await render(await getEntry("prose", "glug-glug"));
+// getEntry is typed as possibly undefined (the file could be renamed), so narrow
+// it rather than passing it straight to render.
+const entry = await getEntry("prose", "glug-glug");
+if (!entry) throw new Error("Missing prose entry: glug-glug");
+const { Content } = await render(entry);
 ---
 
 <Base
