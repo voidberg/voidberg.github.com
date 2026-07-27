@@ -162,15 +162,23 @@ section{margin-top:72px;}
 .now-foot{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule);
   font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:13px;color:var(--dim);line-height:1.8;}
 
-/* ---- uses lists ---- */
-.uses-group{margin-top:44px;}
-.uses-group h3{font-family:"Press Start 2P",monospace;font-size:12px;color:var(--s-yel);margin:0 0 18px;letter-spacing:.04em;}
-.uses-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule);}
-.uses-list li{display:grid;grid-template-columns:230px 1fr;gap:18px;padding:16px 4px;border-bottom:1px solid var(--rule);align-items:baseline;}
-.u-name{font-weight:600;color:var(--paper);font-size:16px;}
-.u-note{font-size:14.5px;color:var(--dim);line-height:1.6;}
-.u-note .since{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:11px;color:var(--faint);margin-left:8px;
-  border:1px solid var(--rule);padding:2px 6px;white-space:nowrap;}
+/* ---- uses ---- */
+/* The page is one Markdown body: an h2 per group, then a list where each item is
+   one thing. The list is laid out as tags rather than rows, so a group reads as a
+   glance instead of a column to work down. Same chip as .pe-stack on /projects. */
+.uses-prose h2{font-family:"Press Start 2P",monospace;font-size:12px;color:var(--s-yel);
+  margin:44px 0 18px;letter-spacing:.04em;line-height:1.5;}
+.uses-prose h2:first-child{margin-top:48px;}
+.uses-prose ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px;}
+.uses-prose li{margin:0;font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:13px;
+  line-height:1.5;color:var(--ink);border:1px solid var(--rule);padding:6px 11px;}
+/* A tag that links keeps the site's cyan, and fills on hover like every other
+   link. The border rather than the text carries the colour, so a row of tags
+   doesn't read as a row of shouting links. */
+.uses-prose li:has(a){border-color:#123c3c;}
+.uses-prose li a{color:var(--s-cyan);text-decoration:none;}
+.uses-prose li:has(a):hover{background:var(--s-cyan);border-color:var(--s-cyan);}
+.uses-prose li:has(a):hover a{color:var(--bg);}
 
 /* ---- contact ---- */
 .cmail{margin-top:44px;display:flex;flex-direction:column;gap:12px;}
@@ -415,7 +423,6 @@ section{margin-top:72px;}
 @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
 
 @media (max-width:640px){
-  .uses-list li{grid-template-columns:1fr;gap:6px;}
   .posts-mini li{grid-template-columns:1fr;gap:6px;}
   .alt-links{grid-template-columns:1fr;}
   .page-head h1{font-size:19px;}

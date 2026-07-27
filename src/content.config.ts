@@ -37,7 +37,7 @@ const now = defineCollection({
 });
 
 // Standalone prose blocks rendered by a specific page (the bio, the Glug Glug
-// article). Markdown or MDX.
+// article, the uses list). Markdown or MDX.
 const prose = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/prose' }),
   schema: z.object({

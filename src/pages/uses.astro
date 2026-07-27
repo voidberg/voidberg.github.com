@@ -1,0 +1,36 @@
+---
+import Base from "../layouts/Base.astro";
+import { getEntry, render } from "astro:content";
+
+const description =
+    "The boring honest list of tools and tech Alexandru Badiu actually reaches for.";
+
+// The whole page is one Markdown file: a heading per group, then a list where
+// every item is one thing. CSS lays those lists out as tags (see .uses-prose in
+// spectrum.css), so adding something is a single line.
+// getEntry is typed as possibly undefined (the file could be renamed), so narrow
+// it rather than passing it straight to render.
+const entry = await getEntry("prose", "uses");
+if (!entry) throw new Error("Missing prose entry: uses");
+const { Content } = await render(entry);
+---
+
+<Base title="Uses · Alexandru Badiu" description={description} active="/uses" critters={4}>
+    <header class="page-head enter">
+        <div class="eyebrow">Uses</div>
+        <h1>LOAD "tools"</h1>
+        <p class="blurb">
+            The things I actually use on a daily basis.
+        </p>
+    </header>
+
+    <div class="uses-prose enter"><Content /></div>
+
+    <div class="now-foot">
+        Inspired by the <a
+            href="https://uses.tech"
+            target="_blank"
+            rel="noreferrer">/uses</a
+        > directory, a collection of "what I use" pages started by Wes Bos.
+    </div>
+</Base>
