@@ -13,8 +13,12 @@ interface Props {
     footerExtra?: string;
     /** How many sea creatures hang in the right margin (0-7). They sit at fixed
      *  percentages of the document height, so a short page packs the whole lot
-     *  into one screen; turn it down there. */
+     *  into one screen; turn it down there. Only read when scene is 'full'. */
     critters?: number;
+    /** 'full' is the whole diving scene: boat, diver, creatures, treasure,
+     *  mines and the crab. 'seabed', the default, keeps only the strip of
+     *  seabed along the bottom, so a reading page isn't competing with it. */
+    scene?: "full" | "seabed";
 }
 
 const {
@@ -28,7 +32,14 @@ const {
     // Every page signs off the same way; pass footerExtra to override it.
     footerExtra = " · Bytes: andu",
     critters = 7,
+    scene = "seabed",
 } = Astro.props;
+
+const fullScene = scene === "full";
+// The footer credit covers both debts at once: the sprites are Glug Glug's, the
+// look of the place is the Spectrum's. Only the first word changes with the
+// scene, so it's a word rather than two copies of the same sentence.
+const spriteCredit = fullScene ? "Sprites" : "Seabed";
 
 // The creatures, listed so that any prefix of the list stays spread down the
 // page rather than clumping at the top: first the three that split the page in
@@ -96,13 +107,20 @@ const fontHref =
                 <span><a href={backHref}>{backLabel}</a></span>
             </footer>
             <div class="foot-credit">
-                Diver from <a href="/glug-glug">Glug Glug</a> (CRL, 1984), the
-                game that started it.
+                {spriteCredit} from <a href="/glug-glug">Glug Glug</a> (CRL, 1984),
+                the game that started it. Everything else is an <a
+                    href="https://en.wikipedia.org/wiki/HC_(computer)"
+                    target="_blank"
+                    rel="noreferrer">ICE Felix HC 88</a
+                > wearing a website.
             </div>
         </div>
 
         <!-- Decorative only: sprites from the Glug Glug loading screen, kept in the
-         margins and hidden from assistive tech. -->
+         margins and hidden from assistive tech. Everything except the seabed
+         strip is gated on scene="full", so only the home and Glug Glug pages
+         run the whole thing. -->
+        {fullScene && (
         <div class="dive" aria-hidden="true">
             <div class="dive-rail">
                 <img
@@ -126,9 +144,11 @@ const fontHref =
                 />
             </div>
         </div>
+        )}
         <!-- Fish sit at fixed points down the page (anchored to the document, not
              the viewport) in the right margin, so the descending diver draws
              level with each in turn and looks at them across the content. -->
+        {fullScene && (
         <div class="dive-school" aria-hidden="true">
             <div class="dive-shoal">
                 {
@@ -144,7 +164,12 @@ const fontHref =
                 }
             </div>
         </div>
+        )}
+        <!-- The seabed strip runs along the bottom of every page; the treasure
+             and the crab standing on it do not. -->
         <div class="dive-floor" aria-hidden="true">
+            {fullScene && (
+            <Fragment>
             <!-- Treasures, scattered across the floor by the script below. -->
             <div class="dive-hoard">
                 <img
@@ -175,7 +200,10 @@ const fontHref =
             <div class="dive-crab-walk">
                 <div class="dive-crab"></div>
             </div>
+            </Fragment>
+            )}
         </div>
+        {fullScene && (
         <div class="dive-mines" aria-hidden="true">
             <div class="dive-bomb dive-bomb-left">
                 <img src="/sprites/bomb.png" width="32" height="32" alt="" />
@@ -184,6 +212,7 @@ const fontHref =
                 <img src="/sprites/bomb.png" width="32" height="32" alt="" />
             </div>
         </div>
+        )}
 
         <script>
             // Drives the diver down the page as you scroll. Transform only, one write
