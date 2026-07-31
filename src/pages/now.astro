@@ -1,0 +1,137 @@
+---
+import Base from "../layouts/Base.astro";
+import { getCollection, getEntry, render } from "astro:content";
+
+const description =
+    "What Alexandru Badiu is doing now.";
+
+// The page is a sandwich. The two prose halves are hand-written and change when
+// life does; the devlog block between them changes every time a project does.
+// Splitting the prose in two is what lets the dynamic part sit in the middle
+// rather than being tacked on at the end.
+async function prose(id: string) {
+    const entry = await getEntry("prose", id);
+    if (!entry) throw new Error(`Missing prose entry: ${id}`);
+    return (await render(entry)).Content;
+}
+const Work = await prose("now-work");
+const Life = await prose("now-life");
+
+// Projects opt in by setting nowUpdates in their frontmatter: the number of
+// devlog entries to show here, newest first. Everything else stays off the page.
+const surfaced = (await getCollection("projects")).filter(
+    (p) => p.data.nowUpdates > 0,
+);
+const posts = await getCollection("devlog");
+
+const updates = (
+    await Promise.all(
+        surfaced.map(async (project) => {
+            const newest = posts
+                .filter((e) => e.data.project.id === project.id)
+                .sort((a, b) => +b.data.date - +a.data.date)
+                .slice(0, project.data.nowUpdates);
+            return {
+                project,
+                entries: await Promise.all(
+                    newest.map(async (e) => ({
+                        date: e.data.date,
+                        title: e.data.title,
+                        Body: (await render(e)).Content,
+                    })),
+                ),
+            };
+        }),
+    )
+)
+    // A project with nowUpdates set but nothing written yet shouldn't leave an
+    // empty heading behind.
+    .filter((g) => g.entries.length > 0)
+    // Most recently touched project first, which is the only order a now page
+    // can honestly claim.
+    .sort((a, b) => +b.entries[0].date - +a.entries[0].date);
+
+// A sub-project has no entry of its own on /projects, so its heading points at
+// the parent's. Its devlog stream still stands alone.
+const anchor = (p: (typeof surfaced)[number]) => p.data.parent?.id ?? p.id;
+
+const day = (d: Date) =>
+    d.toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+    });
+
+// Stamped at build time, like the home page's NOW heading. A now page that
+// can't say when it was last true isn't worth much.
+const updated = new Date().toLocaleDateString("en-GB", {
+    month: "long",
+    year: "numeric",
+});
+---
+
+<Base
+    title="Now · Alexandru Badiu"
+    description={description}
+    active="/now"
+    critters={5}
+>
+    <header class="page-head enter">
+        <div class="eyebrow">Now</div>
+        <h1>LOAD "now"</h1>
+        <p class="blurb">
+            Where my attention is these days.
+            Reasonably honest, reasonably current.
+        </p>
+        <div class="now-stamp">
+            <span class="pulse"></span><span>Updated {updated} · London</span>
+        </div>
+    </header>
+
+    <div class="now-block enter"><Work /></div>
+
+    {
+        updates.length > 0 && (
+            <div class="now-block enter">
+                <h3>Devlog</h3>
+                <div class="devlog">
+                    {updates.map((g) => (
+                        <section class="dl-project">
+                            <div class="dl-head">
+                                <a href={`/projects#${anchor(g.project)}`}>
+                                    {g.project.data.devlogName ??
+                                        g.project.data.name}
+                                </a>
+                                <span class="dl-status">
+                                    {g.project.data.statusLabel}
+                                </span>
+                            </div>
+                            {g.entries.map((e) => (
+                                <article class="dl-entry">
+                                    <div class="dl-when">{day(e.date)}</div>
+                                    {e.title && (
+                                        <h4 class="dl-title">{e.title}</h4>
+                                    )}
+                                    <e.Body />
+                                </article>
+                            ))}
+                        </section>
+                    ))}
+                </div>
+                <div class="dl-more">
+                    <a href="/devlog">See all updates →</a>
+                </div>
+            </div>
+        )
+    }
+
+    <div class="now-block enter"><Life /></div>
+
+    <div class="now-foot">
+        Inspired by <a
+            href="https://nownownow.com/about"
+            target="_blank"
+            rel="noreferrer">Derek Sivers' now page</a
+        >, a small movement of sites with a "what I'm doing now" page.
+    </div>
+</Base>

@@ -1,0 +1,79 @@
+---
+import Base from "../layouts/Base.astro";
+import { getCollection, render } from "astro:content";
+
+const description =
+    "Devlog: what Alexandru Badiu has been changing lately, across InstaKobo, Incunable, Quarto, Zare and the rest.";
+
+// Every entry, newest first, regardless of project. /now shows only the last
+// few per project; this is the whole run.
+const posts = (await getCollection("devlog")).sort(
+    (a, b) => +b.data.date - +a.data.date,
+);
+
+// Entries carry a project id, so look the project up once rather than per
+// entry. devlogName is what a project calls its own stream, which is what an
+// entry belongs to: an InstaKobo entry says InstaKobo, not "InstaKobo & InstaRM".
+const projects = new Map(
+    (await getCollection("projects")).map((p) => [p.id, p]),
+);
+
+const entries = await Promise.all(
+    posts.map(async (post) => {
+        const project = projects.get(post.data.project.id)!;
+        return {
+            date: post.data.date,
+            title: post.data.title,
+            name: project.data.devlogName ?? project.data.name,
+            // A sub-project has no entry of its own on /projects, so point at
+            // the parent's.
+            anchor: project.data.parent?.id ?? project.id,
+            Body: (await render(post)).Content,
+        };
+    }),
+);
+
+const day = (d: Date) =>
+    d.toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+    });
+---
+
+<Base
+    title="Devlog · Alexandru Badiu"
+    description={description}
+    active="/devlog"
+    critters={5}
+>
+    <header class="page-head enter">
+        <div class="eyebrow">Devlog</div>
+        <h1>LOAD "devlog"</h1>
+        <p class="blurb">
+            Recent updates on the things I'm working on.
+        </p>
+    </header>
+
+    <div class="devlog dl-full enter">
+        {
+            entries.map((e) => (
+                <article class="dl-entry">
+                    <div class="dl-when">
+                        {day(e.date)}
+                        <span class="sep">·</span>
+                        <a class="dl-proj" href={`/projects#${e.anchor}`}>
+                            {e.name}
+                        </a>
+                    </div>
+                    {e.title && <h2 class="dl-title">{e.title}</h2>}
+                    <e.Body />
+                </article>
+            ))
+        }
+    </div>
+
+    <div class="now-foot">
+        Each entry belongs to something on the <a href="/projects">projects</a> page.
+    </div>
+</Base>

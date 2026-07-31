@@ -5,9 +5,12 @@ import { getCollection, render } from "astro:content";
 const description =
     "Things Alexandru Badiu has built: Spotlight, Watch, small open-source tools used in surprising places, afternoon hacks, and chiptunes.";
 
-const projects = (await getCollection("projects")).sort(
-    (a, b) => a.data.order - b.data.order,
-);
+// Sub-projects (those with a parent) are covered by their parent's entry here,
+// and only exist as their own thing in the devlog. Filter before sorting so
+// they can share the parent's order without disturbing it.
+const projects = (await getCollection("projects"))
+    .filter((p) => !p.data.parent)
+    .sort((a, b) => a.data.order - b.data.order);
 // Render each project's Markdown description to a component up front.
 const entries = await Promise.all(
     projects.map(async (p) => ({ ...p, Desc: (await render(p)).Content })),

@@ -21,11 +21,6 @@ const nowLines = await Promise.all(
         Body: (await render(item)).Content,
     })),
 );
-// Printed next to the heading; the current month at build time.
-const nowUpdated = new Date().toLocaleDateString("en-GB", {
-    month: "long",
-    year: "numeric",
-});
 
 // getEntry is typed as possibly undefined (the file could be renamed), so narrow
 // it rather than passing it straight to render.
@@ -92,7 +87,7 @@ const { Content: Bio } = await render(bio);
     <section class="enter" style="margin-top: 42px;">
         <div class="slabel">
             <span class="k">NOW</span><h2>What I'm up to</h2><span class="line"
-            ></span><span class="see-all">{nowUpdated}</span>
+            ></span><a class="see-all" href="/now">The long version →</a>
         </div>
         <div class="now-list">
             {

@@ -152,12 +152,67 @@ section{margin-top:72px;}
 .writing-foot{margin-top:24px;font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:13px;color:var(--dim);}
 
 /* ---- now blocks ---- */
+/* The /now page is one Markdown body: an h3 per area, then paragraphs. The gap
+   above a heading has to carry the section break on its own, since there are no
+   rules between areas. */
 .now-block{margin-top:44px;}
-.now-block h3{font-family:"Press Start 2P",monospace;font-size:12px;color:var(--s-mag);margin:0 0 16px;letter-spacing:.04em;}
+.now-block h3{font-family:"Press Start 2P",monospace;font-size:12px;color:var(--s-mag);
+  margin:44px 0 16px;letter-spacing:.04em;line-height:1.5;}
+.now-block h3:first-child{margin-top:0;}
 .now-block p{font-size:16px;line-height:1.7;color:var(--ink);margin:0 0 16px;}
 .now-block p:last-child{margin-bottom:0;}
 .now-stamp{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:12px;color:var(--faint);
   display:flex;align-items:center;gap:8px;}
+/* Under the blurb in the page header, where it dates the page. */
+.page-head .now-stamp{margin-top:18px;}
+
+/* ---- devlog (on /now) ---- */
+/* Project updates, newest first, grouped under the project they belong to. The
+   left rule and markers are the bio timeline's, because that is what these are:
+   a timeline that hasn't finished yet. */
+.devlog{display:flex;flex-direction:column;gap:36px;}
+/* Each group is a <section>, so it inherits the global 72px top margin; the
+   flex gap above does the spacing here. */
+.dl-project{margin-top:0;}
+.dl-head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;}
+.dl-head a{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;font-size:17px;
+  color:var(--paper);text-decoration:none;border-bottom:2px solid var(--rule);padding-bottom:1px;}
+.dl-head a:hover{color:var(--bg);background:var(--s-cyan);border-color:var(--s-cyan);}
+.dl-status{font-family:"Press Start 2P",monospace;font-size:8px;color:var(--bg);
+  background:var(--s-cyan);padding:4px 6px;letter-spacing:.04em;}
+.dl-entry{position:relative;border-left:2px solid var(--rule);padding-left:26px;margin-left:6px;
+  padding-bottom:22px;}
+.dl-entry:last-child{padding-bottom:0;}
+.dl-entry::before{content:"";position:absolute;left:-7px;top:5px;width:10px;height:10px;
+  background:var(--rule);}
+.dl-project .dl-entry:first-of-type::before{background:var(--s-grn);}
+.dl-when{font-family:"Press Start 2P",monospace;font-size:10px;color:var(--s-yel);
+  margin-bottom:10px;letter-spacing:.04em;}
+.dl-title{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:600;font-size:16px;
+  color:var(--paper);margin:0 0 8px;}
+.dl-entry p{font-size:16px;line-height:1.7;color:var(--dim);margin:0 0 12px;}
+.dl-entry p:last-child{margin-bottom:0;}
+.dl-entry ul,.dl-entry ol{margin:0 0 12px;padding-left:20px;}
+.dl-entry li{font-size:16px;line-height:1.7;color:var(--dim);margin:0 0 4px;}
+.dl-entry a{color:var(--s-cyan);text-decoration:none;border-bottom:2px solid var(--s-cyan);padding-bottom:1px;}
+.dl-entry a:hover{color:var(--bg);background:var(--s-cyan);}
+
+/* The /devlog page runs every entry together, newest first, so each one has to
+   name its own project rather than sitting under a project heading. */
+/* 44px is the gap every other page leaves between the header and its body. On
+   /now the surrounding .now-block supplies it; here the list is the body. */
+.dl-full{margin-top:44px;gap:34px;}
+.dl-full .dl-entry{padding-bottom:0;}
+.dl-full .dl-entry:first-child::before{background:var(--s-grn);}
+.dl-when .sep{color:var(--faint);margin:0 6px;}
+.dl-when .dl-proj{color:var(--s-cyan);text-decoration:none;
+  border-bottom:2px solid var(--s-cyan);padding-bottom:1px;}
+.dl-when .dl-proj:hover{color:var(--bg);background:var(--s-cyan);}
+/* Out to the full devlog, from the trimmed version on /now. */
+.dl-more{margin-top:28px;font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:13px;}
+.dl-more a{color:var(--s-cyan);text-decoration:none;
+  border-bottom:2px solid var(--s-cyan);padding-bottom:1px;}
+.dl-more a:hover{color:var(--bg);background:var(--s-cyan);}
 .now-stamp .pulse{width:8px;height:8px;background:var(--s-grn);animation:blink 1.4s steps(2) infinite;}
 .now-foot{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule);
   font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:13px;color:var(--dim);line-height:1.8;}

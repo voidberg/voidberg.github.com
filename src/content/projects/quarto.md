@@ -1,5 +1,6 @@
 ---
 name: "Quarto & Quarto Go"
+devlogName: "Quarto"
 status: active
 statusLabel: "Open source"
 meta:
@@ -23,6 +24,7 @@ featured: true
 tag: "// open source"
 short: "EPUB and KEPUB generation with zero native dependencies, in JavaScript and Go. The same library twice, because I needed it in both. Both are in use across my own reading tools."
 order: 5
+nowUpdates: 1
 ---
 
 Libraries for generating EPUB and KEPUB files with zero native dependencies. Quarto is the original, Quarto Go is the port. Both are in use across my own reading tools.
