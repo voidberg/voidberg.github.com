@@ -180,37 +180,28 @@
     color: var(--bg);
     background: var(--s-cyan);
 }
-.now-list {
-    display: grid;
-    gap: 12px;
-    border-left: 2px solid var(--rule);
-    padding-left: 18px;
-}
-.now-item {
-    display: grid;
-    grid-template-columns: 88px 1fr;
-    gap: 14px;
-    align-items: baseline;
-}
-.now-item .nk {
-    font-family: "Press Start 2P", monospace;
-    font-size: 9px;
-    color: var(--s-grn);
-    letter-spacing: 0.05em;
-    line-height: 1.8;
-}
-.now-item p {
-    margin: 0;
-    font-size: 15px;
+/* The NOW section is a teaser now: one paragraph and a link out to /now, which
+   holds the full current-status prose. */
+.now-teaser p {
+    font-size: 16px;
     line-height: 1.7;
+    color: var(--ink);
+    margin: 0 0 14px;
+}
+.now-teaser p:last-child {
+    margin-bottom: 0;
+}
+.now-teaser-more {
+    font-family: "Spline Sans Mono", ui-monospace, monospace;
+    font-size: 13px;
     color: var(--dim);
 }
-.now-item a {
+.now-teaser a {
     color: var(--s-cyan);
     text-decoration: none;
     border-bottom: 1px solid var(--s-cyan);
 }
-.now-item a:hover {
+.now-teaser a:hover {
     color: var(--bg);
     background: var(--s-cyan);
 }
@@ -278,10 +269,6 @@
     }
     .proj-grid {
         grid-template-columns: 1fr;
-    }
-    .now-item {
-        grid-template-columns: 1fr;
-        gap: 4px;
     }
     .hero h1 {
         font-size: 20px;

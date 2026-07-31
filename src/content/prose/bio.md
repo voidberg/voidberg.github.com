@@ -8,4 +8,6 @@ I'm Alexandru, but you can call me Andu (pronounced as undo). I'm an engineer wh
 
 These days I'm working on a problem that's been haunting me for a long time: capturing what I find interesting and surfacing it again at the right time. That's taken me from binaries running on e-ink hardware to web and desktop apps, with AI doing real work in the product, not just in my editor.
 
+Right now I'm between roles, looking for a senior IC or engineering leadership role; what I'm up to lately is on the [now page](/now).
+
 Elsewhere: a Playdate game, and music made out of things that were never meant to make it.

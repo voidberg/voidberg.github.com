@@ -161,6 +161,12 @@ section{margin-top:72px;}
 .now-block h3:first-child{margin-top:0;}
 .now-block p{font-size:16px;line-height:1.7;color:var(--ink);margin:0 0 16px;}
 .now-block p:last-child{margin-bottom:0;}
+/* Below the devlog sits the standing-interest section, which isn't part of
+   "now" at all. A rule above it and a different heading colour keep it from
+   reading as one more status block. */
+.now-aside{margin-top:56px;padding-top:30px;border-top:1px solid var(--rule);}
+.now-block h2{font-family:"Press Start 2P",monospace;font-size:12px;color:var(--s-cyan);
+  margin:0 0 18px;letter-spacing:.04em;line-height:1.5;}
 .now-stamp{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:12px;color:var(--faint);
   display:flex;align-items:center;gap:8px;}
 /* Under the blurb in the page header, where it dates the page. */

@@ -11,17 +11,6 @@ const projects = (await getCollection("projects")).sort(
 );
 const featured = projects.filter((p) => p.data.featured);
 
-// Now block: render each line's Markdown body to a component.
-const nowItems = (await getCollection("now")).sort(
-    (a, b) => a.data.order - b.data.order,
-);
-const nowLines = await Promise.all(
-    nowItems.map(async (item) => ({
-        label: item.data.label,
-        Body: (await render(item)).Content,
-    })),
-);
-
 // getEntry is typed as possibly undefined (the file could be renamed), so narrow
 // it rather than passing it straight to render.
 const bio = await getEntry("prose", "bio");
@@ -84,22 +73,23 @@ const { Content: Bio } = await render(bio);
     </div>
 
     <!-- NOW -->
-    <section class="enter" style="margin-top: 42px;">
+    <!-- A teaser only. /now is the canonical home for current-status prose;
+         this keeps the one fact a visitor here most needs and links onward. -->
+    <!-- <section class="enter" style="margin-top: 42px;">
         <div class="slabel">
             <span class="k">NOW</span><h2>What I'm up to</h2><span class="line"
-            ></span><a class="see-all" href="/now">The long version →</a>
+            ></span><a class="see-all" href="/now">the full version →</a>
         </div>
-        <div class="now-list">
-            {
-                nowLines.map((item) => (
-                    <div class="now-item">
-                        <span class="nk">{item.label}</span>
-                        <item.Body />
-                    </div>
-                ))
-            }
+        <div class="now-teaser">
+            <p>
+                Between roles since BENlabs wound down, looking for a senior IC
+                or engineering leadership role.
+            </p>
+            <p class="now-teaser-more">
+                Other than that, building various things. More on the <a href="/now">now page</a>.
+            </p>
         </div>
-    </section>
+    </section> -->
 
     <!-- PROJECTS -->
     <section class="enter" style="margin-top: 42px;">

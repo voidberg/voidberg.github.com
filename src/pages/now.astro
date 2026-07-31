@@ -81,7 +81,7 @@ const updated = new Date().toLocaleDateString("en-GB", {
         <h1>LOAD "now"</h1>
         <p class="blurb">
             Where my attention is these days.
-            Reasonably honest, reasonably current.
+            Reasonably honest, and current.
         </p>
         <div class="now-stamp">
             <span class="pulse"></span><span>Updated {updated} · London</span>
@@ -125,7 +125,12 @@ const updated = new Date().toLocaleDateString("en-GB", {
         )
     }
 
-    <div class="now-block enter"><Life /></div>
+    {/*
+        TODO: Music is a standing interest, not current status, so it sits below
+        the rule rather than among the WORK / MAKING / READING sections. If a Bio
+        page ever happens, this belongs there and this block comes out.
+    */}
+    <div class="now-block now-aside enter"><Life /></div>
 
     <div class="now-foot">
         Inspired by <a
