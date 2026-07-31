@@ -236,12 +236,16 @@ const { Content } = await render(entry);
     </style>
     <script>
         (function () {
-            var diver = document.getElementById("dive-diver");
-            var page = document.getElementById("page"); // the content column
+            // The guard below is the real check; the assertions tell the type
+            // checker what it proves, since check() is a hoisted declaration and
+            // could in principle run before the guard.
+            const diver = document.getElementById("dive-diver")!;
+            const page = document.getElementById("page")!; // the content column
             // Every sea creature in the right margin is a target: fish, and the
-            // two enemies lifted from the game (jellyfish, squid).
-            var enemies = Array.prototype.slice.call(
-                document.querySelectorAll(
+            // two enemies lifted from the game (jellyfish, squid). They are all
+            // <img>, which is what lets an entry be respawned as another type.
+            var enemies = Array.from(
+                document.querySelectorAll<HTMLImageElement>(
                     ".dive-fish, .dive-jelly, .dive-squid",
                 ),
             );
@@ -262,7 +266,13 @@ const { Content } = await render(entry);
             var AIM_ABOVE = 0;
             var RESPAWN_MS = 700; // gap before a replacement slides in
 
-            function spawn(x, y, dist, dur, fadeIn) {
+            function spawn(
+                x: number,
+                y: number,
+                dist: number,
+                dur: number,
+                fadeIn: boolean,
+            ) {
                 var b = document.createElement("div");
                 b.className = "gg-bullet";
                 b.style.left = x + "px";
@@ -304,7 +314,7 @@ const { Content } = await render(entry);
             }
 
             // The bubble burst is drawn in the creature's own colour.
-            function deathColor(enemy) {
+            function deathColor(enemy: HTMLImageElement) {
                 if (enemy.classList.contains("dive-jelly"))
                     return "rgb(57,255,255)";
                 if (enemy.classList.contains("dive-squid"))
@@ -314,7 +324,7 @@ const { Content } = await render(entry);
 
             // Two to four little bubbles that swell from small to large, drift up
             // a touch, then pop — the game's death puff.
-            function burst(cx, cy, color) {
+            function burst(cx: number, cy: number, color: string) {
                 var n = 2 + Math.floor(Math.random() * 3);
                 for (var k = 0; k < n; k++) {
                     var bub = document.createElement("div");
@@ -359,7 +369,7 @@ const { Content } = await render(entry);
             // nudged vertical position so it isn't exactly where the last fell,
             // sliding in from off the right edge. The drift animation (turned off
             // for the slide) takes back over once it has arrived.
-            function respawn(enemy) {
+            function respawn(enemy: HTMLImageElement) {
                 enemy.style.transition = "";
                 enemy.classList.remove("dive-fish", "dive-jelly", "dive-squid");
                 var t = TYPES[Math.floor(Math.random() * TYPES.length)];
@@ -385,7 +395,7 @@ const { Content } = await render(entry);
 
             // The harpoon connects: burst bubbles where the creature was, hide it,
             // then slide a replacement in a moment later.
-            function die(enemy) {
+            function die(enemy: HTMLImageElement) {
                 if (enemy.dataset.dead) return;
                 enemy.dataset.dead = "1";
                 var r = enemy.getBoundingClientRect();
@@ -406,7 +416,13 @@ const { Content } = await render(entry);
             // emerges on the right and travels to the target. The bolt stops at
             // the creature and is pulled the instant it lands, together with the
             // burst — no flying off past it.
-            function fire(gunX, gunY, contentL, contentR, enemy) {
+            function fire(
+                gunX: number,
+                gunY: number,
+                contentL: number,
+                contentR: number,
+                enemy: HTMLImageElement | null,
+            ) {
                 var seg1 = contentL - gunX;
                 // y values are document-space (viewport + scrollY) to match the layer.
                 if (seg1 > 6)
