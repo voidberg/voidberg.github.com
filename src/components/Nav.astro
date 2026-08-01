@@ -13,7 +13,17 @@ const { active, showControls = false } = Astro.props;
     <a class="brand" href="/"
         ><span class="blink"></span><span>ALEXANDRU BADIU · 48K</span></a
     >
-    <div class="grp">
+    <!-- Phone-only. The links need ~415px and a phone gives the column ~337px,
+         so below 640px they fold into the panel this opens. -->
+    <button
+        class="navtoggle"
+        id="nav-toggle"
+        aria-expanded="false"
+        aria-controls="nav-menu"
+    >
+        MENU
+    </button>
+    <div class="grp" id="nav-menu">
         {
             nav.map((n) => (
                 <a
@@ -48,3 +58,29 @@ const { active, showControls = false } = Astro.props;
         }
     </div>
 </div>
+
+<script>
+    // The collapsing menu is an enhancement: the js-nav class is what switches
+    // the links from inline to a panel, so with no JS they stay inline and wrap,
+    // which is worse-looking but still navigable.
+    (function () {
+        const bar = document.querySelector(".statusbar");
+        const toggle = document.getElementById("nav-toggle");
+        const menu = document.getElementById("nav-menu");
+        if (!bar || !toggle || !menu) return;
+
+        bar.classList.add("js-nav");
+        toggle.addEventListener("click", function () {
+            const open = menu.classList.toggle("open");
+            toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        });
+        // Escape closes it, the way any menu should.
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape" && menu.classList.contains("open")) {
+                menu.classList.remove("open");
+                toggle.setAttribute("aria-expanded", "false");
+                toggle.focus();
+            }
+        });
+    })();
+</script>

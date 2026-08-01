@@ -94,6 +94,14 @@ section{margin-top:72px;}
   padding:5px 10px;cursor:pointer;letter-spacing:.04em;text-decoration:none;display:inline-block;}
 .statusbar button:hover,.navlink:hover{color:var(--bg);background:var(--s-yel);border-color:var(--s-yel);}
 .navlink.active{color:var(--bg);background:var(--accent);border-color:var(--accent);}
+/* Desktop has room for the links inline, so the toggle only exists on phones.
+   Needs .statusbar to outrank the ".statusbar button" rule just above. */
+.statusbar .navtoggle{display:none;}
+/* The sound toggle only pays off with a pointer: the bleeps fire on the loader
+   and on project-card hover, and there is no hover on a touch screen. */
+@media (hover:none){
+  #sound-btn{display:none;}
+}
 
 /* ---- avatar dither block ---- */
 .avatar{flex:0 0 auto;width:128px;height:128px;position:relative;
@@ -487,7 +495,29 @@ section{margin-top:72px;}
   .posts-mini li{grid-template-columns:1fr;gap:6px;}
   .alt-links{grid-template-columns:1fr;}
   .page-head h1{font-size:19px;}
-  .statusbar{position:static;}
+  /* Was static: the bar doesn't stick on a phone, but it still has to be the
+     positioning context for the menu panel hanging off its bottom edge. */
+  .statusbar{position:relative;}
+
+  /* ---- phone menu ----
+     The five links plus the controls need about 415px and the column has ~337px,
+     so they fold into a panel behind a MENU toggle. Listed the way a Spectrum
+     program menu is: numbered options, one per line, pick a number. */
+  .statusbar .navtoggle{display:inline-block;}
+  .statusbar.js-nav .grp{
+    display:none;position:absolute;top:100%;left:0;right:0;z-index:31;
+    flex-direction:column;align-items:stretch;gap:0;
+    background:var(--bg);border:1px solid var(--rule);border-top:none;
+    padding:6px;counter-reset:menuitem;}
+  .statusbar.js-nav .grp.open{display:flex;}
+  .statusbar.js-nav .grp .navlink{border:none;padding:11px 10px;font-size:13px;}
+  .statusbar.js-nav .grp .navlink::before{counter-increment:menuitem;
+    content:counter(menuitem) "  ";color:var(--s-yel);}
+  .statusbar.js-nav .grp .navlink.active{background:var(--accent);color:var(--bg);}
+  /* The yellow index is unreadable on the magenta active row. */
+  .statusbar.js-nav .grp .navlink.active::before{color:var(--bg);}
+  /* The controls sit under the links, on their own row, still boxed. */
+  .statusbar.js-nav .grp .iconbtn{margin:6px 0 0 10px;align-self:flex-start;}
 }
 @media (prefers-reduced-motion:reduce){
   .enter{opacity:1;transform:none;animation:none;}
