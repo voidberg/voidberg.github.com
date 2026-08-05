@@ -19,6 +19,10 @@
   --accent:var(--s-mag);
   --rule:#262626;
   --card:#0c0c0c;
+  /* The pixel face, in one place so it can be swapped in a line.
+     Press Start 2P is the wider, chunkier one; Silkscreen is narrower
+     and lighter, so sizes may want nudging when this changes. */
+  --font-pixel:"Silkscreen",monospace;
   /* reading mode (long-form articles) */
   --font-prose:"Newsreader",Georgia,"Times New Roman",serif;
   --bg-read:#0c0c0c;
@@ -41,7 +45,6 @@ body{
 a{color:inherit;}
 em{font-style:italic;color:var(--paper);}
 .mono{font-family:"Spline Sans Mono",ui-monospace,monospace;}
-.pixel{font-family:"Press Start 2P",monospace;line-height:1.5;}
 
 /* ---- Rainbow tape border frame (always-on chrome) ---- */
 .tape-frame{position:fixed;inset:0;pointer-events:none;z-index:40;}
@@ -107,8 +110,11 @@ section{margin-top:72px;}
 .avatar{flex:0 0 auto;width:128px;height:128px;position:relative;
   border:3px solid var(--ink);image-rendering:pixelated;background:var(--card);}
 .avatar canvas{display:block;width:100%;height:100%;image-rendering:pixelated;}
+/* Pixel, against the tiering doc's Tier 2 for this slot: it's a screen-memory
+   joke on a photo, so it wants to look like a machine wrote it. Held at 11px,
+   the doc's floor for pixel, rather than the 7px it used to be. */
 .avatar .tag{position:absolute;bottom:-1px;left:-1px;
-  font-family:"Press Start 2P",monospace;font-size:7px;color:var(--bg);
+  font-family:var(--font-pixel);font-size:11px;color:var(--bg);
   background:var(--s-yel);padding:4px 5px;letter-spacing:.05em;}
 
 /* ---- page head ---- */
@@ -117,7 +123,7 @@ section{margin-top:72px;}
   letter-spacing:.2em;text-transform:uppercase;color:var(--s-mag);margin-bottom:16px;
   display:flex;align-items:center;gap:9px;}
 .eyebrow::before{content:"";width:9px;height:9px;background:var(--s-mag);flex:0 0 auto;}
-.page-head h1{font-family:"Press Start 2P",monospace;font-size:24px;line-height:1.4;margin:0 0 18px;
+.page-head h1{font-family:var(--font-pixel);font-size:24px;line-height:1.4;margin:0 0 18px;
   color:var(--paper);text-shadow:3px 3px 0 var(--s-blue);}
 .blurb{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:16px;line-height:1.7;color:var(--dim);margin:0;}
 
@@ -129,7 +135,7 @@ section{margin-top:72px;}
 
 /* ---- section label ---- */
 .slabel{display:flex;align-items:center;gap:14px;margin-bottom:26px;}
-.slabel .k{font-family:"Press Start 2P",monospace;font-size:11px;color:var(--bg);
+.slabel .k{font-family:var(--font-pixel);font-size:11px;color:var(--bg);
   background:var(--accent);padding:7px 9px;letter-spacing:.05em;white-space:nowrap;}
 .slabel h2,.slabel h3{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;font-size:20px;margin:0;color:var(--paper);}
 .slabel .line{flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--rule) 0 6px,transparent 6px 12px);}
@@ -144,7 +150,8 @@ section{margin-top:72px;}
 .tl-entry::before{content:"";position:absolute;left:-33px;top:6px;width:10px;height:10px;
   background:var(--rule);}
 .tl-entry.current::before{background:var(--s-grn);box-shadow:0 0 0 3px rgba(0,255,0,.18);}
-.tl-when{font-family:"Press Start 2P",monospace;font-size:10px;color:var(--s-yel);margin-bottom:10px;letter-spacing:.04em;}
+.tl-when{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;
+  font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--s-yel);margin-bottom:10px;}
 .tl-entry.current .tl-when{color:var(--s-grn);}
 .tl-entry p{margin:0;font-size:16px;line-height:1.7;color:var(--dim);}
 
@@ -155,7 +162,8 @@ section{margin-top:72px;}
 .pm-date{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:12px;color:var(--faint);}
 .pm-title{font-size:16px;color:var(--ink);}
 .posts-mini li.draft .pm-title{color:var(--dim);}
-.pm-meta{font-family:"Press Start 2P",monospace;font-size:8px;color:var(--bg);background:var(--s-cyan);padding:4px 6px;letter-spacing:.04em;}
+.pm-meta{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;
+  font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:var(--bg);background:var(--s-cyan);padding:4px 6px;}
 .posts-mini li.draft .pm-meta{background:var(--rule);color:var(--dim);}
 .writing-foot{margin-top:24px;font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:13px;color:var(--dim);}
 
@@ -164,8 +172,9 @@ section{margin-top:72px;}
    above a heading has to carry the section break on its own, since there are no
    rules between areas. */
 .now-block{margin-top:44px;}
-.now-block h3{font-family:"Press Start 2P",monospace;font-size:12px;color:var(--s-mag);
-  margin:44px 0 16px;letter-spacing:.04em;line-height:1.5;}
+.now-block h3{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;
+  font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--s-mag);
+  margin:44px 0 16px;line-height:1.5;}
 .now-block h3:first-child{margin-top:0;}
 .now-block p{font-size:16px;line-height:1.7;color:var(--ink);margin:0 0 16px;}
 .now-block p:last-child{margin-bottom:0;}
@@ -173,8 +182,9 @@ section{margin-top:72px;}
    "now" at all. A rule above it and a different heading colour keep it from
    reading as one more status block. */
 .now-aside{margin-top:56px;padding-top:30px;border-top:1px solid var(--rule);}
-.now-block h2{font-family:"Press Start 2P",monospace;font-size:12px;color:var(--s-cyan);
-  margin:0 0 18px;letter-spacing:.04em;line-height:1.5;}
+.now-block h2{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;
+  font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--s-cyan);
+  margin:0 0 18px;line-height:1.5;}
 .now-stamp{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:12px;color:var(--faint);
   display:flex;align-items:center;gap:8px;}
 /* Under the blurb in the page header, where it dates the page. */
@@ -192,16 +202,18 @@ section{margin-top:72px;}
 .dl-head a{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;font-size:17px;
   color:var(--paper);text-decoration:none;border-bottom:2px solid var(--rule);padding-bottom:1px;}
 .dl-head a:hover{color:var(--bg);background:var(--s-cyan);border-color:var(--s-cyan);}
-.dl-status{font-family:"Press Start 2P",monospace;font-size:8px;color:var(--bg);
-  background:var(--s-cyan);padding:4px 6px;letter-spacing:.04em;}
+.dl-status{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;
+  font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:var(--bg);
+  background:var(--s-cyan);padding:4px 6px;}
 .dl-entry{position:relative;border-left:2px solid var(--rule);padding-left:26px;margin-left:6px;
   padding-bottom:22px;}
 .dl-entry:last-child{padding-bottom:0;}
 .dl-entry::before{content:"";position:absolute;left:-7px;top:5px;width:10px;height:10px;
   background:var(--rule);}
 .dl-project .dl-entry:first-of-type::before{background:var(--s-grn);}
-.dl-when{font-family:"Press Start 2P",monospace;font-size:10px;color:var(--s-yel);
-  margin-bottom:10px;letter-spacing:.04em;}
+.dl-when{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;
+  font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--s-yel);
+  margin-bottom:10px;}
 .dl-title{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:600;font-size:16px;
   color:var(--paper);margin:0 0 8px;}
 .dl-entry p{font-size:16px;line-height:1.7;color:var(--dim);margin:0 0 12px;}
@@ -235,8 +247,9 @@ section{margin-top:72px;}
 /* The page is one Markdown body: an h2 per group, then a list where each item is
    one thing. The list is laid out as tags rather than rows, so a group reads as a
    glance instead of a column to work down. Same chip as .pe-stack on /projects. */
-.uses-prose h2{font-family:"Press Start 2P",monospace;font-size:12px;color:var(--s-yel);
-  margin:44px 0 18px;letter-spacing:.04em;line-height:1.5;}
+.uses-prose h2{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;
+  font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--s-yel);
+  margin:44px 0 18px;line-height:1.5;}
 .uses-prose h2:first-child{margin-top:48px;}
 .uses-prose ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px;}
 .uses-prose li{margin:0;font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:13px;
@@ -253,11 +266,11 @@ section{margin-top:72px;}
 .cmail{margin-top:44px;display:flex;flex-direction:column;gap:12px;}
 .cmail-label{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:11px;color:var(--faint);
   text-transform:uppercase;letter-spacing:.07em;}
-.cmail a{font-family:"Press Start 2P",monospace;font-size:20px;line-height:1.5;color:var(--s-cyan);
+.cmail a{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:500;font-size:25px;line-height:1.5;color:var(--s-cyan);
   text-decoration:none;border-bottom:3px solid var(--s-cyan);padding-bottom:6px;width:fit-content;
   word-break:break-all;}
 .cmail a:hover{color:var(--bg);background:var(--s-cyan);}
-@media (max-width:640px){.cmail a{font-size:13px;}}
+@media (max-width:640px){.cmail a{font-size:18px;}}
 .calt{margin-top:48px;padding-top:28px;border-top:1px solid var(--rule);}
 .alt-links{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:16px;}
 .alt{display:flex;flex-direction:column;gap:6px;}
@@ -278,9 +291,11 @@ section{margin-top:72px;}
 .pe-thumb canvas{width:170px;height:114px;border:2px solid var(--rule);image-rendering:pixelated;display:block;}
 /* Real project thumbnail (a logo/graphic); same frame as the seed canvas. */
 .pe-thumb-img{width:170px;height:114px;border:2px solid var(--rule);object-fit:cover;display:block;}
-.pe-idx{font-family:"Press Start 2P",monospace;font-size:9px;color:var(--faint);margin-top:12px;letter-spacing:.04em;}
+.pe-idx{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-top:12px;}
 .pe-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px;}
-.pe-name{font-family:"Press Start 2P",monospace;font-size:14px;color:var(--paper);margin:0;line-height:1.5;}
+.pe-name{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;font-size:17px;color:var(--paper);
+  margin:0;line-height:1.35;letter-spacing:-.005em;}
 .pe-status{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.06em;
   padding:4px 8px;text-transform:uppercase;white-space:nowrap;}
 .pe-status.active{background:var(--s-grn);color:var(--bg);}
@@ -309,13 +324,13 @@ section{margin-top:72px;}
 .door{display:flex;align-items:center;gap:18px;padding:22px 6px;text-decoration:none;
   border-bottom:2px solid var(--rule);transition:padding-left .15s ease,background .15s ease;}
 .door:hover{padding-left:20px;background:linear-gradient(90deg,rgba(255,0,255,.08),transparent);}
-.door .num,.door .door-num{font-family:"Press Start 2P",monospace;font-size:13px;color:var(--s-mag);min-width:34px;}
+.door .num,.door .door-num{font-family:var(--font-pixel);font-size:12px;color:var(--s-mag);min-width:34px;}
 .door .body,.door .door-body{flex:1;display:flex;flex-direction:column;}
 .door .kick,.door .door-kicker{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:11px;color:var(--faint);
   text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;}
 .door .ttl,.door .door-title{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;font-size:19px;color:var(--paper);}
 .door .dsc,.door .door-desc{font-size:14px;color:var(--dim);margin-top:5px;}
-.door .arr,.door .door-arrow{font-family:"Press Start 2P",monospace;font-size:14px;color:var(--s-cyan);}
+.door .arr,.door .door-arrow{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;font-size:18px;color:var(--s-cyan);}
 
 /* ---- footer ---- */
 /* ---- decorative diving scene (Glug Glug, CRL 1984) ---- */
@@ -602,8 +617,9 @@ body.read{background:var(--bg-read);}
   border-bottom:2px solid var(--rule);text-decoration:none;
   transition:padding-left .15s ease,background .15s ease;}
 .wl-entry:hover{padding-left:18px;background:linear-gradient(90deg,rgba(255,0,255,.07),transparent);}
-.wl-date{font-family:"Press Start 2P",monospace;font-size:9px;color:var(--s-yel);
-  line-height:1.7;margin-top:6px;letter-spacing:.03em;}
+.wl-date{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;
+  font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--s-yel);
+  line-height:1.7;margin-top:6px;}
 .wl-entry.draft .wl-date{color:var(--faint);}
 .wl-title{font-family:var(--font-prose);font-weight:600;font-size:25px;line-height:1.2;
   color:var(--paper);margin:0 0 10px;letter-spacing:-.01em;}

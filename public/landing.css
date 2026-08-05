@@ -59,7 +59,7 @@
     border: 2px solid #111;
 }
 .load-line {
-    font-family: "Press Start 2P", monospace;
+    font-family: var(--font-pixel);
     font-size: 13px;
     color: #7fc9c7;
 }
@@ -67,7 +67,7 @@
     color: #cdbf7a;
 }
 .load-status {
-    font-family: "Press Start 2P", monospace;
+    font-family: var(--font-pixel);
     font-size: 11px;
     line-height: 1.5;
     letter-spacing: 0.03em;
@@ -123,7 +123,7 @@
     image-rendering: auto;
 }
 .hero h1 {
-    font-family: "Press Start 2P", monospace;
+    font-family: var(--font-pixel);
     font-size: 23px;
     line-height: 1.35;
     margin: 0 0 14px;
@@ -243,8 +243,10 @@
     border: 1px solid #1c1c1c;
 }
 .proj .pname {
-    font-family: "Press Start 2P", monospace;
-    font-size: 11px;
+    font-family: "Spline Sans Mono", ui-monospace, monospace;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.005em;
     color: var(--paper);
     margin-bottom: 9px;
     line-height: 1.5;
