@@ -56,11 +56,10 @@ const CRITTERS = [
 ].slice(0, critters);
 
 const year = new Date().getFullYear();
-// Both pixel faces load while Silkscreen is on trial, so --font-pixel in
-// spectrum.css can be flipped between them without touching this. Drop the
-// loser from this URL once it's decided; it's a real request either way.
+// Silkscreen is the pixel face (see --font-pixel in spectrum.css); Press Start
+// 2P was the previous one and is no longer requested.
 const fontHref =
-    "https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Spline+Sans+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap";
+    "https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Spline+Sans+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap";
 ---
 
 <!doctype html>
