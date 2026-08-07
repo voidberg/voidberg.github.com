@@ -139,7 +139,10 @@ section{margin-top:72px;}
 
 /* ---- section label ---- */
 .slabel{display:flex;align-items:center;gap:14px;margin-bottom:26px;}
-.slabel .k{font-family:var(--font-pixel);font-size:16px;color:var(--bg);
+/* 12px, not the 16px the 8px-grid rule would prefer: 16 made the badge taller
+   than the heading beside it. On a 2x screen 12px is still a whole 3x of the
+   8px design grid, so it only softens on a 1x display. */
+.slabel .k{font-family:var(--font-pixel);font-size:12px;color:var(--bg);
   background:var(--accent);padding:7px 9px;letter-spacing:.05em;white-space:nowrap;}
 .slabel h2,.slabel h3{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;font-size:20px;margin:0;color:var(--paper);}
 .slabel .line{flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--rule) 0 6px,transparent 6px 12px);}
