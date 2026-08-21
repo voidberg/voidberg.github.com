@@ -1,0 +1,47 @@
+---
+title: "35 years, or $1.5 billion"
+date: 2026-07-26T18:38:00+01:00
+standfirst: "Aaron Swartz faced 35 years for downloading papers. Anthropic paid $1.5 billion and carried on."
+# excerpt: "The line under the title in the index; falls back to the standfirst."
+tags: ["AI", "Copyright", "Open access"]
+---
+
+import { Image } from "astro:assets";
+import aaronSwartz from "./aaron-swartz.jpg";
+
+<figure>
+  <Image
+    src={aaronSwartz}
+    width={1600}
+    alt="Aaron Swartz speaking into a microphone at an outdoor rally, one finger raised. Behind him a hand-lettered yellow sign reads SOPA, PIPA: BAD 4 NY."
+  />
+  {/* One line: text on its own line inside a JSX element is parsed as a
+      Markdown block and comes out wrapped in a <p>. */}
+  <figcaption>Photo: Aaron Swartz by Daniel J. Sieradski, via Wikimedia Commons, licensed <a href="https://creativecommons.org/licenses/by-sa/2.0/" target="_blank" rel="noreferrer">CC BY-SA 2.0</a>.</figcaption>
+</figure>
+
+These days I’ve been thinking of Aaron Swartz.
+
+I assume most people reading this know who he is, but in case you don’t, he was a developer (among many things) who thought that publicly funded research should be free, and not locked behind a paywall in JSTOR.
+
+He put a computer in a closet at MIT and started downloading academic papers. He was caught, charged, refused a plea deal, then had a counter offer refused, and as a result he was left with a theoretical 35 years in prison and $1 million in fines. He killed himself. He was only 26.
+
+I’ve been thinking about him because I’m seeing a lot of discussions online about Anthropic’s settlement of $1.5 billion in the class action lawsuit brought by a group of authors. Some are giddy and think it’s good that a colossus got a slap in the face. Others are unhappy that people are not willing to give their works and first borns for free to a handful of companies to help with the quest of AGI.
+
+The interesting part of this settlement is that the training was ruled to be fine, and the actual problem was with... piracy.
+
+What I don’t see people talking about is the fact that now there is a price for acquiring vast amounts of works the fast way and training on them. That price is $1.5 billion. Might go up after another lawsuit, who knows.
+
+Can you do it legally? Yes. Is it feasible? Most likely no. Buying and scanning books at that scale, dealing with licensing costs, it all adds up. And it’s very very slow, compared to downloading torrents of books.
+
+How many AI companies do you know who can afford this bill? Anthropic is clearly one. Alphabet, Meta, OpenAI and the other big players surely can as well. But others? For Mistral that bill is half their equity raised to date. For Google it's a rounding error. How can smaller companies compete when the playing field is so skewed and you’re always one lawsuit away from bankruptcy?
+
+China is also interesting, as it’s outside of the US jurisdiction. Good luck enforcing a US copyright judgement in Chinese courts.
+
+And if you’re in neither of those places, then you’re squeezed from both sides: you can’t spend like the Americans, and you can’t outrun the Chinese labs.
+
+The moat is getting bigger.
+
+And no, I am not saying that every AI company should be allowed to hoover everything for free and then resell it to us in a nice monthly package.
+
+Aaron thought that knowledge should be free, and that walls should be torn down. What we got instead is a taller wall, and a handful of companies collecting the toll.
