@@ -1,9 +1,10 @@
 ---
 import Base from "../layouts/Base.astro";
 import { getCollection, getEntry, render } from "astro:content";
+import { getArticles } from "../lib/articles";
 
 const description =
-    "Alexandru Badiu, engineering leader in London. Twenty years building software, the last stretch leading teams across five countries. Currently looking for what's next.";
+    "Alexandru Badiu, engineering leader in London. Twenty years building software, the last stretch leading teams across five countries.";
 
 // Featured projects, in listed order.
 const projects = (await getCollection("projects")).sort(
@@ -13,6 +14,16 @@ const featured = projects.filter((p) => p.data.featured);
 
 // getEntry is typed as possibly undefined (the file could be renamed), so narrow
 // it rather than passing it straight to render.
+// The three most recent pieces. Same helper the articles pages use, so drafts
+// are visible in dev and absent from the build here too.
+const latest = (await getArticles()).slice(0, 3);
+const day = (d: Date) =>
+    d.toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+    });
+
 const bio = await getEntry("prose", "bio");
 if (!bio) throw new Error("Missing prose entry: bio");
 const { Content: Bio } = await render(bio);
@@ -63,15 +74,42 @@ const { Content: Bio } = await render(bio);
             <div class="eyebrow enter">Me, in 30 seconds</div>
             <h1 class="enter">Alexandru Badiu</h1>
             <div class="subline enter mono">
-                <span>Engineer</span><span class="sep">▚</span><span
-                    >London</span
-                ><span class="sep">▚</span><span>Open to what's next</span>
+                <span>Engineer</span><span class="sep">▚</span><span>London</span>
             </div>
         </div>
     </header>
     <div class="lede-body enter">
         <Bio />
     </div>
+
+    <!-- WRITING -->
+    {
+        latest.length > 0 && (
+            <section class="enter" style="margin-top: 42px;">
+                <div class="slabel">
+                    <span class="k">WRITE</span>
+                    <h2>Some things I've written</h2>
+                    <span class="line" />
+                    <a class="see-all" href="/articles">
+                        See all →
+                    </a>
+                </div>
+                <div class="home-writing">
+                    {latest.map((a) => (
+                        <a class="hw-entry" href={`/articles/${a.id}`}>
+                            <span class="hw-date">{day(a.data.date)}</span>
+                            <span class="hw-title">{a.data.title}</span>
+                            {(a.data.excerpt ?? a.data.standfirst) && (
+                                <span class="hw-blurb">
+                                    {a.data.excerpt ?? a.data.standfirst}
+                                </span>
+                            )}
+                        </a>
+                    ))}
+                </div>
+            </section>
+        )
+    }
 
     <!-- NOW -->
     <!-- A teaser only. /now is the canonical home for current-status prose;

@@ -1,0 +1,17 @@
+ON HOLD, was the Work section of /now.
+
+Said "between roles, looking for a senior IC or engineering leadership role",
+which stopped being true in August 2026. Rewrite for the new job and paste it
+back above the Making section in now-work.md.
+
+Kept as .txt so the prose glob (**/*.{md,mdx}) ignores it and it stays out of
+the built HTML. An HTML comment in the Markdown would have shipped in the page
+source.
+
+--------------------------------------------------------------------------
+
+### Work
+
+Between roles since BENlabs wound down earlier this year. Looking for a senior IC or engineering leadership role.
+
+I do my best work close to the product and the people using it. If you’re a charity or nonprofit and I can help, that too. [Get in touch](/contact) if that sounds like your team.
