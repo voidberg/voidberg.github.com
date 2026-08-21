@@ -1,0 +1,68 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getArticles } from "../../lib/articles";
+
+const description =
+    "Writing by Alexandru Badiu: notes on engineering, the tools he builds, and twenty years of running teams.";
+
+// Newest first, drafts included in dev and dropped from the build.
+const articles = await getArticles();
+
+const day = (d: Date) =>
+    d.toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+    });
+---
+
+<Base
+    title="Articles · Alexandru Badiu"
+    description={description}
+    active="/articles"
+>
+    <header class="page-head enter">
+        <div class="eyebrow">Articles</div>
+        <h1>LOAD "articles"</h1>
+        <p class="blurb">
+            Longer pieces, when something needs more room than a devlog entry.
+        </p>
+    </header>
+
+    {
+        articles.length > 0 ? (
+            <div class="writing-list enter">
+                {articles.map((a) => (
+                    <a
+                        class:list={["wl-entry", { draft: a.data.draft }]}
+                        href={`/articles/${a.id}`}
+                    >
+                        <div class="wl-date">{day(a.data.date)}</div>
+                        <h2 class="wl-title">{a.data.title}</h2>
+                        {(a.data.excerpt ?? a.data.standfirst) && (
+                            <p class="wl-excerpt">
+                                {a.data.excerpt ?? a.data.standfirst}
+                            </p>
+                        )}
+                        <div class="wl-meta">
+                            {a.data.draft && <span class="badge">Draft</span>}
+                            {a.data.tags.map((t, j) => (
+                                <>
+                                    {j > 0 && <span class="dot">·</span>}
+                                    <span class="tag">{t}</span>
+                                </>
+                            ))}
+                        </div>
+                    </a>
+                ))}
+            </div>
+        ) : (
+            <p class="writing-foot">Nothing published yet.</p>
+        )
+    }
+
+    <div class="writing-foot">
+        Shorter, project-by-project notes live on the <a href="/devlog">devlog</a
+        >.
+    </div>
+</Base>

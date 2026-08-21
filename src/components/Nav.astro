@@ -1,5 +1,6 @@
 ---
 import { nav } from "../data/site";
+import { getArticles } from "../lib/articles";
 
 interface Props {
     active?: string;
@@ -7,6 +8,12 @@ interface Props {
 }
 
 const { active, showControls = false } = Astro.props;
+
+// Articles earns its nav slot by having something in it. Until the first piece
+// lands, the link would point at an empty page, so it's dropped here rather
+// than being commented in and out of site.ts by hand.
+const hasArticles = (await getArticles()).length > 0;
+const items = nav.filter((n) => n.href !== "/articles" || hasArticles);
 ---
 
 <div class="statusbar">
@@ -25,7 +32,7 @@ const { active, showControls = false } = Astro.props;
     </button>
     <div class="grp" id="nav-menu">
         {
-            nav.map((n) => (
+            items.map((n) => (
                 <a
                     class:list={["navlink", { active: active === n.href }]}
                     href={n.href}

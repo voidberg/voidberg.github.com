@@ -1,0 +1,105 @@
+---
+import Base from "../../layouts/Base.astro";
+import { render } from "astro:content";
+import { getArticles } from "../../lib/articles";
+import type { GetStaticPaths } from "astro";
+import type { CollectionEntry } from "astro:content";
+
+// Newest first, so "previous" is the piece before this one in reading order.
+export const getStaticPaths: GetStaticPaths = async () => {
+    // A draft has no page in the build either, not just no listing entry.
+    const all = await getArticles();
+    return all.map((article, i) => ({
+        params: { slug: article.id },
+        props: {
+            article,
+            newer: all[i - 1] ?? null,
+            older: all[i + 1] ?? null,
+        },
+    }));
+};
+
+// getStaticPaths doesn't type Astro.props on its own; declaring Props does.
+type Props = {
+    article: CollectionEntry<"articles">;
+    newer: CollectionEntry<"articles"> | null;
+    older: CollectionEntry<"articles"> | null;
+};
+
+const { article, newer, older } = Astro.props;
+const { Content } = await render(article);
+
+const day = (d: Date) =>
+    d.toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+---
+
+{/* body.read swaps in the serif reading surface; it's the only place on the
+    site that uses it. */}
+<Base
+    title={`${article.data.title} · Alexandru Badiu`}
+    description={article.data.standfirst ?? article.data.excerpt ?? article.data.title}
+    bodyClass="no-loader read"
+    active="/articles"
+    backHref="/articles"
+    backLabel="← Back to articles"
+>
+    <article>
+        <header class="article-head enter">
+            <div class="eyebrow">Articles</div>
+            <h1 class="article-title">{article.data.title}</h1>
+            {
+                article.data.standfirst && (
+                    <p class="article-standfirst">{article.data.standfirst}</p>
+                )
+            }
+            <div class="article-meta">
+                <span class="byline">{day(article.data.date)}</span>
+                {
+                    article.data.tags.map((t) => (
+                        <>
+                            <span class="dot">·</span>
+                            <span class="tag">{t}</span>
+                        </>
+                    ))
+                }
+                {
+                    article.data.draft && (
+                        <>
+                            <span class="dot">·</span>
+                            <span class="tag">Draft</span>
+                        </>
+                    )
+                }
+            </div>
+        </header>
+
+        <div class="article-body enter"><Content /></div>
+    </article>
+
+    {
+        (newer || older) && (
+            <nav class="article-foot">
+                <div class="pv">
+                    {newer && (
+                        <a href={`/articles/${newer.id}`}>
+                            <span class="pv-kick">Newer</span>
+                            {newer.data.title}
+                        </a>
+                    )}
+                </div>
+                <div class="nx">
+                    {older && (
+                        <a href={`/articles/${older.id}`}>
+                            <span class="nx-kick">Older</span>
+                            {older.data.title}
+                        </a>
+                    )}
+                </div>
+            </nav>
+        )
+    }
+</Base>

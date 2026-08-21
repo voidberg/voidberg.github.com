@@ -10,5 +10,12 @@ export default defineConfig({
     // Emit /bio/index.html rather than /bio.html so links stay extensionless.
     format: 'directory',
   },
+  markdown: {
+    // SmartyPants turns ... into a single U+2026 glyph, which in a monospace
+    // face is three dots crammed into one character cell. The whole site is
+    // monospace, so plain full stops read better. It also can't quietly turn
+    // a double hyphen into an em dash.
+    smartypants: false,
+  },
   integrations: [mdx()],
 });

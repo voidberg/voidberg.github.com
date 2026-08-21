@@ -26,7 +26,6 @@
      third larger than they were under that face. */
   --font-pixel:"Silkscreen",monospace;
   /* reading mode (long-form articles) */
-  --font-prose:"Newsreader",Georgia,"Times New Roman",serif;
   --bg-read:#0c0c0c;
   --read-measure:100%; /* body fills the reading shell so it aligns with the header */
 }
@@ -284,6 +283,9 @@ section{margin-top:72px;}
 .alt-label{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.07em;}
 .alt a{color:var(--s-cyan);text-decoration:none;border-bottom:1px solid var(--s-cyan);width:fit-content;font-size:16px;}
 .alt-note{font-size:13px;color:var(--dim);}
+/* An entry that points at two places for the same thing, on one line. */
+.alt-pair{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+.alt-pair .dot{color:var(--rule);}
 
 /* ---- projects page ---- */
 .project-list{display:flex;flex-direction:column;border-top:2px solid var(--rule);margin-top:8px;}
@@ -546,10 +548,12 @@ section{margin-top:72px;}
 }
 
 /* ============================================================
-   READING MODE — long-form articles ("Writing")
+   READING MODE — long-form articles
    The 8-bit chrome (tape frame, status bar, pixel eyebrows)
    still frames the page, but the reading surface itself is
-   calm: softer paper, a proportional serif, generous measure.
+   calm: softer paper, generous leading, a wider measure. It
+   stays in the site's mono. A proportional serif was tried
+   here and read as a different website bolted onto this one.
    ============================================================ */
 body.read{background:var(--bg-read);}
 
@@ -558,9 +562,9 @@ body.read{background:var(--bg-read);}
 /* ---- article header ---- */
 .article-head{margin-top:44px;padding-bottom:26px;border-bottom:2px solid var(--rule);}
 .article-head .eyebrow{margin-bottom:20px;}
-.article-title{font-family:var(--font-prose);font-weight:600;font-size:42px;line-height:1.12;
-  letter-spacing:-.015em;color:var(--paper);margin:0 0 22px;text-wrap:balance;}
-.article-standfirst{font-family:var(--font-prose);font-size:22px;line-height:1.5;color:var(--dim);
+.article-title{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;font-size:30px;line-height:1.25;
+  letter-spacing:-.01em;color:var(--paper);margin:0 0 22px;text-wrap:balance;}
+.article-standfirst{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:17px;line-height:1.7;color:var(--dim);
   margin:0 0 26px;max-width:var(--read-measure);font-style:italic;}
 .article-meta{display:flex;gap:11px;flex-wrap:wrap;align-items:center;
   font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:12.5px;color:var(--faint);}
@@ -569,13 +573,13 @@ body.read{background:var(--bg-read);}
 .article-meta .byline{color:var(--dim);}
 
 /* ---- article body: the comfortable reading column ---- */
-.article-body{font-family:var(--font-prose);font-size:20px;line-height:1.75;color:var(--ink);
+.article-body{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:16.5px;line-height:1.8;color:var(--ink);
   max-width:var(--read-measure);margin:36px 0 0;}
 .article-body > *{max-width:var(--read-measure);}
 .article-body p{margin:0 0 24px;}
-.article-body h2{font-family:var(--font-prose);font-weight:600;font-size:27px;line-height:1.25;
+.article-body h2{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;font-size:20px;line-height:1.35;
   color:var(--paper);margin:52px 0 16px;padding-left:16px;border-left:4px solid var(--accent);}
-.article-body h3{font-family:var(--font-prose);font-weight:600;font-size:21px;line-height:1.3;
+.article-body h3{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;font-size:17px;line-height:1.4;
   color:var(--paper);margin:40px 0 12px;}
 .article-body a{color:var(--s-cyan);text-decoration:none;border-bottom:2px solid var(--s-cyan);padding-bottom:1px;}
 .article-body a:hover{color:var(--bg);background:var(--s-cyan);}
@@ -588,9 +592,9 @@ body.read{background:var(--bg-read);}
 
 /* pull quote — big, cyan, still serif */
 .article-body blockquote{margin:36px 0;padding:6px 0 6px 24px;border-left:3px solid var(--s-mag);}
-.article-body blockquote p{font-family:var(--font-prose);font-style:italic;font-size:24px;line-height:1.45;
+.article-body blockquote p{font-family:"Spline Sans Mono",ui-monospace,monospace;font-style:italic;font-size:17px;line-height:1.7;
   color:var(--paper);margin:0;}
-.pullquote{font-family:var(--font-prose);font-style:italic;font-size:27px;line-height:1.35;
+.pullquote{font-family:"Spline Sans Mono",ui-monospace,monospace;font-style:italic;font-size:19px;line-height:1.6;
   color:var(--s-cyan);margin:44px 0;padding:0;border:none;text-wrap:balance;}
 
 /* inline + block code — mono, terminal-flavoured */
@@ -603,8 +607,20 @@ body.read{background:var(--bg-read);}
 
 /* figures */
 .article-body figure{margin:36px 0;}
-.article-body figure canvas,.article-body figure img{display:block;width:100%;
-  border:2px solid var(--rule);image-rendering:pixelated;}
+/* Smooth by default: these are photographs more often than not. Add class
+   "pixel" to the <figure> for screenshots that should stay crisp. */
+.article-body figure canvas,.article-body figure img,.article-body p > img{
+  display:block;width:100%;height:auto;border:2px solid var(--rule);}
+.article-body figure.pixel canvas,.article-body figure.pixel img{
+  image-rendering:pixelated;}
+/* A bare Markdown image sits in its own paragraph; give it the figure's spacing
+   so ![alt](/img/x.jpg) looks deliberate without needing the HTML. */
+.article-body p > img{margin:36px 0;}
+/* A caption written across several lines in MDX arrives wrapped in a <p>;
+   don't let it pick up body-paragraph sizing and spacing. */
+.article-body figcaption p{margin:0;font-size:inherit;line-height:inherit;color:inherit;}
+.article-body figcaption a{color:var(--s-cyan);text-decoration:none;border-bottom:1px solid var(--s-cyan);}
+.article-body figcaption a:hover{color:var(--bg);background:var(--s-cyan);}
 .article-body figcaption{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:12.5px;
   color:var(--faint);margin-top:12px;text-align:center;line-height:1.6;}
 
@@ -620,19 +636,23 @@ body.read{background:var(--bg-read);}
 
 /* ---- WRITING index (article listing) ---- */
 .writing-list{display:flex;flex-direction:column;border-top:2px solid var(--rule);margin-top:8px;}
-.wl-entry{display:grid;grid-template-columns:118px 1fr;gap:26px;padding:30px 6px;
-  border-bottom:2px solid var(--rule);text-decoration:none;
-  transition:padding-left .15s ease,background .15s ease;}
-.wl-entry:hover{padding-left:18px;background:linear-gradient(90deg,rgba(255,0,255,.07),transparent);}
+/* One column: date, then title, then excerpt, then meta. The date used to sit
+   in a 118px gutter, which left the left third of every row empty and never
+   baseline-aligned against a 20px title. Same stack as the devlog entries. */
+.wl-entry{display:block;padding:24px 6px;
+  border-bottom:2px solid var(--rule);text-decoration:none;}
+/* The title carries the hover. Shifting the whole row moved the text under the
+   pointer, which is what made it feel unsteady. */
+.wl-entry:hover .wl-title{color:var(--accent);}
 .wl-date{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;
   font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--s-yel);
-  line-height:1.7;margin-top:6px;}
+  line-height:1.5;margin-bottom:9px;}
 .wl-entry.draft .wl-date{color:var(--faint);}
-.wl-title{font-family:var(--font-prose);font-weight:600;font-size:25px;line-height:1.2;
-  color:var(--paper);margin:0 0 10px;letter-spacing:-.01em;}
+.wl-title{font-family:"Spline Sans Mono",ui-monospace,monospace;font-weight:700;font-size:20px;line-height:1.3;
+  color:var(--paper);margin:0 0 8px;letter-spacing:-.01em;transition:color .12s ease;}
 .wl-entry.draft .wl-title{color:var(--dim);}
-.wl-excerpt{font-family:var(--font-prose);font-size:16.5px;line-height:1.6;color:var(--dim);
-  margin:0 0 14px;max-width:58ch;}
+.wl-excerpt{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:15px;line-height:1.65;color:var(--dim);
+  margin:0 0 12px;max-width:64ch;}
 .wl-meta{display:flex;gap:11px;flex-wrap:wrap;align-items:center;
   font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:12px;color:var(--faint);}
 .wl-meta .tag{color:var(--s-cyan);}

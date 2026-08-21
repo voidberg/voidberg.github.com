@@ -75,4 +75,23 @@ const prose = defineCollection({
   }),
 });
 
-export const collections = { projects, now, prose, devlog };
+// Long-form writing. One file per piece; the body is the article. These are the
+// only pages that use the serif reading surface (body.read), everything else on
+// the site stays on the mono chrome.
+const articles = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/articles' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    // The large line under the title on the article page.
+    standfirst: z.string().optional(),
+    // The line under the title in the index. Falls back to the standfirst.
+    excerpt: z.string().optional(),
+    tags: z.array(z.string()).default([]),
+    // Drafts show in the index with a badge, so a piece can be in the open
+    // while it's still being written. Set false to publish properly.
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { projects, now, prose, devlog, articles };

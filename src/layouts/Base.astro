@@ -56,10 +56,11 @@ const CRITTERS = [
 ].slice(0, critters);
 
 const year = new Date().getFullYear();
-// Silkscreen is the pixel face (see --font-pixel in spectrum.css); Press Start
-// 2P was the previous one and is no longer requested.
+// Two families, and that is the whole site: Silkscreen for pixel display (see
+// --font-pixel in spectrum.css) and Spline Sans Mono for everything else.
+// Newsreader was here for the article reading surface, which is now mono too.
 const fontHref =
-    "https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Spline+Sans+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap";
+    "https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Spline+Sans+Mono:wght@400;500;600;700&display=swap";
 ---
 
 <!doctype html>
