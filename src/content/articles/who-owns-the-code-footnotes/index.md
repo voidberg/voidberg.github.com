@@ -150,6 +150,24 @@ The "Who's going to check?" section had a lot more behind it.
 
 **Anthropic's "Non-commercial use only"** clause is in the [UK and EEA consumer terms](https://www.anthropic.com/legal/consumer-terms), not the US ones, as far as I could check. It sits in the liability section, so it's mostly there to stop Anthropic owing a business user anything. It's still a promise you make when you sign up.
 
+## If half your codebase was written by a model
+
+Someone asked me what this means for a company whose closed source code is half generated. The short version: day to day, nothing. At the edges, quite a lot.
+
+Copyright follows the human parts. In the US and the EU, the bits a model wrote on its own probably have no copyright, while your edits, choices and structure do. In practice most generated code has been prompted, reviewed, edited and fitted into a design a human made, so "half generated" isn't a clean split, and nobody can tell you where the line is. The UK still protects computer-generated works, for 50 years, until it changes its mind.
+
+You don't need copyright to run, sell or support your own code. It only matters when someone else copies it. If you sell SaaS, customers never get the code, and your contract and your servers do the protecting. If you ship it (a desktop app, an SDK, an on-prem install, your front-end JavaScript), a competitor who lifts the generated parts is harder to stop with copyright. What's left is your license terms (which in the US can ban reverse engineering, see above), trademarks, patents if you have any, and trade secret for whatever you don't ship.
+
+Trade secret is the interesting one, because it doesn't care who wrote the code. It cares whether the code is valuable and whether you took ["reasonable measures"](https://www.law.cornell.edu/uscode/text/18/1839) to keep it secret. For closed source, it's the protection that survives AI. It also means pasting your code into a consumer seat that trains on it works against you.
+
+Customer contracts usually promise to defend the customer if your product infringes someone's IP. That doesn't change. What changes is "we own all the IP in the product". With half the code generated, that's a promise you might not be able to keep, and "own or have the right to use" is the safer wording. The [NVCA](https://nvca.org/model-legal-documents/) investment forms ask founders to promise they haven't used AI tools to develop proprietary IP "in a manner that it believes would materially affect the Company's ownership or rights therein". Half the codebase is exactly that question.
+
+In the US you can't sue over a US work until you've [registered the copyright](https://www.law.cornell.edu/uscode/text/17/411), and the registration has to exclude AI-generated material that's more than trivial. So you need to know which parts those are. That's the practical case for tracking what was generated, beyond it being good hygiene.
+
+Liability doesn't move either. From 9 December 2026, the EU's new Product Liability Directive treats software as a product, with liability without fault for defects that cause injury, damage to private property or loss of data ([UK government summary](https://www.niassembly.gov.uk/globalassets/committee-blocks/windsor-framework-democratic-scrutiny-committee/com-eu-20242853/directive-eu-20242853-em.pdf)). "The model wrote that bit" isn't a defence.
+
+And a small irony. Anthropic says that as of May 2026, ["more than 80% of the code we merge into Anthropic's codebase was authored by Claude"](https://www.anthropic.com/institute/recursive-self-improvement). Its takedown notice for the Claude Code leak, in March, said ["Anthropic is the copyright owner"](https://github.com/github/dmca/blob/master/2026/03/2026-03-31-anthropic.md). Both can be true: the human design, editing and arrangement are protected, and in the UK the generated parts are too. But it shows how little of this anyone has had to test.
+
 ## Small things
 
 The fast inverse square root isn't Carmack's. [Beyond3D traced it](https://games.slashdot.org/story/06/12/01/184205/origin-of-quake3s-fast-invsqrt) in 2006 to Greg Walsh at Ardent Computer in the late 1980s, with Cleve Moler involved. [Armin Ronacher's tweet](https://twitter.com/mitsuhiko/status/1410886329924194309) with Copilot reproducing it is from 2 July 2021.
