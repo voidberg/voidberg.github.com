@@ -1,14 +1,12 @@
 ---
 title: "Who owns the code: the footnotes"
-date: 2026-10-29T21:00:00+00:00
+date: 2026-10-29T09:00:00+00:00
 standfirst: "The stories, caveats and links that didn't fit into a 40 minute talk about copyright, licenses and AI."
 tags: ["AI", "Copyright", "Open source", "Talks"]
-draft: true
+draft: false
 ---
 
-Tonight I gave a talk at JSMonthly London about copyright and licenses in the AI era. It's the successor to a talk I gave at meetups and conferences around 2016 to 2018, and the research for the new one produced a lot more than fits in 40 minutes. This is where the rest went.
-
-<!-- TODO: link to the slides once they're up. -->
+On 29 October 2026 I gave a talk at JSMonthly London about copyright and licenses in the AI era. It's the successor to a talk I gave at meetups and conferences around 2016 to 2018, and the research for the new one produced a lot more than fits in 40 minutes. This is where the rest went.
 
 Same disclaimer as the talk: I am not a lawyer, and this is not legal advice. I checked everything here against primary sources in October 2026 where I could, and I say so where I couldn't. Some of it will be out of date by Christmas.
 
