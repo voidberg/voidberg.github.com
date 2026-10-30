@@ -8,6 +8,8 @@ draft: false
 
 On 29 October 2026 I gave a talk at JSMonthly London about copyright and licenses in the AI era. It's the successor to a talk I gave at meetups and conferences around 2016 to 2018, and the research for the new one produced a lot more than fits in 40 minutes. This is where the rest went.
 
+The slides are [here as a PDF](/talks/who-owns-the-code.pdf) (1.6 MB), with my speaker notes under each one.
+
 Same disclaimer as the talk: I am not a lawyer, and this is not legal advice. I checked everything here against primary sources in October 2026 where I could, and I say so where I couldn't. Some of it will be out of date by Christmas.
 
 ## Public domain depends on where you're standing
